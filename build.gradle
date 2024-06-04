@@ -5,7 +5,7 @@ plugins {
     id "run.halo.plugin.devtools" version "0.0.9"
 }
 
-group 'run.halo.starter'
+group 'run.halo.editor.hyperlink'
 sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    implementation platform('run.halo.tools.platform:plugin:2.11.0-SNAPSHOT')
+    implementation platform('run.halo.tools.platform:plugin:2.15.0-SNAPSHOT')
     compileOnly 'run.halo.app:api'
 
     testImplementation 'run.halo.app:api'
@@ -52,5 +52,5 @@ build {
 }
 
 halo {
-    version = '2.11'
+    version = '2.16'
 }
