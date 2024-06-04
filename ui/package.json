@@ -2,7 +2,6 @@
   "scripts": {
     "dev": "vite build --watch --mode=development",
     "build": "vite build",
-    "preview": "vite preview --port 4173",
     "test:unit": "vitest --environment jsdom",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
@@ -10,6 +9,8 @@
   "dependencies": {
     "@halo-dev/components": "^2.16.0",
     "@halo-dev/console-shared": "^2.16.0",
+    "@halo-dev/hyperlink-card": "workspace:*",
+    "@halo-dev/richtext-editor": "^2.16.0",
     "vue": "^3.4.27"
   },
   "devDependencies": {
