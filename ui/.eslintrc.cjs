@@ -10,6 +10,10 @@ module.exports = {
     "@vue/eslint-config-prettier",
   ],
   env: {
+    node: true,
     "vue/setup-compiler-macros": true,
+  },
+  rules: {
+    "@typescript-eslint/ban-ts-comment": "off",
   },
 };

@@ -1,19 +1,19 @@
+import LinkViewBubbleMenuItem from "@/components/LinkViewBubbleMenuItem.vue";
+import TextExtensionMenuItem from "@/components/TextExtensionMenuItem.vue";
 import {
-  type Editor,
   EditorState,
-  isActive,
-  mergeAttributes,
-  Node,
   ExtensionLink,
+  ExtensionText,
+  Node,
   getMarkAttributes,
   getNodeAttributes,
-  ExtensionText,
+  isActive,
+  mergeAttributes,
+  type Editor,
 } from "@halo-dev/richtext-editor";
 import { markRaw, type Component } from "vue";
 import PreviewLinkIcon from "~icons/fluent/preview-link-24-filled";
 import MdiLinkVariant from "~icons/mdi/link-variant";
-import LinkViewBubbleMenuItem from "@/components/LinkViewBubbleMenuItem.vue";
-import TextExtensionMenuItem from "@/components/TextExtensionMenuItem.vue";
 import { splitLink } from "./utils";
 
 export interface LinkViewType {
@@ -78,19 +78,19 @@ const HyperlinkCardExtension = Node.create({
     return {
       target: {
         default: "_blank",
-        parseHTML: (element: any) => {
+        parseHTML: (element: HTMLElement) => {
           return element.getAttribute("target");
         },
       },
       href: {
         default: null,
-        parseHTML: (element: any) => {
+        parseHTML: (element: HTMLElement) => {
           return element.getAttribute("href");
         },
       },
       type: {
         default: linkViewTypes[1].key,
-        parseHTML: (element: any) => {
+        parseHTML: (element: HTMLElement) => {
           return element.getAttribute("type");
         },
       },
@@ -135,11 +135,11 @@ const HyperlinkCardExtension = Node.create({
     };
   },
   parseHTML() {
-    return [{ tag: "link-view" }];
+    return [{ tag: "hyperlink-card" }];
   },
   renderHTML({ HTMLAttributes }) {
     return [
-      "link-view",
+      "hyperlink-card",
       mergeAttributes(HTMLAttributes),
       [
         "a",
