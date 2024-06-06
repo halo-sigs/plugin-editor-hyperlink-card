@@ -4,7 +4,7 @@ link-view.ProseMirror-selectednode {
 
 .halo-rich-text-editor .editor-content .ProseMirror link-view {
   display: block;
-  margin-top: .75em;
+  margin-top: 0.75em;
   margin-bottom: 0;
   pointer-events: painted;
 }

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import type { LinkViewType } from "@/editor";
-import type { Editor } from "@halo-dev/richtext-editor";
-import { Dropdown as VDropdown } from "floating-vue";
-import type { Component } from "vue";
-import LinkViewMenu from "@/components/LinkViewMenu.vue";
-import MdiMenuDown from "~icons/mdi/menu-down";
+import LinkViewMenu from '@/components/LinkViewMenu.vue';
+import type { LinkViewType } from '@/editor/link-view-type';
+import type { Editor } from '@halo-dev/richtext-editor';
+import { Dropdown as VDropdown } from 'floating-vue';
+import type { Component } from 'vue';
+import MdiMenuDown from '~icons/mdi/menu-down';
 
 const props = withDefaults(
   defineProps<{
@@ -25,22 +25,18 @@ const props = withDefaults(
 
 <template>
   <template v-if="visible({ editor })">
-    <VDropdown
-      class="inline-flex"
-      :triggers="['click']"
-      :popper-triggers="['click']"
-    >
+    <VDropdown class="hyperlink-inline-flex" :triggers="['click']" :popper-triggers="['click']">
       <button
-        :class="{ 'bg-gray-200 !text-black': isActive({ editor }) }"
-        class="inline-flex w-30 items-center gap-x-1 rounded-md p-1 text-base text-gray-600 hover:bg-gray-100"
+        :class="{ 'hyperlink-bg-gray-200 !hyperlink-text-black': isActive({ editor }) }"
+        class="hyperlink-inline-flex hyperlink-h-full hyperlink-items-center hyperlink-gap-x-1 hyperlink-rounded-md hyperlink-p-2 hyperlink-text-base hyperlink-text-gray-600 hover:hyperlink-bg-gray-100"
       >
-        <component :is="type?.({ editor }).icon" class="h-5 w-5" />
+        <component :is="type?.({ editor }).icon" class="hyperlink-size-5" />
         <span>{{ type?.({ editor }).title }}</span>
         <MdiMenuDown />
       </button>
       <template #popper>
         <div
-          class="relative max-h-72 w-48 overflow-hidden overflow-y-auto rounded-md bg-white p-1 drop-shadow"
+          class="hyperlink-relative hyperlink-max-h-96 hyperlink-w-56 hyperlink-overflow-hidden hyperlink-overflow-y-auto hyperlink-rounded-md hyperlink-bg-white hyperlink-p-1 hyperlink-drop-shadow"
         >
           <KeepAlive>
             <LinkViewMenu v-bind="props"></LinkViewMenu>

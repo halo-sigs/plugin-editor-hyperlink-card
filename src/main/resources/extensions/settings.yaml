@@ -1,0 +1,26 @@
+apiVersion: v1alpha1
+kind: Setting
+metadata:
+  name: plugin-editor-hyperlink-card-settings
+spec:
+  forms:
+    - group: proxy
+      label: 代理设置
+      formSchema:
+        - $formkit: text
+          name: host
+          label: HTTP 代理地址
+          value: ""
+        - $formkit: number
+          name: port
+          label: HTTP 代理端口
+        - $formkit: repeater
+          name: hosts
+          label: 需要代理 host 的列表
+          help: 如：github.com
+          value: []
+          children:
+            - $formkit: text
+              name: value
+              label: Host 地址
+              value: ""
