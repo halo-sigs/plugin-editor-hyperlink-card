@@ -1,13 +1,14 @@
-import presetIcons from '@unocss/preset-icons';
-import { presetUno } from 'unocss';
-import UnoCSS from 'unocss/vite';
 import { defineConfig } from 'vite';
+import { sharedPluginsConfig } from './src/vite/shared-plugin-config';
 
 export default defineConfig({
-  plugins: [
-    UnoCSS({
-      mode: 'shadow-dom',
-      presets: [presetUno(), presetIcons()],
-    }),
-  ],
+  plugins: [...sharedPluginsConfig],
+  server: {
+    proxy: {
+      '/apis': {
+        target: 'http://localhost:8090',
+        changeOrigin: true,
+      },
+    },
+  },
 });

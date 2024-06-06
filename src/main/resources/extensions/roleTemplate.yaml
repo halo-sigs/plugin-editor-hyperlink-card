@@ -1,0 +1,15 @@
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: role-template-hyperlink-card-default
+  labels:
+    halo.run/role-template: "true"
+    halo.run/hidden: "true"
+    rbac.authorization.halo.run/aggregate-to-anonymous: "true"
+  annotations:
+    rbac.authorization.halo.run/module: "editor-hyperlink-card"
+    rbac.authorization.halo.run/display-name: "编辑器超链接卡片"
+rules:
+  - apiGroups: ["api.hyperlink.halo.run"]
+    resources: ["*"]
+    verbs: ["*"]

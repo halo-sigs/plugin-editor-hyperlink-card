@@ -11,6 +11,8 @@ spec:
     name: Halo
     website: https://github.com/halo-dev
   logo: logo.svg
+  configMapName: plugin-editor-hyperlink-card-configs
+  settingName: plugin-editor-hyperlink-card-settings
   homepage: https://github.com/halo-sigs/plugin-editor-hyperlink-card#readme
   repo: https://github.com/halo-sigs/plugin-editor-hyperlink-card
   issues: https://github.com/halo-sigs/plugin-editor-hyperlink-card/issues

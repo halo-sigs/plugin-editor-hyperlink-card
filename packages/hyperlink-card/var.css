@@ -1,0 +1,38 @@
+@media (prefers-color-scheme: dark) {
+  .color-scheme-auto,
+  [data-color-scheme='auto'] hyperlink-card {
+    color-scheme: dark;
+    --halo-hyperlink-card-bg-color: #18181b;
+    --halo-hyperlink-card-inline-bg-color: #3f3f46;
+    --halo-hyperlink-card-inline-hover-bg-color: #52525b;
+
+    --halo-hyperlink-card-title-color: #f4f4f5;
+    --halo-hyperlink-card-inline-title-color: #f4f4f5;
+
+    --halo-hyperlink-card-description-color: #a1a1aa;
+    --halo-hyperlink-card-link-color: #e4e4e7;
+    --halo-hyperlink-card-bg-gradient: linear-gradient(#454545, #454545),
+      linear-gradient(transparent, transparent);
+    --halo-hyperlink-card-border-color: #52525b;
+    --halo-hyperlink-card-border-hover-color: #e4e4e7;
+  }
+}
+
+.color-scheme-dark,
+.dark,
+[data-color-scheme='dark'] hyperlink-card {
+    color-scheme: dark;
+    --halo-hyperlink-card-bg-color: #18181b;
+    --halo-hyperlink-card-inline-bg-color: #3f3f46;
+    --halo-hyperlink-card-inline-hover-bg-color: #52525b;
+
+    --halo-hyperlink-card-title-color: #f4f4f5;
+    --halo-hyperlink-card-inline-title-color: #f4f4f5;
+
+    --halo-hyperlink-card-description-color: #a1a1aa;
+    --halo-hyperlink-card-link-color: #e4e4e7;
+    --halo-hyperlink-card-bg-gradient: linear-gradient(#454545, #454545),
+      linear-gradient(transparent, transparent);
+    --halo-hyperlink-card-border-color: #52525b;
+    --halo-hyperlink-card-border-hover-color: #e4e4e7;
+}
