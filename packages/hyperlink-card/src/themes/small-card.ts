@@ -11,11 +11,11 @@ export class HyperlinkSmallCard extends LitElement {
   override render() {
     return html`
       <div class="items-center relative flex p-2 gap-3">
-        ${this.siteData?.image
+        ${this.siteData?.image || this.siteData?.icon
           ? html`<div class="flex-none w-8 z-[1] aspect-square">
               <img
                 class="rounded-lg size-full object-cover"
-                src=${this.siteData.icon || this.siteData?.image}
+                src=${this.siteData.icon || this.siteData?.image || ''}
               />
             </div>`
           : ''}

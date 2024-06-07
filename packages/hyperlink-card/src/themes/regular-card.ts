@@ -32,7 +32,7 @@ export class HyperlinkRegularCard extends LitElement {
           </div>`
         : ''}
       ${!this.siteData?.image && this.siteData?.icon
-        ? html`<div class="aspect-square w-full sm:w-32 flex-none z-[1]">
+        ? html`<div class="aspect-square w-full sm:w-18 flex-none z-[1]">
             <img class="rounded-lg size-full object-cover" src=${this.siteData?.icon} />
           </div>`
         : ''}
