@@ -2,18 +2,17 @@ import LinkViewBubbleMenuItem from '@/components/LinkViewBubbleMenuItem.vue';
 import {
   EditorState,
   Node,
-  NodeSelection,
-  PMNode,
-  Plugin,
-  PluginKey,
+  VueNodeViewRenderer,
   getNodeAttributes,
   isActive,
   mergeAttributes,
   type Editor,
-} from "@halo-dev/richtext-editor";
-import { markRaw } from "vue";
-import linkViewTypes from "./link-view-type";
-import { resolve } from "./utils";
+} from '@halo-dev/richtext-editor';
+import { markRaw } from 'vue';
+import linkViewTypes from './link-view-type';
+import HyperlinkInlineView from '@/components/HyperlinkInlineView.vue';
+import HyperlinkBubbleButton from '@/components/HyperlinkBubbleButton.vue';
+import MdiShare from '~icons/mdi/share';
 
 const HyperlinkInlineCardExtension = Node.create({
   name: 'hyperlinkInlineCard',
@@ -67,14 +66,37 @@ const HyperlinkInlineCardExtension = Node.create({
                 },
               },
             },
+            {
+              priority: 20,
+              component: markRaw(HyperlinkBubbleButton),
+              props: {
+                name: HyperlinkInlineCardExtension.name,
+              },
+            },
+            {
+              priority: 30,
+              props: {
+                isActive: () => false,
+                icon: markRaw(MdiShare),
+                title: '打开链接',
+                action: ({ editor }: { editor: Editor }) => {
+                  const attr = getNodeAttributes(editor.state, HyperlinkInlineCardExtension.name);
+                  if (attr?.href) {
+                    window.open(attr?.href, '_blank');
+                  }
+                },
+              },
+            },
           ],
         };
       },
     };
   },
+
   parseHTML() {
     return [{ tag: 'hyperlink-inline-card' }];
   },
+
   renderHTML({ HTMLAttributes }) {
     return [
       'hyperlink-inline-card',
@@ -82,52 +104,10 @@ const HyperlinkInlineCardExtension = Node.create({
       ['a', { href: HTMLAttributes.href, target: HTMLAttributes.target }, HTMLAttributes.href],
     ];
   },
-  addProseMirrorPlugins() {
-    return [
-      new Plugin({
-        key: new PluginKey("hyperlinkInlineCardKey"),
-        props: {
-          handleDOMEvents: {
-            mouseover: (view, event) => {
-              const coords = {
-                left: event.clientX,
-                top: event.clientY,
-              };
-              // 从 event 中判断当前移入的元素
-              const pos = view.posAtCoords(coords);
-              if (!pos) {
-                return false;
-              }
-              const $pos = resolve(view.state.doc, pos.pos);
-              if ($pos.length === 0) {
-                return false;
-              }
-              const currentNodePos = $pos[$pos.length - 1];
-              const parentNode = currentNodePos.node;
-              if (
-                parentNode.content.childCount === 0 ||
-                parentNode.content.childCount <= currentNodePos.index
-              ) {
-                return false;
-              }
-              const node = parentNode.child(currentNodePos.index);
-              const state = view.state;
-              const tr = state.tr;
-              if (predicate(node)) {
-                tr.setSelection(new NodeSelection(state.doc.resolve(pos.pos)));
-                view.dispatch(tr);
-                return false;
-              }
-            },
-          },
-        },
-      }),
-    ];
+
+  addNodeView() {
+    return VueNodeViewRenderer(HyperlinkInlineView);
   },
 });
-
-const predicate = (node: PMNode) => {
-  return node.type.name === HyperlinkInlineCardExtension.name;
-};
 
 export default HyperlinkInlineCardExtension;

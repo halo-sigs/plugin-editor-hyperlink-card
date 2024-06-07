@@ -11,6 +11,8 @@ import {
 } from '@halo-dev/richtext-editor';
 import { markRaw } from 'vue';
 import linkViewTypes from './link-view-type';
+import MdiShare from '~icons/mdi/share';
+import HyperlinkBubbleButton from '@/components/HyperlinkBubbleButton.vue';
 
 const HyperlinkCardExtension = Node.create({
   name: 'hyperlinkCard',
@@ -69,6 +71,27 @@ const HyperlinkCardExtension = Node.create({
                 },
               },
             },
+            {
+              priority: 20,
+              component: markRaw(HyperlinkBubbleButton),
+              props: {
+                name: HyperlinkCardExtension.name,
+              },
+            },
+            {
+              priority: 30,
+              props: {
+                isActive: () => false,
+                icon: markRaw(MdiShare),
+                title: '打开链接',
+                action: ({ editor }: { editor: Editor }) => {
+                  const attr = getNodeAttributes(editor.state, HyperlinkCardExtension.name);
+                  if (attr?.href) {
+                    window.open(attr?.href, '_blank');
+                  }
+                },
+              },
+            },
           ],
         };
       },
@@ -79,9 +102,11 @@ const HyperlinkCardExtension = Node.create({
       },
     };
   },
+
   parseHTML() {
     return [{ tag: 'hyperlink-card' }];
   },
+
   renderHTML({ HTMLAttributes }) {
     return [
       'hyperlink-card',
@@ -89,6 +114,7 @@ const HyperlinkCardExtension = Node.create({
       ['a', { href: HTMLAttributes.href, target: HTMLAttributes.target }, HTMLAttributes.href],
     ];
   },
+
   addNodeView() {
     return VueNodeViewRenderer(HyperlinkView);
   },
