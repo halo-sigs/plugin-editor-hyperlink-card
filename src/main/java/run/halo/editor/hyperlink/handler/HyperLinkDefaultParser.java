@@ -6,6 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import run.halo.editor.hyperlink.dto.HyperLinkBaseDTO;
 
@@ -23,8 +24,11 @@ public class HyperLinkDefaultParser implements HyperLinkParser<HyperLinkBaseDTO>
         Elements meta = parse.getElementsByTag("meta");
         parserMetas(meta, hyperLinkBaseDTO);
 
-        var title = parse.getElementsByTag("title").get(0).text();
-        hyperLinkBaseDTO.setTitle(title);
+        var titles = parse.getElementsByTag("title");
+        if (!CollectionUtils.isEmpty(titles)) {
+            var title = titles.get(0).text();
+            hyperLinkBaseDTO.setTitle(title);
+        }
 
         Elements links = parse.getElementsByTag("link");
         parserLinks(links, hyperLinkBaseDTO);
