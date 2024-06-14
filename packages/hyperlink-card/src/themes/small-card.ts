@@ -16,6 +16,7 @@ export class HyperlinkSmallCard extends LitElement {
               <img
                 class="rounded-lg size-full object-cover"
                 src=${this.siteData.icon || this.siteData?.image || ''}
+                referrerpolicy="no-referrer"
               />
             </div>`
           : ''}

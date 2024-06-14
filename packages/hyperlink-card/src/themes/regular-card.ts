@@ -28,12 +28,20 @@ export class HyperlinkRegularCard extends LitElement {
         : ''}
       ${this.siteData?.image
         ? html`<div class="aspect-16/9 w-full sm:w-56 flex-none z-[1]">
-            <img class="rounded-lg size-full object-cover" src=${this.siteData?.image} />
+            <img
+              class="rounded-lg size-full object-cover"
+              src=${this.siteData?.image}
+              referrerpolicy="no-referrer"
+            />
           </div>`
         : ''}
       ${!this.siteData?.image && this.siteData?.icon
         ? html`<div class="aspect-square w-full sm:w-18 flex-none z-[1]">
-            <img class="rounded-lg size-full object-cover" src=${this.siteData?.icon} />
+            <img
+              class="rounded-lg size-full object-cover"
+              src=${this.siteData?.icon}
+              referrerpolicy="no-referrer"
+            />
           </div>`
         : ''}
 

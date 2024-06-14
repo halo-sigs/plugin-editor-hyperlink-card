@@ -60,6 +60,7 @@ export class HyperlinkInlineCard extends LitElement {
           ? html`<img
               class="size-4 rounded-sm"
               src=${this.siteData.icon || this.siteData.image || ''}
+              referrerpolicy="no-referrer"
             />`
           : ''}
         <span>${this.siteData.title || this.href}</span>

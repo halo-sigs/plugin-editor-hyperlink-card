@@ -31,6 +31,7 @@ export class HyperlinkGridCard extends LitElement {
             <img
               class="rounded-lg size-full object-cover aspect-16/9"
               src=${this.siteData?.image || this.siteData?.icon || ''}
+              referrerpolicy="no-referrer"
             />
           </div>`
         : ''}
