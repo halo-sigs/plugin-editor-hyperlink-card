@@ -47,7 +47,8 @@ public class HttpClientFactory {
 
     private static HttpClient getHttpClient() {
         return HttpClient.create()
-            .responseTimeout(Duration.ofSeconds(10));
+            .responseTimeout(Duration.ofSeconds(10))
+            .compress(true);
     }
 
     record ProxyConfig(String host, int port, List<AddressConfig> hosts) {
