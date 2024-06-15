@@ -27,7 +27,7 @@ Halo 的编辑器插件，能够在编辑器中将普通的超链接转为卡片
 
 ## 作为标签使用
 
-如果你使用默认编辑器，那么参考上面的[安装与使用](#安装与使用)即可在文章中插入链接卡片。此外，因为此插件的 UI 部分最终会编译为 [https://developer.mozilla.org/en-US/docs/Web/API/Web_components](Web Component)，所以你可以将其当做一个常规的 HTML 标签插入到网站的任意位置。
+如果你使用默认编辑器，那么参考上面的[安装与使用](#安装与使用)即可在文章中插入链接卡片。此外，因为此插件的 UI 部分最终会编译为 [Web Component](https://developer.mozilla.org/en-US/docs/Web/API/Web_components)，所以你可以将其当做一个常规的 HTML 标签插入到网站的任意位置。
 
 ### hyperlink-card
 
