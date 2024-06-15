@@ -25,6 +25,37 @@ Halo 的编辑器插件，能够在编辑器中将普通的超链接转为卡片
 
 ![Light](./images/preview-light.png)
 
+## 作为标签使用
+
+如果你使用默认编辑器，那么参考上面的[安装与使用](#安装与使用)即可在文章中插入链接卡片。此外，因为此插件的 UI 部分最终会编译为 [https://developer.mozilla.org/en-US/docs/Web/API/Web_components](Web Component)，所以你可以将其当做一个常规的 HTML 标签插入到网站的任意位置。
+
+### hyperlink-card
+
+块级链接卡片，使用方式：
+
+```html
+<hyperlink-card href="https://www.halo.run" target="_blank" theme="regular"></hyperlink-card>
+```
+
+参数：
+
+- `href`：链接地址。
+- `target`：链接打开方式，可选值为 `_blank`、`_self`，默认为 `_self`。
+- `theme`：卡片风格，可选值为 `regular`、`small`、`grid`，默认为 `regular`。
+
+### hyperlink-inline-card
+
+行内链接卡片，使用方式：
+
+```html
+<hyperlink-inline-card href="https://www.halo.run" target="_blank"></hyperlink-inline-card>
+```
+
+参数：
+
+- `href`：链接地址。
+- `target`：链接打开方式，可选值为 `_blank`、`_self`，默认为 `_self`。
+
 ## 主题适配
 
 ### 自定义样式
