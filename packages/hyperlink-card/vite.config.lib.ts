@@ -1,7 +1,7 @@
-import copy from 'rollup-plugin-copy';
 import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
+import { viteStaticCopy as StaticCopy } from 'vite-plugin-static-copy';
 import { sharedPluginsConfig } from './src/vite/shared-plugin-config';
 
 export default defineConfig({
@@ -22,7 +22,7 @@ export default defineConfig({
   plugins: [
     ...sharedPluginsConfig,
     dts(),
-    copy({
+    StaticCopy({
       targets: [
         {
           src: ['./dist/hyperlink-card.iife.js', './var.css'],
