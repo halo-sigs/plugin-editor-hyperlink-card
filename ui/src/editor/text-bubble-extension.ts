@@ -4,6 +4,8 @@ import { markRaw } from 'vue';
 import linkViewTypes from './link-view-type';
 
 const TextBubbleExtension = Extension.create({
+  name: 'textHyperlinkCardExtension',
+
   onBeforeCreate() {
     const itemKey = 'export-text-link-view';
     this.editor.extensionManager.extensions.forEach((extension) => {
