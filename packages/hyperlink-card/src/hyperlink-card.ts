@@ -82,7 +82,7 @@ export class HyperlinkCard extends LitElement {
       <a
         href=${this.href}
         target=${this.target}
-        class="border border-card relative flex rounded-xl overflow-hidden border-hover-card bg-card transition-all"
+        class="border h-full border-card relative flex rounded-xl overflow-hidden border-hover-card bg-card transition-all"
       >
         ${this.siteData
           ? html` ${this.renderCard()} `
