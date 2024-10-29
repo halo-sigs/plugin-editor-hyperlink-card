@@ -39,26 +39,7 @@ public class HyperLinkCardServiceImpl implements HyperLinkCardService {
         if (Objects.nonNull(cacheHyperLink)) {
             return Mono.just(cacheHyperLink);
         }
-        return request.getHyperLinkDetail(uri)
-            .switchIfEmpty(
-                Mono.error(new ServerWebInputException("this website is not supported."))
-            )
-            .map(item -> {
-                var actualURI = URI.create(item.url());
-                var hyperLinkDTO = parserFactory.getParser(uri.getHost()).parse(item.htmlContent());
-                if (StringUtils.isNotBlank(hyperLinkDTO.getIcon())
-                    && !PathUtils.isAbsoluteUri(hyperLinkDTO.getIcon())) {
-                    hyperLinkDTO.setIcon(actualURI.resolve(hyperLinkDTO.getIcon()).toString());
-                }
-                if (StringUtils.isNotBlank(hyperLinkDTO.getImage())
-                    && !PathUtils.isAbsoluteUri(hyperLinkDTO.getImage())) {
-                    hyperLinkDTO.setImage(actualURI.resolve(hyperLinkDTO.getImage()).toString());
-                }
-                if (StringUtils.isBlank(hyperLinkDTO.getUrl())) {
-                    hyperLinkDTO.setUrl(actualURI.toString());
-                }
-                return hyperLinkDTO;
-            })
+        return parserFactory.getParser(uri.getHost()).parse(uri)
             .doOnNext(hyperLinkBaseDTO -> {
                 hyperLinkCache.put(linkUrl, hyperLinkBaseDTO);
             });
