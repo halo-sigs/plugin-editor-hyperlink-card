@@ -36,7 +36,7 @@ public class HyperLinkDefaultParser implements HyperLinkParser<HyperLinkBaseDTO>
     @SuppressWarnings("checkstyle:MissingSwitchDefault")
     @Override
     public Mono<HyperLinkBaseDTO> parse(URI linkURI) {
-        return this.getHyperLinkDetail(linkURI)
+        return getHyperLinkDetail(linkURI)
                 .switchIfEmpty(
                         Mono.error(new ServerWebInputException("this website is not supported.")))
                 .map(item -> {
