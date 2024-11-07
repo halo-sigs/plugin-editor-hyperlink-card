@@ -26,4 +26,9 @@ public class HyperLinkParserConfiguration {
     public HyperLinkParser<HyperLinkBaseDTO> qqMusicParser() {
         return new HyperLinkQQMusicParser(applicationContext.getBean(HttpClientFactory.class), new ObjectMapper());
     }
+
+    @Bean
+    public HyperLinkParser<HyperLinkBaseDTO> bilibiliParser() {
+        return new HyperLinkBilibiliParser(applicationContext.getBean(HttpClientFactory.class), new ObjectMapper());
+    }
 }
