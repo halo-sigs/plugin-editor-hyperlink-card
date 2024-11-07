@@ -1,7 +1,6 @@
 package run.halo.editor.hyperlink.handler;
 
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -10,8 +9,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
-import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -94,15 +91,7 @@ public class HyperLinkDefaultParser implements HyperLinkParser<HyperLinkBaseDTO>
                                     linkURI.getScheme() + "://" + linkURI.getHost());
                         })
                         .retrieve()
-                        .bodyToFlux(DataBuffer.class)
-                        .flatMap(dataBuffer -> {
-                            String content = dataBuffer.toString(StandardCharsets.UTF_8);
-                            DataBufferUtils.release(dataBuffer);
-                            return Mono.just(content);
-                        })
-                        .reduce(new StringBuilder(), StringBuilder::append)
-                        .filter(stringBuilder -> !stringBuilder.isEmpty())
-                        .map(StringBuilder::toString)
+                        .bodyToMono(String.class)
                         .map(htmlContent -> new HyperLinkRequest.HyperLinkResponse(htmlContent, resourceUrl.get())));
     }
 
