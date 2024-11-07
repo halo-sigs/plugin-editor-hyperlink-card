@@ -15,20 +15,20 @@ import run.halo.editor.hyperlink.dto.HyperLinkBaseDTO;
 @RequiredArgsConstructor
 public class HyperLinkParserConfiguration {
 
-    private final ApplicationContext applicationContext;
+    private final HttpClientFactory httpClientFactory;
 
     @Bean
     public HyperLinkParser<HyperLinkBaseDTO> defaultParser() {
-        return new HyperLinkDefaultParser(applicationContext.getBean(HttpClientFactory.class));
+        return new HyperLinkDefaultParser(httpClientFactory);
     }
 
     @Bean
     public HyperLinkParser<HyperLinkBaseDTO> qqMusicParser() {
-        return new HyperLinkQQMusicParser(applicationContext.getBean(HttpClientFactory.class), new ObjectMapper());
+        return new HyperLinkQQMusicParser(httpClientFactory, new ObjectMapper());
     }
 
     @Bean
     public HyperLinkParser<HyperLinkBaseDTO> bilibiliParser() {
-        return new HyperLinkBilibiliParser(applicationContext.getBean(HttpClientFactory.class), new ObjectMapper());
+        return new HyperLinkBilibiliParser(httpClientFactory, new ObjectMapper());
     }
 }
