@@ -1,13 +1,16 @@
 package run.halo.editor.hyperlink.handler;
 
 import run.halo.editor.hyperlink.dto.HyperLinkBaseDTO;
+import java.util.regex.Pattern;
 
 /**
  * @author LIlGG
  */
 public enum ParserType {
 
-    DEFAULT("default", HyperLinkDefaultParser.class);
+    DEFAULT("default", HyperLinkDefaultParser.class),
+    QQMUSIC("(i.)?y.qq.com", HyperLinkQQMusicParser.class),
+    BILIBILI("www.bilibili.com", HyperLinkBilibiliParser.class);
 
     private final String host;
     private final Class<? extends HyperLinkParser<? extends HyperLinkBaseDTO>> type;
@@ -28,7 +31,7 @@ public enum ParserType {
     public static Class<? extends HyperLinkParser<? extends HyperLinkBaseDTO>> getBeanTypeByHost(
         String host) {
         for (ParserType type : values()) {
-            if (type.getHost().equalsIgnoreCase(host)) {
+            if (Pattern.matches(type.getHost(), host)) {
                 return type.getType();
             }
         }
