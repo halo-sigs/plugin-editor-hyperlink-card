@@ -61,7 +61,6 @@ public class HyperLinkBilibiliParser implements HyperLinkParser<HyperLinkBaseDTO
             throw new RuntimeException("id not found");
         }
         String id = matcher.group(1);
-        System.out.println(id);
         if (id.chars().allMatch(Character::isDigit)) {
             return "aid=" + id;
         } else {
