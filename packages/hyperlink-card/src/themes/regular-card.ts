@@ -12,8 +12,10 @@ export class HyperlinkRegularCard extends LitElement {
   siteData?: SiteData;
 
   override render() {
+    const isOnlyIcon = !this.siteData?.image && this.siteData?.icon;
+
     return html`<div
-      class="items-center flex ${!this.siteData?.image && this.siteData?.icon
+      class="items-center flex ${isOnlyIcon
         ? 'flex-row'
         : 'flex-col'} sm:flex-row relative p-2 gap-3"
     >
@@ -37,7 +39,7 @@ export class HyperlinkRegularCard extends LitElement {
             </div>
           `
         : ''}
-      ${!this.siteData?.image && this.siteData?.icon
+      ${isOnlyIcon
         ? html`<div class="aspect-square w-18 flex-none z-[1]">
             <img
               class="rounded-lg size-full object-cover"
@@ -56,7 +58,9 @@ export class HyperlinkRegularCard extends LitElement {
             ${this.siteData?.title}
           </h2>
         </div>
-        <p class="text-sm text-description line-clamp-2">${this.siteData?.description}</p>
+        <p class="text-sm text-description ${isOnlyIcon ? 'line-clamp-1' : 'line-clamp-2'}">
+          ${this.siteData?.description}
+        </p>
       </div>
     </div>`;
   }
