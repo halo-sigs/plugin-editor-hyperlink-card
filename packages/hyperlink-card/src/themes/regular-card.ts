@@ -12,7 +12,13 @@ export class HyperlinkRegularCard extends LitElement {
   siteData?: SiteData;
 
   override render() {
-    return html`<div class="items-center flex flex-col sm:flex-row relative p-2 gap-3">
+    const isOnlyIcon = !this.siteData?.image && this.siteData?.icon;
+
+    return html`<div
+      class="items-center flex ${isOnlyIcon
+        ? 'flex-row'
+        : 'flex-col'} sm:flex-row relative p-2 gap-3"
+    >
       ${this.siteData?.image
         ? html`
             <div
@@ -24,19 +30,17 @@ export class HyperlinkRegularCard extends LitElement {
                 filter: `blur(64px) saturate(4) contrast(90%)`,
               })}
             ></div>
+            <div class="aspect-16/9 w-full sm:w-56 flex-none z-[1]">
+              <img
+                class="rounded-lg size-full object-cover"
+                src=${this.siteData?.image}
+                referrerpolicy="no-referrer"
+              />
+            </div>
           `
         : ''}
-      ${this.siteData?.image
-        ? html`<div class="aspect-16/9 w-full sm:w-56 flex-none z-[1]">
-            <img
-              class="rounded-lg size-full object-cover"
-              src=${this.siteData?.image}
-              referrerpolicy="no-referrer"
-            />
-          </div>`
-        : ''}
-      ${!this.siteData?.image && this.siteData?.icon
-        ? html`<div class="aspect-square w-full sm:w-18 flex-none z-[1]">
+      ${isOnlyIcon
+        ? html`<div class="aspect-square w-18 flex-none z-[1]">
             <img
               class="rounded-lg size-full object-cover"
               src=${this.siteData?.icon}
@@ -45,7 +49,7 @@ export class HyperlinkRegularCard extends LitElement {
           </div>`
         : ''}
 
-      <div class="flex-1 shrink space-y-1 z-[1]">
+      <div class="flex-auto shrink space-y-1 z-[1] text-ellipsis overflow-hidden w-full">
         <div>
           <span class="text-link text-xs line-clamp-1">${this.siteData?.url}</span>
         </div>
@@ -54,7 +58,9 @@ export class HyperlinkRegularCard extends LitElement {
             ${this.siteData?.title}
           </h2>
         </div>
-        <p class="text-sm text-description line-clamp-2">${this.siteData?.description}</p>
+        <p class="text-sm text-description ${isOnlyIcon ? 'line-clamp-1' : 'line-clamp-2'}">
+          ${this.siteData?.description}
+        </p>
       </div>
     </div>`;
   }
