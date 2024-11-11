@@ -10,7 +10,7 @@ public enum ParserType {
 
     DEFAULT("default", HyperLinkDefaultParser.class),
     QQMUSIC("(i.)?y.qq.com", HyperLinkQQMusicParser.class),
-    BILIBILI("[www|m].bilibili.com", HyperLinkBilibiliParser.class);
+    BILIBILI("(www|m).bilibili.com", HyperLinkBilibiliParser.class);
 
     private final String host;
     private final Class<? extends HyperLinkParser<? extends HyperLinkBaseDTO>> type;
