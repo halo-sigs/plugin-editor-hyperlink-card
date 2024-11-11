@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -11,6 +13,7 @@ import reactor.core.publisher.Mono;
 import run.halo.editor.hyperlink.HttpClientFactory;
 import run.halo.editor.hyperlink.dto.HyperLinkBaseDTO;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,7 +54,15 @@ public class HyperLinkBilibiliParser implements HyperLinkParser<HyperLinkBaseDTO
                     httpHeaders.set(HttpHeaders.CONTENT_TYPE, "application/json");
                 })
                 .retrieve()
-                .bodyToMono(String.class));
+                .bodyToFlux(DataBuffer.class)
+                .flatMap(dataBuffer -> {
+                    String content = dataBuffer.toString(StandardCharsets.UTF_8);
+                    DataBufferUtils.release(dataBuffer);
+                    return Mono.just(content);
+                })
+                .reduce(new StringBuilder(), StringBuilder::append)
+                .filter(stringBuilder -> !stringBuilder.isEmpty())
+                .map(StringBuilder::toString));
     }
 
     public String getQueryParam(URI linkURI) {
@@ -61,7 +72,6 @@ public class HyperLinkBilibiliParser implements HyperLinkParser<HyperLinkBaseDTO
             throw new RuntimeException("id not found");
         }
         String id = matcher.group(1);
-        System.out.println(id);
         if (id.chars().allMatch(Character::isDigit)) {
             return "aid=" + id;
         } else {
