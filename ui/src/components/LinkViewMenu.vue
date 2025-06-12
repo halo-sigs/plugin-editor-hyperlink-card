@@ -23,22 +23,22 @@ const isActiveType = (item: LinkViewType) => {
 };
 </script>
 <template>
-  <ul class="hyperlink-flex hyperlink-flex-col hyperlink-space-y-1.5">
+  <ul class=":uno: flex flex-col space-y-1.5">
     <li
       v-for="item in linkViewTypes"
       :key="item.key"
-      class="hyperlink-group hyperlink-flex hyperlink-cursor-pointer hyperlink-flex-row hyperlink-items-center hyperlink-gap-3 hyperlink-rounded hyperlink-px-1.5 hyperlink-py-1 hover:hyperlink-bg-gray-100"
-      :class="{ '!hyperlink-bg-gray-100': isActiveType(item) }"
+      class=":uno: group flex flex-row cursor-pointer items-center gap-3 rounded px-1.5 py-1 hover:bg-gray-100"
+      :class="{ ':uno: !bg-gray-100': isActiveType(item) }"
       @click="handleSwitchLinkViewType(item)"
     >
       <component
         :is="item.icon"
-        class="hyperlink-size-7 hyperlink-rounded hyperlink-bg-gray-100 hyperlink-p-1.5 group-hover:hyperlink-bg-white"
-        :class="{ '!hyperlink-bg-white': isActiveType(item) }"
+        class=":uno: size-7 rounded bg-gray-100 p-1.5 group-hover:bg-white"
+        :class="{ ':uno: !bg-white': isActiveType(item) }"
       />
       <span
-        class="hyperlink-text-sm hyperlink-text-gray-600 group-hover:hyperlink-font-medium group-hover:hyperlink-text-gray-900"
-        :class="{ '!hyperlink-font-medium !hyperlink-text-gray-900': isActiveType(item) }"
+        class=":uno: text-sm text-gray-600 group-hover:text-gray-900 group-hover:font-medium"
+        :class="{ ':uno: !font-medium !text-gray-900': isActiveType(item) }"
       >
         {{ item.title }}
       </span>

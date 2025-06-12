@@ -60,32 +60,30 @@ const target = computed({
 </script>
 
 <template>
-  <VDropdown class="hyperlink-inline-flex" :triggers="['click']" :distance="10">
+  <VDropdown class=":uno: inline-flex" :triggers="['click']" :distance="10">
     <button
       v-tooltip="'编辑链接'"
-      class="hyperlink-rounded-md hyperlink-p-2 hyperlink-text-lg hyperlink-text-gray-600 hover:hyperlink-bg-gray-100"
+      class=":uno: rounded-md p-2 text-lg text-gray-600 hover:bg-gray-100"
     >
       <MdiLinkVariant />
     </button>
 
     <template #popper>
       <div
-        class="hyperlink-relative hyperlink-max-h-72 hyperlink-w-96 hyperlink-overflow-hidden hyperlink-overflow-y-auto hyperlink-rounded-md hyperlink-bg-white hyperlink-p-1 hyperlink-drop-shadow"
+        class=":uno: relative max-h-72 w-96 overflow-hidden overflow-y-auto rounded-md bg-white p-1 drop-shadow"
       >
         <input
           v-model.lazy="href"
           placeholder="链接地址"
-          class="hyperlink-block hyperlink-w-full hyperlink-rounded-md hyperlink-border hyperlink-border-gray-300 hyperlink-bg-gray-50 hyperlink-px-2 hyperlink-py-1.5 hyperlink-text-sm hyperlink-text-gray-900 hover:hyperlink-bg-gray-100 focus:hyperlink-border-blue-500 focus:hyperlink-ring-blue-500"
+          class=":uno: block w-full border border-gray-300 rounded-md bg-gray-50 px-2 py-1.5 text-sm text-gray-900 focus:border-blue-500 hover:bg-gray-100 focus:ring-blue-500"
         />
-        <label class="hyperlink-mt-2 hyperlink-inline-flex hyperlink-items-center">
+        <label class=":uno: mt-2 inline-flex items-center">
           <input
             v-model="target"
             type="checkbox"
-            class="hyperlink-form-checkbox hyperlink-rounded hyperlink-border-gray-300 hyperlink-text-blue-600 focus:hyperlink-ring-blue-500"
+            class=":uno: form-checkbox border-gray-300 rounded text-blue-600 focus:ring-blue-500"
           />
-          <span class="hyperlink-ml-2 hyperlink-text-sm hyperlink-text-gray-500"
-            >在新窗口中打开</span
-          >
+          <span class=":uno: ml-2 text-sm text-gray-500">在新窗口中打开</span>
         </label>
       </div>
     </template>

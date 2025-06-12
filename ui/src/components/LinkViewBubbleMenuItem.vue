@@ -25,18 +25,18 @@ const props = withDefaults(
 
 <template>
   <template v-if="visible({ editor })">
-    <VDropdown class="hyperlink-inline-flex" :triggers="['click']" :popper-triggers="['click']">
+    <VDropdown class=":uno: inline-flex" :triggers="['click']" :popper-triggers="['click']">
       <button
-        :class="{ 'hyperlink-bg-gray-200 !hyperlink-text-black': isActive({ editor }) }"
-        class="hyperlink-inline-flex hyperlink-h-full hyperlink-items-center hyperlink-gap-x-1 hyperlink-rounded-md hyperlink-p-2 hyperlink-text-base hyperlink-text-gray-600 hover:hyperlink-bg-gray-100"
+        :class="{ ':uno: bg-gray-200 !text-black': isActive({ editor }) }"
+        class=":uno: h-full inline-flex items-center gap-x-1 rounded-md p-2 text-base text-gray-600 hover:bg-gray-100"
       >
-        <component :is="type?.({ editor }).icon" class="hyperlink-size-5" />
+        <component :is="type?.({ editor }).icon" class=":uno: size-5" />
         <span>{{ type?.({ editor }).title }}</span>
         <MdiMenuDown />
       </button>
       <template #popper>
         <div
-          class="hyperlink-relative hyperlink-max-h-96 hyperlink-w-56 hyperlink-overflow-hidden hyperlink-overflow-y-auto hyperlink-rounded-md hyperlink-bg-white hyperlink-p-1 hyperlink-drop-shadow"
+          class=":uno: relative max-h-96 w-56 overflow-hidden overflow-y-auto rounded-md bg-white p-1 drop-shadow"
         >
           <KeepAlive>
             <LinkViewMenu v-bind="props"></LinkViewMenu>
@@ -46,7 +46,7 @@ const props = withDefaults(
     </VDropdown>
   </template>
 </template>
-<style>
+<style lang="scss">
 .v-popper__popper.v-popper__popper--show-from .v-popper__wrapper {
   transform: scale(0.9);
 }

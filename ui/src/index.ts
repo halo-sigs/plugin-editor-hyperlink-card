@@ -1,17 +1,13 @@
-import '@/styles/tailwind.css';
 import { definePlugin } from '@halo-dev/console-shared';
-import '@halo-dev/hyperlink-card';
-import {
-  HyperlinkCardExtension,
-  HyperlinkInlineCardExtension,
-  TextBubbleExtension,
-} from './editor';
+import 'uno.css';
 
 export default definePlugin({
   components: {},
   routes: [],
   extensionPoints: {
-    'default:editor:extension:create': () => {
+    'default:editor:extension:create': async () => {
+      const { TextBubbleExtension, HyperlinkCardExtension, HyperlinkInlineCardExtension } =
+        await import('./editor');
       return [TextBubbleExtension, HyperlinkCardExtension, HyperlinkInlineCardExtension];
     },
   },

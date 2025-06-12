@@ -2,6 +2,7 @@
 import type { HyperlinkCard } from '@halo-dev/hyperlink-card';
 import { nodeViewProps, NodeViewWrapper } from '@halo-dev/richtext-editor';
 import { ref, watch } from 'vue';
+import '@halo-dev/hyperlink-card';
 
 const props = defineProps(nodeViewProps);
 
@@ -21,12 +22,12 @@ watch(
 <template>
   <node-view-wrapper
     as="div"
-    class="hyperlink-mb-0 hyperlink-mt-[0.75em] first:hyperlink-mt-0"
-    :class="{ 'hyperlink-rounded-xl hyperlink-ring-1': selected }"
+    class=":uno: mb-0 mt-[0.75em] first:mt-0"
+    :class="{ ':uno: rounded-xl ring-1': selected }"
   >
     <hyperlink-card
       ref="cardRef"
-      class="hyperlink-pointer-events-none hyperlink-select-none"
+      class=":uno: pointer-events-none select-none"
       :href="node.attrs.href"
       :theme="node.attrs.theme"
     ></hyperlink-card>
