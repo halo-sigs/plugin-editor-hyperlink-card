@@ -14,7 +14,9 @@ const props = withDefaults(
   }>(),
   {
     isActive: () => false,
+    // @unocss-skip-start
     visible: () => true,
+    // @unocss-skip-end
     action: undefined,
     type: undefined,
   }

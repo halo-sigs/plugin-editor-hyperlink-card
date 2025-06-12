@@ -16,7 +16,9 @@ const props = withDefaults(
   }>(),
   {
     isActive: () => false,
+    // @unocss-skip-start
     visible: () => true,
+    // @unocss-skip-end
     action: undefined,
     type: undefined,
   }
@@ -48,11 +50,15 @@ const props = withDefaults(
 </template>
 <style lang="scss">
 .v-popper__popper.v-popper__popper--show-from .v-popper__wrapper {
+  // @unocss-skip-start
   transform: scale(0.9);
+  // @unocss-skip-end
 }
 
 .v-popper__popper.v-popper__popper--show-to .v-popper__wrapper {
+  // @unocss-skip-start
   transform: none;
   transition: transform 0.1s;
+  // @unocss-skip-end
 }
 </style>
