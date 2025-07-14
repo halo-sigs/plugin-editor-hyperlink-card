@@ -6,7 +6,7 @@ import linkViewTypes from './link-view-type';
 const TextBubbleExtension = Extension.create({
   name: 'textHyperlinkCardExtension',
 
-  onBeforeCreate() {
+  onCreate() {
     const itemKey = 'export-text-link-view';
     this.editor.extensionManager.extensions.forEach((extension) => {
       if (extension.name == 'text') {
