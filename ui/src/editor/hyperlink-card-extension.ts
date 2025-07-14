@@ -13,6 +13,7 @@ import { markRaw } from 'vue';
 import linkViewTypes from './link-view-type';
 import MdiShare from '~icons/mdi/share';
 import HyperlinkBubbleButton from '@/components/HyperlinkBubbleButton.vue';
+import HyperlinkPropsBubbleButton from '@/components/HyperlinkPropsBubbleButton.vue';
 
 const HyperlinkCardExtension = Node.create({
   name: 'hyperlinkCard',
@@ -47,6 +48,18 @@ const HyperlinkCardExtension = Node.create({
           return element.getAttribute('style');
         },
       },
+      'custom-title': {
+        default: null,
+        parseHTML: (element: HTMLElement) => {
+          return element.getAttribute('custom-title');
+        },
+      },
+      'custom-description': {
+        default: null,
+        parseHTML: (element: HTMLElement) => {
+          return element.getAttribute('custom-description');
+        },
+      },
     };
   },
 
@@ -74,6 +87,13 @@ const HyperlinkCardExtension = Node.create({
             {
               priority: 20,
               component: markRaw(HyperlinkBubbleButton),
+              props: {
+                name: HyperlinkCardExtension.name,
+              },
+            },
+            {
+              priority: 25,
+              component: markRaw(HyperlinkPropsBubbleButton),
               props: {
                 name: HyperlinkCardExtension.name,
               },

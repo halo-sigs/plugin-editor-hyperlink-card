@@ -1,10 +1,20 @@
 import resetStyles from '@unocss/reset/tailwind.css?inline';
 import { LitElement, css, html, unsafeCSS } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { SiteData } from '../types';
+import { consume } from '@lit/context';
+import { customDescriptionContext, customTitleContext } from '../context';
 export class HyperlinkSmallCard extends LitElement {
   @property({ type: String })
   href: string = '';
+
+  @consume({ context: customTitleContext, subscribe: true })
+  @state()
+  customTitle?: string;
+
+  @consume({ context: customDescriptionContext, subscribe: true })
+  @state()
+  customDescription?: string;
 
   @property({ type: Object })
   siteData?: SiteData;
@@ -22,9 +32,11 @@ export class HyperlinkSmallCard extends LitElement {
           : ''}
 
         <h2 class="font-semibold text-base whitespace-nowrap truncate text-title">
-          ${this.siteData?.title}
+          ${this.customTitle || this.siteData?.title}
         </h2>
-        <p class="text-sm truncate text-description">${this.siteData?.description}</p>
+        <p class="text-sm truncate text-description">
+          ${this.customDescription || this.siteData?.description}
+        </p>
       </div>
     `;
   }

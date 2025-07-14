@@ -13,6 +13,7 @@ import linkViewTypes from './link-view-type';
 import HyperlinkInlineView from '@/components/HyperlinkInlineView.vue';
 import HyperlinkBubbleButton from '@/components/HyperlinkBubbleButton.vue';
 import MdiShare from '~icons/mdi/share';
+import HyperlinkPropsBubbleButton from '@/components/HyperlinkPropsBubbleButton.vue';
 
 const HyperlinkInlineCardExtension = Node.create({
   name: 'hyperlinkInlineCard',
@@ -43,6 +44,18 @@ const HyperlinkInlineCardExtension = Node.create({
           return element.getAttribute('theme');
         },
       },
+      'custom-title': {
+        default: null,
+        parseHTML: (element: HTMLElement) => {
+          return element.getAttribute('custom-title');
+        },
+      },
+      'custom-description': {
+        default: null,
+        parseHTML: (element: HTMLElement) => {
+          return element.getAttribute('custom-description');
+        },
+      },
     };
   },
 
@@ -69,6 +82,13 @@ const HyperlinkInlineCardExtension = Node.create({
             {
               priority: 20,
               component: markRaw(HyperlinkBubbleButton),
+              props: {
+                name: HyperlinkInlineCardExtension.name,
+              },
+            },
+            {
+              priority: 25,
+              component: markRaw(HyperlinkPropsBubbleButton),
               props: {
                 name: HyperlinkInlineCardExtension.name,
               },

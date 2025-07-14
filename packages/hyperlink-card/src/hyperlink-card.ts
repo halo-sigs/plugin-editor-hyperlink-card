@@ -6,10 +6,20 @@ import './themes/grid-card';
 import './themes/regular-card';
 import './themes/small-card';
 import { SiteData } from './types';
+import { provide } from '@lit/context';
+import { customDescriptionContext, customTitleContext } from './context';
 
 export class HyperlinkCard extends LitElement {
   @property({ type: String })
   href = '';
+
+  @provide({ context: customTitleContext })
+  @property({ type: String, attribute: 'custom-title' })
+  customTitle?: string;
+
+  @provide({ context: customDescriptionContext })
+  @property({ type: String, attribute: 'custom-description' })
+  customDescription?: string;
 
   @property({ type: String })
   target: '_blank' | '_self' = '_self';

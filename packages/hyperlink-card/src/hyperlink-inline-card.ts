@@ -7,6 +7,12 @@ export class HyperlinkInlineCard extends LitElement {
   @property({ type: String })
   href = '';
 
+  @property({ type: String, attribute: 'custom-title' })
+  customTitle?: string;
+
+  @property({ type: String, attribute: 'custom-description' })
+  customDescription?: string;
+
   @property({ type: String })
   target: '_blank' | '_self' = '_self';
 
@@ -63,7 +69,7 @@ export class HyperlinkInlineCard extends LitElement {
               referrerpolicy="no-referrer"
             />`
           : ''}
-        <span>${this.siteData.title || this.href}</span>
+        <span>${this.customTitle || this.siteData.title || this.href}</span>
         ${!this.href.startsWith(location.origin)
           ? html` <span class="i-tabler-external-link text-inline-title"></span>`
           : ''}

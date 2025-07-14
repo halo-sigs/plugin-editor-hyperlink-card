@@ -95,6 +95,8 @@ const linkViewTypes: LinkViewType[] = [
               state.schema.nodes[HyperlinkInlineCardExtension.name].create({
                 href: linkViewAttr.href,
                 theme: 'inline',
+                'custom-title': linkViewAttr?.['custom-title'],
+                'custom-description': linkViewAttr?.['custom-description'],
               })
             );
             return true;
@@ -170,6 +172,8 @@ const changeToHyperlinkCardExtension = (editor: Editor, theme: string) => {
           state.schema.nodes[HyperlinkCardExtension.name].create({
             href: linkViewAttr.href,
             theme: theme,
+            'custom-title': linkViewAttr?.['custom-title'],
+            'custom-description': linkViewAttr?.['custom-description'],
           })
         );
         return true;

@@ -1,12 +1,22 @@
 import resetStyles from '@unocss/reset/tailwind.css?inline';
 import { LitElement, css, html, unsafeCSS } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { SiteData } from '../types';
+import { customDescriptionContext, customTitleContext } from '../context';
+import { consume } from '@lit/context';
 
 export class HyperlinkGridCard extends LitElement {
   @property({ type: String })
   href: string = '';
+
+  @consume({ context: customTitleContext, subscribe: true })
+  @state()
+  customTitle?: string;
+
+  @consume({ context: customDescriptionContext, subscribe: true })
+  @state()
+  customDescription?: string;
 
   @property({ type: Object })
   siteData?: SiteData;
@@ -38,8 +48,12 @@ export class HyperlinkGridCard extends LitElement {
 
       <div class="col-span-12 space-y-1 z-[1]">
         <div class="text-link text-xs line-clamp-1">${this.siteData?.url}</div>
-        <h2 class="font-semibold text-base text-title line-clamp-2">${this.siteData?.title}</h2>
-        <p class="text-sm text-description line-clamp-2">${this.siteData?.description}</p>
+        <h2 class="font-semibold text-base text-title line-clamp-2">
+          ${this.customTitle || this.siteData?.title}
+        </h2>
+        <p class="text-sm text-description line-clamp-2">
+          ${this.customDescription || this.siteData?.description}
+        </p>
       </div>
     </div>`;
   }

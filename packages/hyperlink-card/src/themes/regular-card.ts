@@ -1,12 +1,22 @@
 import resetStyles from '@unocss/reset/tailwind.css?inline';
 import { LitElement, css, html, unsafeCSS } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { SiteData } from '../types';
+import { consume } from '@lit/context';
+import { customDescriptionContext, customTitleContext } from '../context';
 
 export class HyperlinkRegularCard extends LitElement {
   @property({ type: String })
   href: string = '';
+
+  @consume({ context: customTitleContext, subscribe: true })
+  @state()
+  customTitle?: string;
+
+  @consume({ context: customDescriptionContext, subscribe: true })
+  @state()
+  customDescription?: string;
 
   @property({ type: Object })
   siteData?: SiteData;
@@ -55,11 +65,11 @@ export class HyperlinkRegularCard extends LitElement {
         </div>
         <div>
           <h2 class="font-semibold text-base text-title line-clamp-2 lg:line-clamp-1">
-            ${this.siteData?.title}
+            ${this.customTitle || this.siteData?.title}
           </h2>
         </div>
         <p class="text-sm text-description ${isOnlyIcon ? 'line-clamp-1' : 'line-clamp-2'}">
-          ${this.siteData?.description}
+          ${this.customDescription || this.siteData?.description}
         </p>
       </div>
     </div>`;

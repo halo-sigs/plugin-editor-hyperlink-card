@@ -30,6 +30,8 @@ watch(
       class=":uno: pointer-events-none select-none"
       :href="node.attrs.href"
       :theme="node.attrs.theme"
+      :custom-title="node.attrs?.['custom-title']"
+      :custom-description="node.attrs?.['custom-description']"
     ></hyperlink-card>
   </node-view-wrapper>
 </template>
