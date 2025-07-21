@@ -5,6 +5,9 @@ import { viteStaticCopy as StaticCopy } from 'vite-plugin-static-copy';
 import { sharedPluginsConfig } from './src/vite/shared-plugin-config';
 
 export default defineConfig({
+  experimental: {
+    enableNativePlugin: true,
+  },
   build: {
     lib: {
       entry: 'src/index.ts',

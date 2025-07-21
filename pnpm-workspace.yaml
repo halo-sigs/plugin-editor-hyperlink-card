@@ -1,3 +1,5 @@
 packages:
-  - 'ui'
-  - 'packages/**'
+  - ui
+  - packages/**
+onlyBuiltDependencies:
+  - esbuild
