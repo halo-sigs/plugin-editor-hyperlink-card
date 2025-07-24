@@ -17,6 +17,7 @@
       linear-gradient(transparent, transparent);
     --halo-hyperlink-card-border-color: #52525b;
     --halo-hyperlink-card-border-hover-color: #e4e4e7;
+    --halo-hyperlink-card-skeleton-color: #52525b;
   }
 }
 
@@ -40,4 +41,5 @@
     linear-gradient(transparent, transparent);
   --halo-hyperlink-card-border-color: #52525b;
   --halo-hyperlink-card-border-hover-color: #e4e4e7;
+  --halo-hyperlink-card-skeleton-color: #52525b;
 }

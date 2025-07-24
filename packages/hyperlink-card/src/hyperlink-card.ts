@@ -1,10 +1,12 @@
 import resetStyles from '@unocss/reset/tailwind.css?inline';
 import { LitElement, css, html, unsafeCSS } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import './loading-bar';
 import './themes/grid-card';
+import './themes/grid-card-loading';
 import './themes/regular-card';
+import './themes/regular-card-loading';
 import './themes/small-card';
+import './themes/small-card-loading';
 import { SiteData } from './types';
 import { provide } from '@lit/context';
 import { customDescriptionContext, customTitleContext } from './context';
@@ -39,7 +41,6 @@ export class HyperlinkCard extends LitElement {
   }
 
   async fetchSiteData() {
-    // Mock
     try {
       this.loading = true;
       const response = await fetch(
@@ -58,47 +59,49 @@ export class HyperlinkCard extends LitElement {
     }
   }
 
-  renderCard() {
-    switch (this.theme) {
-      case 'small':
-        return html`<hyperlink-small-card
-          .href=${this.href}
-          .siteData=${this.siteData}
-        ></hyperlink-small-card>`;
-      case 'regular':
-        return html`<hyperlink-regular-card
-          .href=${this.href}
-          .siteData=${this.siteData}
-        ></hyperlink-regular-card>`;
-      case 'grid':
-        return html`<hyperlink-grid-card
-          .href=${this.href}
-          .siteData=${this.siteData}
-        ></hyperlink-grid-card>`;
-      default:
-        return html`<hyperlink-regular-card
-          .href=${this.href}
-          .siteData=${this.siteData}
-        ></hyperlink-regular-card>`;
-    }
-  }
-
   override render() {
-    if (this.loading) {
-      return html`<loading-bar></loading-bar>`;
-    }
-
     return html`
       <a
         href=${this.href}
         target=${this.target}
         class="border h-full border-card relative flex rounded-xl overflow-hidden border-hover-card bg-card transition-all"
       >
-        ${this.siteData
-          ? html` ${this.renderCard()} `
-          : html`<span class="text-link text-xs p-1 px-2">${this.href}</span>`}
+        ${this.renderContent()}
       </a>
     `;
+  }
+
+  renderContent() {
+    if (this.loading) {
+      switch (this.theme) {
+        case 'small':
+          return html`<hyperlink-small-card-loading></hyperlink-small-card-loading>`;
+        case 'grid':
+          return html`<hyperlink-grid-card-loading></hyperlink-grid-card-loading>`;
+        default:
+          return html`<hyperlink-regular-card-loading></hyperlink-regular-card-loading>`;
+      }
+    }
+    if (this.siteData) {
+      switch (this.theme) {
+        case 'small':
+          return html`<hyperlink-small-card
+            .href=${this.href}
+            .siteData=${this.siteData}
+          ></hyperlink-small-card>`;
+        case 'grid':
+          return html`<hyperlink-grid-card
+            .href=${this.href}
+            .siteData=${this.siteData}
+          ></hyperlink-grid-card>`;
+        default:
+          return html`<hyperlink-regular-card
+            .href=${this.href}
+            .siteData=${this.siteData}
+          ></hyperlink-regular-card>`;
+      }
+    }
+    return html`<span class="text-link text-xs p-1 px-2">${this.href}</span>`;
   }
 
   static override styles = [

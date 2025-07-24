@@ -2,6 +2,7 @@ import resetStyles from '@unocss/reset/tailwind.css?inline';
 import { LitElement, css, html, unsafeCSS } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { SiteData } from './types';
+import './hyperlink-inline-card-loading';
 
 export class HyperlinkInlineCard extends LitElement {
   @property({ type: String })
@@ -28,7 +29,6 @@ export class HyperlinkInlineCard extends LitElement {
   }
 
   async fetchSiteData() {
-    // Mock
     try {
       this.loading = true;
       const response = await fetch(
@@ -48,12 +48,8 @@ export class HyperlinkInlineCard extends LitElement {
   }
 
   override render() {
-    const fallback = html`<a class="text-indigo-600" href=${this.href} target=${this.target}>
-      ${this.href}
-    </a>`;
-
     if (this.loading) {
-      return fallback;
+      return html`<hyperlink-inline-card-loading></hyperlink-inline-card-loading>`;
     }
 
     if (this.siteData) {
@@ -76,7 +72,9 @@ export class HyperlinkInlineCard extends LitElement {
       </a>`;
     }
 
-    return fallback;
+    return html`<a class="text-indigo-600" href=${this.href} target=${this.target}>
+      ${this.href}
+    </a>`;
   }
 
   static override styles = [

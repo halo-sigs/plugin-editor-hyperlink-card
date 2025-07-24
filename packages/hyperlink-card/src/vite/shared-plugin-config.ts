@@ -17,6 +17,8 @@ export const sharedPluginsConfig = [
       'bg-inline-card': 'bg-[var(--halo-hyperlink-card-inline-bg-color,#fafafa)]',
       'bg-hover-inline-card': 'hover:bg-[var(--halo-hyperlink-card-inline-hover-bg-color,#f4f4f5)]',
       'text-inline-title': 'text-[var(--halo-hyperlink-card-inline-title-color,#27272a)]',
+
+      'bg-skeleton': 'bg-[var(--halo-hyperlink-card-skeleton-color,#e4e4e7)]',
     },
   }),
 ];
