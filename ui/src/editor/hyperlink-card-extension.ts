@@ -2,7 +2,9 @@ import HyperlinkView from '@/components/HyperlinkView.vue';
 import LinkViewBubbleMenuItem from '@/components/LinkViewBubbleMenuItem.vue';
 import {
   EditorState,
+  ExtensionOptions,
   Node,
+  NodeBubbleMenuType,
   VueNodeViewRenderer,
   getNodeAttributes,
   isActive,
@@ -15,7 +17,7 @@ import MdiShare from '~icons/mdi/share';
 import HyperlinkBubbleButton from '@/components/HyperlinkBubbleButton.vue';
 import HyperlinkPropsBubbleButton from '@/components/HyperlinkPropsBubbleButton.vue';
 
-const HyperlinkCardExtension = Node.create({
+const HyperlinkCardExtension = Node.create<ExtensionOptions>({
   name: 'hyperlinkCard',
 
   atom: true,
@@ -66,13 +68,12 @@ const HyperlinkCardExtension = Node.create({
   addOptions() {
     return {
       ...this.parent?.(),
-      getBubbleMenu() {
+      getBubbleMenu(): NodeBubbleMenuType {
         return {
           pluginKey: 'linkViewBubbleMenu',
           shouldShow: ({ state }: { state: EditorState }) => {
             return isActive(state, HyperlinkCardExtension.name);
           },
-          defaultAnimation: false,
           items: [
             {
               priority: 10,

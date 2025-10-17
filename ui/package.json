@@ -20,7 +20,7 @@
     "@halo-dev/components": "^2.20.21",
     "@halo-dev/console-shared": "^2.20.21",
     "@halo-dev/hyperlink-card": "workspace:*",
-    "@halo-dev/richtext-editor": "^2.20.21",
+    "@halo-dev/richtext-editor": "https://pkg.pr.new/@halo-dev/richtext-editor@7811",
     "floating-vue": "^5.2.2",
     "vue": "^3.5.16"
   },
