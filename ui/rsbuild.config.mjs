@@ -1,21 +1,21 @@
-import { rsbuildConfig } from '@halo-dev/ui-plugin-bundler-kit';
-import { pluginSass } from '@rsbuild/plugin-sass';
-import { UnoCSSRspackPlugin } from '@unocss/webpack/rspack';
-import Icons from 'unplugin-icons/rspack';
+import { rsbuildConfig } from "@halo-dev/ui-plugin-bundler-kit";
+import { pluginSass } from "@rsbuild/plugin-sass";
+import { UnoCSSRspackPlugin } from "@unocss/webpack/rspack";
+import Icons from "unplugin-icons/rspack";
 
-const OUT_DIR_PROD = '../src/main/resources/console';
-const OUT_DIR_DEV = '../build/resources/main/console';
+const OUT_DIR_PROD = "../src/main/resources/console";
+const OUT_DIR_DEV = "../build/resources/main/console";
 
 export default rsbuildConfig({
   rsbuild: ({ envMode }) => {
-    const isProduction = envMode === 'production';
+    const isProduction = envMode === "production";
     const outDir = isProduction ? OUT_DIR_PROD : OUT_DIR_DEV;
 
     return {
       plugins: [pluginSass()],
       resolve: {
         alias: {
-          '@': './src',
+          "@": "./src",
         },
       },
       output: {
@@ -28,9 +28,9 @@ export default rsbuildConfig({
           cache: false,
           plugins: [
             Icons({
-              compiler: 'vue3',
+              compiler: "vue3",
             }),
-            UnoCSSRspackPlugin('../uno.config.ts'),
+            UnoCSSRspackPlugin("../uno.config.ts"),
           ],
         },
       },

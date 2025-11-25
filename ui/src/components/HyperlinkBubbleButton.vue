@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { Editor } from '@halo-dev/richtext-editor';
-import { Dropdown as VDropdown, vTooltip } from 'floating-vue';
-import { type Component, computed } from 'vue';
-import MdiLinkVariant from '~icons/mdi/link-variant';
+import type { Editor } from "@halo-dev/richtext-editor";
+import { Dropdown as VDropdown, vTooltip } from "floating-vue";
+import { type Component, computed } from "vue";
+import MdiLinkVariant from "~icons/mdi/link-variant";
 
 const props = defineProps<{
   editor: Editor;
@@ -29,7 +29,7 @@ const href = computed({
       .chain()
       .updateAttributes(props.name, {
         href: value,
-        target: target.value ? '_blank' : '_self',
+        target: target.value ? "_blank" : "_self",
       })
       .setNodeSelection(pos)
       .run();
@@ -39,7 +39,7 @@ const href = computed({
 const target = computed({
   get() {
     const attrs = props.editor.getAttributes(props.name);
-    return attrs?.target === '_blank';
+    return attrs?.target === "_blank";
   },
   set(value) {
     const { selection } = props.editor.state;
@@ -51,7 +51,7 @@ const target = computed({
       .chain()
       .updateAttributes(props.name, {
         href: href.value,
-        target: value ? '_blank' : '_self',
+        target: value ? "_blank" : "_self",
       })
       .setNodeSelection(pos)
       .run();

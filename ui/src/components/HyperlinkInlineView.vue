@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { HyperlinkInlineCard } from '@halo-dev/hyperlink-card';
-import { NodeViewWrapper, nodeViewProps } from '@halo-dev/richtext-editor';
-import { ref, watch } from 'vue';
-import '@halo-dev/hyperlink-card';
+import type { HyperlinkInlineCard } from "@halo-dev/hyperlink-card";
+import { NodeViewWrapper, nodeViewProps } from "@halo-dev/richtext-editor";
+import { ref, watch } from "vue";
+import "@halo-dev/hyperlink-card";
 
 const props = defineProps(nodeViewProps);
 

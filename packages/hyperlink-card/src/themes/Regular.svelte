@@ -5,8 +5,7 @@
     siteData,
     customTitle,
     customDescription,
-  }: { siteData?: SiteData; customTitle?: string; customDescription?: string } =
-    $props();
+  }: { siteData?: SiteData; customTitle?: string; customDescription?: string } = $props();
 
   let isOnlyIcon = $derived(!siteData?.image && siteData?.icon);
 </script>
@@ -30,7 +29,7 @@
         src={siteData?.image}
         alt={siteData?.title}
         referrerpolicy="no-referrer"
-      >
+      />
     </div>
   {/if}
 
@@ -41,26 +40,20 @@
         src={siteData?.icon}
         alt={siteData?.title}
         referrerpolicy="no-referrer"
-      >
+      />
     </div>
   {/if}
 
-  <div
-    class="flex-auto shrink space-y-1 z-[1] text-ellipsis overflow-hidden w-full"
-  >
+  <div class="flex-auto shrink space-y-1 z-[1] text-ellipsis overflow-hidden w-full">
     <div>
       <span class="text-link text-xs line-clamp-1">{siteData?.url}</span>
     </div>
     <div>
-      <h2
-        class="font-semibold text-base text-title line-clamp-2 lg:line-clamp-1"
-      >
+      <h2 class="font-semibold text-base text-title line-clamp-2 lg:line-clamp-1">
         {customTitle || siteData?.title}
       </h2>
     </div>
-    <p
-      class="text-sm text-description ${isOnlyIcon ? 'line-clamp-1' : 'line-clamp-2'}"
-    >
+    <p class="text-sm text-description ${isOnlyIcon ? 'line-clamp-1' : 'line-clamp-2'}">
       {customDescription || siteData?.description}
     </p>
   </div>

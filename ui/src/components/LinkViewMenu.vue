@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Editor } from '@halo-dev/richtext-editor';
-import type { Component } from 'vue';
-import linkViewTypes, { type LinkViewType } from '@/editor/link-view-type';
+import type { Editor } from "@halo-dev/richtext-editor";
+import type { Component } from "vue";
+import linkViewTypes, { type LinkViewType } from "@/editor/link-view-type";
 
 const props = defineProps<{
   editor: Editor;

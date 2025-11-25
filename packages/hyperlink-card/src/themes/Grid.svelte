@@ -5,8 +5,7 @@
     siteData,
     customTitle,
     customDescription,
-  }: { siteData?: SiteData; customTitle?: string; customDescription?: string } =
-    $props();
+  }: { siteData?: SiteData; customTitle?: string; customDescription?: string } = $props();
 </script>
 
 <div class="items-center relative grid grid-cols-12 p-2 gap-3 size-full">
@@ -27,7 +26,7 @@
         src={siteData?.image || siteData?.icon || ""}
         alt={siteData?.title}
         referrerpolicy="no-referrer"
-      >
+      />
     </div>
   {/if}
 

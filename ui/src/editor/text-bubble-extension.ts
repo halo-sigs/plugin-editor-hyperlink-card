@@ -1,15 +1,15 @@
-import { type Editor, Extension, ExtensionLink, isActive } from '@halo-dev/richtext-editor';
-import { markRaw } from 'vue';
-import TextExtensionMenuItem from '@/components/TextExtensionMenuItem.vue';
-import linkViewTypes from './link-view-type';
+import TextExtensionMenuItem from "@/components/TextExtensionMenuItem.vue";
+import { type Editor, Extension, ExtensionLink, isActive } from "@halo-dev/richtext-editor";
+import { markRaw } from "vue";
+import linkViewTypes from "./link-view-type";
 
 const TextBubbleExtension = Extension.create({
-  name: 'textHyperlinkCardExtension',
+  name: "textHyperlinkCardExtension",
 
   onCreate() {
-    const itemKey = 'export-text-link-view';
+    const itemKey = "export-text-link-view";
     this.editor.extensionManager.extensions.forEach((extension) => {
-      if (extension.name === 'text') {
+      if (extension.name === "text") {
         const bubbleMenu = extension.options?.getBubbleMenu?.({
           editor: this.editor,
         });
@@ -21,7 +21,7 @@ const TextBubbleExtension = Extension.create({
           return;
         }
 
-        //@ts-expect-error
+        //@ts-expect-error TODO: fix this
         const linkViewItem = items.find((item) => item.key === itemKey);
         if (linkViewItem) {
           return;

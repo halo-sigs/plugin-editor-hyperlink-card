@@ -5,15 +5,15 @@ import {
   getMarkAttributes,
   getNodeAttributes,
   isActive,
-} from '@halo-dev/richtext-editor';
-import { type Component, markRaw } from 'vue';
-import MdiCardBulletedOutline from '~icons/mdi/card-bulleted-outline';
-import MdiGridLarge from '~icons/mdi/grid-large';
-import MdiLink from '~icons/mdi/link';
-import MdiLinkVariant from '~icons/mdi/link-variant';
-import HyperlinkCardExtension from './hyperlink-card-extension';
-import HyperlinkInlineCardExtension from './hyperlink-inline-card-extension';
-import { splitLink } from './utils';
+} from "@halo-dev/richtext-editor";
+import { type Component, markRaw } from "vue";
+import MdiCardBulletedOutline from "~icons/mdi/card-bulleted-outline";
+import MdiGridLarge from "~icons/mdi/grid-large";
+import MdiLink from "~icons/mdi/link";
+import MdiLinkVariant from "~icons/mdi/link-variant";
+import HyperlinkCardExtension from "./hyperlink-card-extension";
+import HyperlinkInlineCardExtension from "./hyperlink-inline-card-extension";
+import { splitLink } from "./utils";
 
 export interface LinkViewType {
   key: string;
@@ -24,8 +24,8 @@ export interface LinkViewType {
 
 const linkViewTypes: LinkViewType[] = [
   {
-    key: 'link',
-    title: '普通链接',
+    key: "link",
+    title: "普通链接",
     icon: markRaw(MdiLinkVariant),
     action: ({ editor }) => {
       let linkViewAttr;
@@ -42,7 +42,7 @@ const linkViewTypes: LinkViewType[] = [
       }
       editor.commands.insertContent({
         // TODO: Use ExtensionParagraph to report an error Cannot read properties of undefined (reading 'name')
-        type: 'paragraph',
+        type: "paragraph",
         content: [
           {
             type: ExtensionText.name,
@@ -61,8 +61,8 @@ const linkViewTypes: LinkViewType[] = [
     },
   },
   {
-    key: 'inline',
-    title: '行内卡片',
+    key: "inline",
+    title: "行内卡片",
     icon: markRaw(MdiLink),
     action: ({ editor }) => {
       if (isActive(editor.state, ExtensionLink.name)) {
@@ -77,7 +77,7 @@ const linkViewTypes: LinkViewType[] = [
             tr.replaceSelectionWith(
               state.schema.nodes[HyperlinkInlineCardExtension.name].create({
                 href: linkAttr.href,
-                theme: 'inline',
+                theme: "inline",
               })
             );
             return true;
@@ -94,9 +94,9 @@ const linkViewTypes: LinkViewType[] = [
             tr.replaceSelectionWith(
               state.schema.nodes[HyperlinkInlineCardExtension.name].create({
                 href: linkViewAttr.href,
-                theme: 'inline',
-                'custom-title': linkViewAttr?.['custom-title'],
-                'custom-description': linkViewAttr?.['custom-description'],
+                theme: "inline",
+                "custom-title": linkViewAttr?.["custom-title"],
+                "custom-description": linkViewAttr?.["custom-description"],
               })
             );
             return true;
@@ -107,27 +107,27 @@ const linkViewTypes: LinkViewType[] = [
     },
   },
   {
-    key: 'small',
-    title: '链接卡片（小）',
+    key: "small",
+    title: "链接卡片（小）",
     icon: markRaw(MdiCardBulletedOutline),
     action: ({ editor }) => {
-      changeToHyperlinkCardExtension(editor, 'small');
+      changeToHyperlinkCardExtension(editor, "small");
     },
   },
   {
-    key: 'regular',
-    title: '链接卡片（正常）',
+    key: "regular",
+    title: "链接卡片（正常）",
     icon: markRaw(MdiCardBulletedOutline),
     action: ({ editor }) => {
-      changeToHyperlinkCardExtension(editor, 'regular');
+      changeToHyperlinkCardExtension(editor, "regular");
     },
   },
   {
-    key: 'grid',
-    title: '链接卡片（格子）',
+    key: "grid",
+    title: "链接卡片（格子）",
     icon: markRaw(MdiGridLarge),
     action: ({ editor }) => {
-      changeToHyperlinkCardExtension(editor, 'grid');
+      changeToHyperlinkCardExtension(editor, "grid");
     },
   },
 ];
@@ -172,8 +172,8 @@ const changeToHyperlinkCardExtension = (editor: Editor, theme: string) => {
           state.schema.nodes[HyperlinkCardExtension.name].create({
             href: linkViewAttr.href,
             theme: theme,
-            'custom-title': linkViewAttr?.['custom-title'],
-            'custom-description': linkViewAttr?.['custom-description'],
+            "custom-title": linkViewAttr?.["custom-title"],
+            "custom-description": linkViewAttr?.["custom-description"],
           })
         );
         return true;

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { BlockActionSeparator, type Editor } from '@halo-dev/richtext-editor';
-import type { Component } from 'vue';
-import type { LinkViewType } from '@/editor/link-view-type';
-import LinkViewBubbleMenuItem from './LinkViewBubbleMenuItem.vue';
+import { BlockActionSeparator, type Editor } from "@halo-dev/richtext-editor";
+import type { Component } from "vue";
+import type { LinkViewType } from "@/editor/link-view-type";
+import LinkViewBubbleMenuItem from "./LinkViewBubbleMenuItem.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -10,7 +10,7 @@ const props = withDefaults(
     isActive?: ({ editor }: { editor: Editor }) => boolean;
     visible?: ({ editor }: { editor: Editor }) => boolean;
     action?: ({ editor }: { editor: Editor }) => Component | void;
-    type: ({ editor }: { editor: Editor }) => LinkViewType;
+    type?: ({ editor }: { editor: Editor }) => LinkViewType;
   }>(),
   {
     isActive: () => false,

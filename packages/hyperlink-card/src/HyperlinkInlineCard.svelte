@@ -1,12 +1,12 @@
 <svelte:options
   customElement={{
-        tag: "hyperlink-inline-card",
-        props: {
-            href: { reflect: true, type: "String", attribute: "href" },
-            target: { reflect: true, type: "String", attribute: "target" },
-            customTitle: { reflect: true, type: "String", attribute: "custom-title" },
-        },
-    }}
+    tag: "hyperlink-inline-card",
+    props: {
+      href: { reflect: true, type: "String", attribute: "href" },
+      target: { reflect: true, type: "String", attribute: "target" },
+      customTitle: { reflect: true, type: "String", attribute: "custom-title" },
+    },
+  }}
 />
 
 <script lang="ts">
@@ -29,9 +29,7 @@
   async function fetchSiteData() {
     try {
       loading = true;
-      const response = await fetch(
-        `/apis/api.hyperlink.halo.run/v1alpha1/link-detail?url=${href}`,
-      );
+      const response = await fetch(`/apis/api.hyperlink.halo.run/v1alpha1/link-detail?url=${href}`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch site data");
@@ -67,7 +65,7 @@
         src={siteData.icon || siteData.image || ""}
         alt={siteData.title}
         referrerpolicy="no-referrer"
-      >
+      />
     {/if}
     <span>{customTitle || siteData.title || href}</span>
     {#if !href.startsWith(location.origin)}
@@ -98,8 +96,8 @@
       line-height: 1.5;
       -webkit-text-size-adjust: 100%;
       font-family:
-        ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
       font-feature-settings: normal;
       font-variation-settings: normal;
       -webkit-tap-highlight-color: transparent;

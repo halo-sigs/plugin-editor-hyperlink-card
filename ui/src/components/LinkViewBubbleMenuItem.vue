@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import type { Editor } from '@halo-dev/richtext-editor';
-import { Dropdown as VDropdown } from 'floating-vue';
-import type { Component } from 'vue';
-import LinkViewMenu from '@/components/LinkViewMenu.vue';
-import type { LinkViewType } from '@/editor/link-view-type';
-import MdiMenuDown from '~icons/mdi/menu-down';
+import type { Editor } from "@halo-dev/richtext-editor";
+import { Dropdown as VDropdown } from "floating-vue";
+import type { Component } from "vue";
+import LinkViewMenu from "@/components/LinkViewMenu.vue";
+import type { LinkViewType } from "@/editor/link-view-type";
+import MdiMenuDown from "~icons/mdi/menu-down";
 
 const props = withDefaults(
   defineProps<{
@@ -12,7 +12,7 @@ const props = withDefaults(
     isActive?: ({ editor }: { editor: Editor }) => boolean;
     visible?: ({ editor }: { editor: Editor }) => boolean;
     action?: ({ editor }: { editor: Editor }) => Component | void;
-    type: ({ editor }: { editor: Editor }) => LinkViewType;
+    type?: ({ editor }: { editor: Editor }) => LinkViewType;
   }>(),
   {
     isActive: () => false,

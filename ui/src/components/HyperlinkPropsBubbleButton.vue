@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { Editor } from '@halo-dev/richtext-editor';
-import { Dropdown as VDropdown, vTooltip } from 'floating-vue';
-import { type Component, computed } from 'vue';
-import { HyperlinkInlineCardExtension } from '@/editor';
-import MdiTextBoxEditOutline from '~icons/mdi/text-box-edit-outline';
+import type { Editor } from "@halo-dev/richtext-editor";
+import { Dropdown as VDropdown, vTooltip } from "floating-vue";
+import { type Component, computed } from "vue";
+import { HyperlinkInlineCardExtension } from "@/editor";
+import MdiTextBoxEditOutline from "~icons/mdi/text-box-edit-outline";
 
 const props = defineProps<{
   editor: Editor;
@@ -18,7 +18,7 @@ const props = defineProps<{
 const customTitle = computed({
   get() {
     const attrs = props.editor.getAttributes(props.name);
-    return attrs?.['custom-title'];
+    return attrs?.["custom-title"];
   },
   set(value) {
     const { selection } = props.editor.state;
@@ -29,7 +29,7 @@ const customTitle = computed({
     props.editor
       .chain()
       .updateAttributes(props.name, {
-        'custom-title': value,
+        "custom-title": value,
       })
       .setNodeSelection(pos)
       .run();
@@ -39,7 +39,7 @@ const customTitle = computed({
 const customDescription = computed({
   get() {
     const attrs = props.editor.getAttributes(props.name);
-    return attrs?.['custom-description'];
+    return attrs?.["custom-description"];
   },
   set(value) {
     const { selection } = props.editor.state;
@@ -50,7 +50,7 @@ const customDescription = computed({
     props.editor
       .chain()
       .updateAttributes(props.name, {
-        'custom-description': value,
+        "custom-description": value,
       })
       .setNodeSelection(pos)
       .run();

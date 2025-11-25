@@ -1,3 +1,7 @@
+import HyperlinkBubbleButton from "@/components/HyperlinkBubbleButton.vue";
+import HyperlinkInlineView from "@/components/HyperlinkInlineView.vue";
+import HyperlinkPropsBubbleButton from "@/components/HyperlinkPropsBubbleButton.vue";
+import LinkViewBubbleMenuItem from "@/components/LinkViewBubbleMenuItem.vue";
 import {
   type Editor,
   type EditorState,
@@ -6,54 +10,50 @@ import {
   mergeAttributes,
   Node,
   VueNodeViewRenderer,
-} from '@halo-dev/richtext-editor';
-import { markRaw } from 'vue';
-import HyperlinkBubbleButton from '@/components/HyperlinkBubbleButton.vue';
-import HyperlinkInlineView from '@/components/HyperlinkInlineView.vue';
-import HyperlinkPropsBubbleButton from '@/components/HyperlinkPropsBubbleButton.vue';
-import LinkViewBubbleMenuItem from '@/components/LinkViewBubbleMenuItem.vue';
-import MdiShare from '~icons/mdi/share';
-import linkViewTypes from './link-view-type';
+} from "@halo-dev/richtext-editor";
+import { markRaw } from "vue";
+import MdiShare from "~icons/mdi/share";
+import linkViewTypes from "./link-view-type";
 
 const HyperlinkInlineCardExtension = Node.create({
-  name: 'hyperlinkInlineCard',
+  name: "hyperlinkInlineCard",
 
   atom: true,
 
   inline: true,
 
-  group: 'inline',
+  group: "inline",
 
   addAttributes() {
     return {
       target: {
-        default: '_blank',
+        default: "_blank",
         parseHTML: (element: HTMLElement) => {
-          return element.getAttribute('target');
+          return element.getAttribute("target");
         },
       },
       href: {
         default: null,
         parseHTML: (element: HTMLElement) => {
-          return element.getAttribute('href');
+          return element.getAttribute("href");
         },
       },
       theme: {
         default: linkViewTypes[1].key,
         parseHTML: (element: HTMLElement) => {
-          return element.getAttribute('theme');
+          return element.getAttribute("theme");
         },
       },
-      'custom-title': {
+      "custom-title": {
         default: null,
         parseHTML: (element: HTMLElement) => {
-          return element.getAttribute('custom-title');
+          return element.getAttribute("custom-title");
         },
       },
-      'custom-description': {
+      "custom-description": {
         default: null,
         parseHTML: (element: HTMLElement) => {
-          return element.getAttribute('custom-description');
+          return element.getAttribute("custom-description");
         },
       },
     };
@@ -98,11 +98,11 @@ const HyperlinkInlineCardExtension = Node.create({
               props: {
                 isActive: () => false,
                 icon: markRaw(MdiShare),
-                title: '打开链接',
+                title: "打开链接",
                 action: ({ editor }: { editor: Editor }) => {
                   const attr = getNodeAttributes(editor.state, HyperlinkInlineCardExtension.name);
                   if (attr?.href) {
-                    window.open(attr?.href, '_blank');
+                    window.open(attr?.href, "_blank");
                   }
                 },
               },
@@ -114,14 +114,14 @@ const HyperlinkInlineCardExtension = Node.create({
   },
 
   parseHTML() {
-    return [{ tag: 'hyperlink-inline-card' }];
+    return [{ tag: "hyperlink-inline-card" }];
   },
 
   renderHTML({ HTMLAttributes }) {
     return [
-      'hyperlink-inline-card',
+      "hyperlink-inline-card",
       mergeAttributes(HTMLAttributes),
-      ['a', { href: HTMLAttributes.href, target: HTMLAttributes.target }, HTMLAttributes.href],
+      ["a", { href: HTMLAttributes.href, target: HTMLAttributes.target }, HTMLAttributes.href],
     ];
   },
 
