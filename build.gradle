@@ -1,8 +1,8 @@
 plugins {
     id 'java'
-    id "com.github.node-gradle.node" version "5.0.0"
-    id "io.freefair.lombok" version "8.0.1"
-    id "run.halo.plugin.devtools" version "0.0.9"
+    id "com.github.node-gradle.node" version "7.1.0"
+    id "io.freefair.lombok" version "8.13"
+    id "run.halo.plugin.devtools" version "0.6.1"
 }
 
 group 'run.halo.editor.hyperlink'

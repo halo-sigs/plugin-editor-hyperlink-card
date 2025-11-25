@@ -1,5 +1,6 @@
 packages:
   - ui
-  - packages/**
+  - packages/hyperlink-card-new
 onlyBuiltDependencies:
+  - core-js
   - esbuild

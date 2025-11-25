@@ -52,7 +52,7 @@
     "prettier": "^3.3.0",
     "typescript": "^5.4.5",
     "unocss": "^0.60.4",
-    "vite": "^7",
+    "vite": "npm:rolldown-vite@7.2.5",
     "vite-plugin-dts": "^3.9.1",
     "vite-plugin-static-copy": "^1.0.6",
     "vitest": "^1.6.0"
