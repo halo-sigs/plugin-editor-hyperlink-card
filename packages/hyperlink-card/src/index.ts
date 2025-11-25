@@ -1,2 +1,3 @@
-export * from './hyperlink-card';
-export * from './hyperlink-inline-card';
+import "./HyperlinkCard.svelte";
+import "./HyperlinkInlineCard.svelte";
+import "./var.css";

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { computed, type Component } from 'vue';
-import { vTooltip, Dropdown as VDropdown } from 'floating-vue';
 import type { Editor } from '@halo-dev/richtext-editor';
-import MdiTextBoxEditOutline from '~icons/mdi/text-box-edit-outline';
+import { Dropdown as VDropdown, vTooltip } from 'floating-vue';
+import { type Component, computed } from 'vue';
 import { HyperlinkInlineCardExtension } from '@/editor';
+import MdiTextBoxEditOutline from '~icons/mdi/text-box-edit-outline';
 
 const props = defineProps<{
   editor: Editor;
@@ -76,7 +76,7 @@ const isInline = computed(() => {
         class=":uno: relative max-h-72 w-96 overflow-hidden overflow-y-auto rounded-md bg-white p-1 drop-shadow flex flex-col gap-2"
       >
         <div>
-          <label for="custom-title" class=":uno: text-sm text-gray-500">自定义标题</label>
+          <label for="custom-title" class=":uno: text-sm text-gray-500"> 自定义标题 </label>
           <input
             id="custom-title"
             v-model.lazy="customTitle"

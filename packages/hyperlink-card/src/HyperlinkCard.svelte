@@ -13,10 +13,10 @@
 
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { SiteData } from "./types";
-    import RegularLoading from "./themes/RegularLoading.svelte";
     import GridLoading from "./themes/GridLoading.svelte";
+    import RegularLoading from "./themes/RegularLoading.svelte";
     import SmallLoading from "./themes/SmallLoading.svelte";
+    import type { SiteData } from "./types";
 
     let {
         href,

@@ -1,19 +1,19 @@
-import LinkViewBubbleMenuItem from '@/components/LinkViewBubbleMenuItem.vue';
 import {
-  EditorState,
-  Node,
-  VueNodeViewRenderer,
+  type Editor,
+  type EditorState,
   getNodeAttributes,
   isActive,
   mergeAttributes,
-  type Editor,
+  Node,
+  VueNodeViewRenderer,
 } from '@halo-dev/richtext-editor';
 import { markRaw } from 'vue';
-import linkViewTypes from './link-view-type';
-import HyperlinkInlineView from '@/components/HyperlinkInlineView.vue';
 import HyperlinkBubbleButton from '@/components/HyperlinkBubbleButton.vue';
-import MdiShare from '~icons/mdi/share';
+import HyperlinkInlineView from '@/components/HyperlinkInlineView.vue';
 import HyperlinkPropsBubbleButton from '@/components/HyperlinkPropsBubbleButton.vue';
+import LinkViewBubbleMenuItem from '@/components/LinkViewBubbleMenuItem.vue';
+import MdiShare from '~icons/mdi/share';
+import linkViewTypes from './link-view-type';
 
 const HyperlinkInlineCardExtension = Node.create({
   name: 'hyperlinkInlineCard',

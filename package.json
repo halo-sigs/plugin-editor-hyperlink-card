@@ -1,15 +1,50 @@
 {
-    "scripts": {
-        "build": "pnpm -r run build"
-    },
-    "packageManager": "pnpm@10.6.4+sha512.da3d715bfd22a9a105e6e8088cfc7826699332ded60c423b14ec613a185f1602206702ff0fe4c438cb15c979081ce4cb02568e364b15174503a63c7a8e2a5f6c",
-    "pnpm": {
-        "overrides": {
-            "vite": "npm:rolldown-vite@7.2.5"
+  "scripts": {
+    "build": "pnpm -r run build",
+    "lint": "eslint . && prettier --check .",
+    "prettier": "prettier --write .",
+    "format": "prettier --write ."
+  },
+  "packageManager": "pnpm@10.6.4+sha512.da3d715bfd22a9a105e6e8088cfc7826699332ded60c423b14ec613a185f1602206702ff0fe4c438cb15c979081ce4cb02568e364b15174503a63c7a8e2a5f6c",
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": false,
+    "trailingComma": "es5",
+    "arrowParens": "always",
+    "plugins": [
+      "prettier-plugin-organize-imports",
+      "prettier-plugin-svelte"
+    ],
+    "overrides": [
+      {
+        "files": "*.svelte",
+        "options": {
+          "parser": "svelte"
         }
-    },
-    "devDependencies": {
-        "@biomejs/biome": "^2.3.7",
-        "@types/node": "22"
+      }
+    ]
+  },
+  "pnpm": {
+    "overrides": {
+      "vite": "npm:rolldown-vite@7.2.5"
     }
+  },
+  "devDependencies": {
+    "@eslint/compat": "^1.4.0",
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^22",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^14.6.0",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-svelte": "^3.13.0",
+    "eslint-plugin-vue": "^10.6.0",
+    "globals": "^16.5.0",
+    "prettier": "^3.6.2",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "prettier-plugin-svelte": "^3.4.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.47.0"
+  }
 }

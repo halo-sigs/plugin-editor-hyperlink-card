@@ -15,7 +15,7 @@ Halo 的编辑器插件，能够在编辑器中将普通的超链接转为卡片
 1. 在[应用市场](https://www.halo.run/store/apps/app-UpUJA)中安装并启用此插件。
 2. 在编辑器中选中一个超链接，如图选择所需链接类型即可。
 
-    ![Editor Doc](./images/editor-doc.png)
+   ![Editor Doc](./images/editor-doc.png)
 
 ## 预览
 
@@ -65,7 +65,7 @@ Halo 的编辑器插件，能够在编辑器中将普通的超链接转为卡片
 目前已提供的 CSS 变量：
 
 | 变量名                                        | 描述                 |
-|-----------------------------------------------|--------------------|
+| --------------------------------------------- | -------------------- |
 | `--halo-hyperlink-card-bg-color`              | 卡片背景颜色         |
 | `--halo-hyperlink-card-inline-bg-color`       | 行内卡片背景颜色     |
 | `--halo-hyperlink-card-inline-hover-bg-color` | 行内卡片悬停背景颜色 |
@@ -111,7 +111,7 @@ Halo 的编辑器插件，能够在编辑器中将普通的超链接转为卡片
 ```css
 @media (prefers-color-scheme: dark) {
   .color-scheme-auto,
-  [data-color-scheme='auto'] hyperlink-card {
+  [data-color-scheme="auto"] hyperlink-card {
     color-scheme: dark;
     --halo-hyperlink-card-bg-color: #18181b;
     --halo-hyperlink-card-inline-bg-color: #3f3f46;
@@ -122,8 +122,7 @@ Halo 的编辑器插件，能够在编辑器中将普通的超链接转为卡片
 
     --halo-hyperlink-card-description-color: #a1a1aa;
     --halo-hyperlink-card-link-color: #e4e4e7;
-    --halo-hyperlink-card-bg-gradient: linear-gradient(#454545, #454545),
-      linear-gradient(transparent, transparent);
+    --halo-hyperlink-card-bg-gradient: linear-gradient(#454545, #454545), linear-gradient(transparent, transparent);
     --halo-hyperlink-card-border-color: #52525b;
     --halo-hyperlink-card-border-hover-color: #e4e4e7;
   }
@@ -131,21 +130,20 @@ Halo 的编辑器插件，能够在编辑器中将普通的超链接转为卡片
 
 .color-scheme-dark,
 .dark,
-[data-color-scheme='dark'] hyperlink-card {
-    color-scheme: dark;
-    --halo-hyperlink-card-bg-color: #18181b;
-    --halo-hyperlink-card-inline-bg-color: #3f3f46;
-    --halo-hyperlink-card-inline-hover-bg-color: #52525b;
+[data-color-scheme="dark"] hyperlink-card {
+  color-scheme: dark;
+  --halo-hyperlink-card-bg-color: #18181b;
+  --halo-hyperlink-card-inline-bg-color: #3f3f46;
+  --halo-hyperlink-card-inline-hover-bg-color: #52525b;
 
-    --halo-hyperlink-card-title-color: #f4f4f5;
-    --halo-hyperlink-card-inline-title-color: #f4f4f5;
+  --halo-hyperlink-card-title-color: #f4f4f5;
+  --halo-hyperlink-card-inline-title-color: #f4f4f5;
 
-    --halo-hyperlink-card-description-color: #a1a1aa;
-    --halo-hyperlink-card-link-color: #e4e4e7;
-    --halo-hyperlink-card-bg-gradient: linear-gradient(#454545, #454545),
-      linear-gradient(transparent, transparent);
-    --halo-hyperlink-card-border-color: #52525b;
-    --halo-hyperlink-card-border-hover-color: #e4e4e7;
+  --halo-hyperlink-card-description-color: #a1a1aa;
+  --halo-hyperlink-card-link-color: #e4e4e7;
+  --halo-hyperlink-card-bg-gradient: linear-gradient(#454545, #454545), linear-gradient(transparent, transparent);
+  --halo-hyperlink-card-border-color: #52525b;
+  --halo-hyperlink-card-border-hover-color: #e4e4e7;
 }
 ```
 

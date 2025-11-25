@@ -1,12 +1,12 @@
 import {
+  type Editor,
   ExtensionLink,
   ExtensionText,
   getMarkAttributes,
   getNodeAttributes,
   isActive,
-  type Editor,
 } from '@halo-dev/richtext-editor';
-import { markRaw, type Component } from 'vue';
+import { type Component, markRaw } from 'vue';
 import MdiCardBulletedOutline from '~icons/mdi/card-bulleted-outline';
 import MdiGridLarge from '~icons/mdi/grid-large';
 import MdiLink from '~icons/mdi/link';

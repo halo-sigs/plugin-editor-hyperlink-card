@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import LinkViewMenu from '@/components/LinkViewMenu.vue';
-import type { LinkViewType } from '@/editor/link-view-type';
 import type { Editor } from '@halo-dev/richtext-editor';
 import { Dropdown as VDropdown } from 'floating-vue';
 import type { Component } from 'vue';
+import LinkViewMenu from '@/components/LinkViewMenu.vue';
+import type { LinkViewType } from '@/editor/link-view-type';
 import MdiMenuDown from '~icons/mdi/menu-down';
 
 const props = withDefaults(
