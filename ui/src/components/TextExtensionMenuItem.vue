@@ -24,8 +24,8 @@ const props = withDefaults(
 </script>
 <template>
   <template v-if="visible({ editor })">
-    <BlockActionSeparator />
+    <BlockActionSeparator :editor="editor" />
     <LinkViewBubbleMenuItem v-bind="props" />
-    <BlockActionSeparator />
+    <BlockActionSeparator :editor="editor" />
   </template>
 </template>

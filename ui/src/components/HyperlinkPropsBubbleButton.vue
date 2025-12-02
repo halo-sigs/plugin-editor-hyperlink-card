@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { computed, type Component } from 'vue';
 import { vTooltip, VDropdown } from '@halo-dev/components';
-import type { Editor } from '@halo-dev/richtext-editor';
-import MdiTextBoxEditOutline from '~icons/mdi/text-box-edit-outline';
+import { BlockActionButton, type Editor } from '@halo-dev/richtext-editor';
+import MingcuteEdit4Line from '~icons/mingcute/edit-4-line';
 import { HyperlinkInlineCardExtension } from '@/editor';
 
 const props = defineProps<{
@@ -64,12 +64,11 @@ const isInline = computed(() => {
 
 <template>
   <VDropdown class=":uno: inline-flex" :triggers="['click']" :distance="10">
-    <button
-      v-tooltip="'编辑属性'"
-      class=":uno: rounded-md p-2 text-lg text-gray-600 hover:bg-gray-100"
-    >
-      <MdiTextBoxEditOutline />
-    </button>
+    <BlockActionButton tooltip="编辑属性">
+      <template #icon>
+        <MingcuteEdit4Line />
+      </template>
+    </BlockActionButton>
 
     <template #popper>
       <div

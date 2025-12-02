@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { computed, type Component } from 'vue';
 import { vTooltip, VDropdown } from '@halo-dev/components';
-import MdiLinkVariant from '~icons/mdi/link-variant';
-import type { Editor } from '@halo-dev/richtext-editor';
+import MingcuteLinkLine from '~icons/mingcute/link-line';
+import { BlockActionButton, type Editor } from '@halo-dev/richtext-editor';
 
 const props = defineProps<{
   editor: Editor;
@@ -61,12 +61,11 @@ const target = computed({
 
 <template>
   <VDropdown class=":uno: inline-flex" :triggers="['click']" :distance="10">
-    <button
-      v-tooltip="'编辑链接'"
-      class=":uno: rounded-md p-2 text-lg text-gray-600 hover:bg-gray-100"
-    >
-      <MdiLinkVariant />
-    </button>
+    <BlockActionButton tooltip="编辑链接">
+      <template #icon>
+        <MingcuteLinkLine />
+      </template>
+    </BlockActionButton>
 
     <template #popper>
       <div class=":uno: relative max-h-72 w-96 overflow-hidden overflow-y-auto bg-white">

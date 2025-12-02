@@ -4,7 +4,7 @@ import type { LinkViewType } from '@/editor/link-view-type';
 import type { Editor } from '@halo-dev/richtext-editor';
 import { VDropdown } from '@halo-dev/components';
 import type { Component } from 'vue';
-import MdiMenuDown from '~icons/mdi/menu-down';
+import MingcuteDownSmallFill from '~icons/mingcute/down-small-fill';
 
 const props = withDefaults(
   defineProps<{
@@ -30,11 +30,11 @@ const props = withDefaults(
     <VDropdown class=":uno: inline-flex" :triggers="['click']" :popper-triggers="['click']">
       <button
         :class="{ ':uno: bg-gray-200 !text-black': isActive({ editor }) }"
-        class=":uno: h-full inline-flex items-center gap-x-1 rounded-md p-2 text-base text-gray-600 hover:bg-gray-100"
+        class=":uno: h-8 inline-flex items-center gap-x-1 px-2 rounded-md text-base text-gray-600 hover:bg-gray-100 active:!bg-gray-200"
       >
         <component :is="type?.({ editor }).icon" class=":uno: size-5" />
         <span>{{ type?.({ editor }).title }}</span>
-        <MdiMenuDown />
+        <MingcuteDownSmallFill />
       </button>
       <template #popper>
         <div class=":uno: relative max-h-96 w-56 overflow-hidden overflow-y-auto bg-white">
