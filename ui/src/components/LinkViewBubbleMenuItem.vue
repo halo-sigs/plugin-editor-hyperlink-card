@@ -2,7 +2,7 @@
 import LinkViewMenu from '@/components/LinkViewMenu.vue';
 import type { LinkViewType } from '@/editor/link-view-type';
 import type { Editor } from '@halo-dev/richtext-editor';
-import { Dropdown as VDropdown } from 'floating-vue';
+import { VDropdown } from '@halo-dev/components';
 import type { Component } from 'vue';
 import MdiMenuDown from '~icons/mdi/menu-down';
 
@@ -48,17 +48,3 @@ const props = withDefaults(
     </VDropdown>
   </template>
 </template>
-<style lang="scss">
-.v-popper__popper.v-popper__popper--show-from .v-popper__wrapper {
-  // @unocss-skip-start
-  transform: scale(0.9);
-  // @unocss-skip-end
-}
-
-.v-popper__popper.v-popper__popper--show-to .v-popper__wrapper {
-  // @unocss-skip-start
-  transform: none;
-  transition: transform 0.1s;
-  // @unocss-skip-end
-}
-</style>

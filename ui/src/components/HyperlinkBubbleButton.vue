@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, type Component } from 'vue';
-import { vTooltip, Dropdown as VDropdown } from 'floating-vue';
+import { vTooltip, VDropdown } from '@halo-dev/components';
 import MdiLinkVariant from '~icons/mdi/link-variant';
 import type { Editor } from '@halo-dev/richtext-editor';
 
