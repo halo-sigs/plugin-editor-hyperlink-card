@@ -69,9 +69,7 @@ const target = computed({
     </button>
 
     <template #popper>
-      <div
-        class=":uno: relative max-h-72 w-96 overflow-hidden overflow-y-auto rounded-md bg-white p-1 drop-shadow"
-      >
+      <div class=":uno: relative max-h-72 w-96 overflow-hidden overflow-y-auto bg-white">
         <input
           v-model.lazy="href"
           placeholder="链接地址"

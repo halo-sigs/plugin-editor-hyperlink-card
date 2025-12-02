@@ -73,7 +73,7 @@ const isInline = computed(() => {
 
     <template #popper>
       <div
-        class=":uno: relative max-h-72 w-96 overflow-hidden overflow-y-auto rounded-md bg-white p-1 drop-shadow flex flex-col gap-2"
+        class=":uno: relative max-h-72 w-96 overflow-hidden overflow-y-auto bg-white flex flex-col gap-2"
       >
         <div>
           <label for="custom-title" class=":uno: text-sm text-gray-500">自定义标题</label>

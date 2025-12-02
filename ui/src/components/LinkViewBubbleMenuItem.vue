@@ -37,9 +37,7 @@ const props = withDefaults(
         <MdiMenuDown />
       </button>
       <template #popper>
-        <div
-          class=":uno: relative max-h-96 w-56 overflow-hidden overflow-y-auto rounded-md bg-white p-1 drop-shadow"
-        >
+        <div class=":uno: relative max-h-96 w-56 overflow-hidden overflow-y-auto bg-white">
           <KeepAlive>
             <LinkViewMenu v-bind="props"></LinkViewMenu>
           </KeepAlive>
