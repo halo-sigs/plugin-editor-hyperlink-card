@@ -1,18 +1,10 @@
 <script lang="ts" setup>
-import { computed, type Component } from 'vue';
-import { vTooltip, VDropdown } from '@halo-dev/components';
+import { computed } from 'vue';
+import { VDropdown } from '@halo-dev/components';
 import MingcuteLinkLine from '~icons/mingcute/link-line';
-import { BlockActionButton, type Editor } from '@halo-dev/richtext-editor';
+import { BubbleButton, BubbleItemComponentProps } from '@halo-dev/richtext-editor';
 
-const props = defineProps<{
-  editor: Editor;
-  name: string;
-  isActive: ({ editor }: { editor: Editor }) => boolean;
-  visible?: ({ editor }: { editor: Editor }) => boolean;
-  icon?: Component;
-  title?: string;
-  action?: ({ editor }: { editor: Editor }) => void;
-}>();
+const props = defineProps<BubbleItemComponentProps & { name: string }>();
 
 const href = computed({
   get() {
@@ -61,11 +53,11 @@ const target = computed({
 
 <template>
   <VDropdown class=":uno: inline-flex" :triggers="['click']" :distance="10">
-    <BlockActionButton tooltip="编辑链接">
+    <BubbleButton title="编辑链接">
       <template #icon>
-        <MingcuteLinkLine />
+        <MingcuteLinkLine class=":uno: size-5" />
       </template>
-    </BlockActionButton>
+    </BubbleButton>
 
     <template #popper>
       <div class=":uno: relative max-h-72 w-96 overflow-hidden overflow-y-auto bg-white">

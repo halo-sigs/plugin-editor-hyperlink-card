@@ -1,15 +1,10 @@
 <script setup lang="ts">
 import linkViewTypes, { type LinkViewType } from '@/editor/link-view-type';
-import type { Editor } from '@halo-dev/richtext-editor';
-import type { Component } from 'vue';
+import type { BubbleItemComponentProps, Editor } from '@halo-dev/richtext-editor';
 
-const props = defineProps<{
-  editor: Editor;
-  isActive?: ({ editor }: { editor: Editor }) => boolean;
-  visible?: ({ editor }: { editor: Editor }) => boolean;
-  action?: ({ editor }: { editor: Editor }) => Component | void;
-  type: ({ editor }: { editor: Editor }) => LinkViewType;
-}>();
+const props = defineProps<
+  BubbleItemComponentProps & { type: ({ editor }: { editor: Editor }) => LinkViewType }
+>();
 
 const handleSwitchLinkViewType = (item: LinkViewType) => {
   if (isActiveType(item)) {

@@ -1,19 +1,11 @@
 <script lang="ts" setup>
-import { computed, type Component } from 'vue';
-import { vTooltip, VDropdown } from '@halo-dev/components';
-import { BlockActionButton, type Editor } from '@halo-dev/richtext-editor';
+import { computed } from 'vue';
+import { VDropdown } from '@halo-dev/components';
+import { BubbleButton, BubbleItemComponentProps } from '@halo-dev/richtext-editor';
 import MingcuteEdit4Line from '~icons/mingcute/edit-4-line';
 import { HyperlinkInlineCardExtension } from '@/editor';
 
-const props = defineProps<{
-  editor: Editor;
-  name: string;
-  isActive: ({ editor }: { editor: Editor }) => boolean;
-  visible?: ({ editor }: { editor: Editor }) => boolean;
-  icon?: Component;
-  title?: string;
-  action?: ({ editor }: { editor: Editor }) => void;
-}>();
+const props = defineProps<BubbleItemComponentProps & { name: string }>();
 
 const customTitle = computed({
   get() {
@@ -64,11 +56,11 @@ const isInline = computed(() => {
 
 <template>
   <VDropdown class=":uno: inline-flex" :triggers="['click']" :distance="10">
-    <BlockActionButton tooltip="编辑属性">
+    <BubbleButton title="编辑属性">
       <template #icon>
-        <MingcuteEdit4Line />
+        <MingcuteEdit4Line class=":uno: size-5" />
       </template>
-    </BlockActionButton>
+    </BubbleButton>
 
     <template #popper>
       <div
