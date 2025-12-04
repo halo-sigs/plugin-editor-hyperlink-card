@@ -29,7 +29,7 @@ const props = withDefaults(
         :is-active="isActive({ editor })"
       >
         <template #icon>
-          <component :is="type?.({ editor }).icon" class=":uno: size-5" />
+          <component :is="type?.({ editor }).icon" />
         </template>
       </BubbleButton>
       <template #popper>

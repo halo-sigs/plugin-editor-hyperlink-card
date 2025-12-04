@@ -23,7 +23,7 @@
     "@halo-dev/components": "https://pkg.pr.new/@halo-dev/components@fca4c32",
     "@halo-dev/console-shared": "^2.21.0",
     "@halo-dev/hyperlink-card": "workspace:*",
-    "@halo-dev/richtext-editor": "https://pkg.pr.new/@halo-dev/richtext-editor@bb1c33b",
+    "@halo-dev/richtext-editor": "https://pkg.pr.new/@halo-dev/richtext-editor@7d378d6",
     "vue": "^3.5.25"
   },
   "devDependencies": {

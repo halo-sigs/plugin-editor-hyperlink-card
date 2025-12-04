@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { VDropdown } from '@halo-dev/components';
 import MingcuteLinkLine from '~icons/mingcute/link-line';
-import { BubbleButton, BubbleItemComponentProps } from '@halo-dev/richtext-editor';
+import { BubbleButton, BubbleItemComponentProps, Input } from '@halo-dev/richtext-editor';
 
 const props = defineProps<BubbleItemComponentProps & { name: string }>();
 
@@ -55,23 +55,15 @@ const target = computed({
   <VDropdown class=":uno: inline-flex" :triggers="['click']" :distance="10">
     <BubbleButton title="编辑链接">
       <template #icon>
-        <MingcuteLinkLine class=":uno: size-5" />
+        <MingcuteLinkLine />
       </template>
     </BubbleButton>
 
     <template #popper>
-      <div class=":uno: relative max-h-72 w-96 overflow-hidden overflow-y-auto bg-white">
-        <input
-          v-model.lazy="href"
-          placeholder="链接地址"
-          class=":uno: block w-full border border-gray-300 rounded-md bg-gray-50 px-2 py-1.5 text-sm text-gray-900 focus:border-blue-500 hover:bg-gray-100 focus:ring-blue-500"
-        />
+      <div class=":uno: w-64">
+        <Input v-model="href" label="链接地址" />
         <label class=":uno: mt-2 inline-flex items-center">
-          <input
-            v-model="target"
-            type="checkbox"
-            class=":uno: form-checkbox border-gray-300 rounded text-blue-600 focus:ring-blue-500"
-          />
+          <input v-model="target" type="checkbox" />
           <span class=":uno: ml-2 text-sm text-gray-500">在新窗口中打开</span>
         </label>
       </div>
