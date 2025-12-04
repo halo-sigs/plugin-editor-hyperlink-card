@@ -33,7 +33,7 @@ const props = withDefaults(
         </template>
       </BubbleButton>
       <template #popper>
-        <div class=":uno: relative max-h-96 w-56 overflow-hidden overflow-y-auto bg-white">
+        <div class=":uno: relative max-h-96 w-56 overflow-hidden overflow-y-auto">
           <KeepAlive>
             <LinkViewMenu v-bind="props"></LinkViewMenu>
           </KeepAlive>

@@ -3,6 +3,7 @@ import HyperlinkPropsBubbleButton from '@/components/HyperlinkPropsBubbleButton.
 import HyperlinkView from '@/components/HyperlinkView.vue';
 import LinkViewBubbleMenuItem from '@/components/LinkViewBubbleMenuItem.vue';
 import {
+  deleteNode,
   EditorState,
   ExtensionOptions,
   getNodeAttributes,
@@ -14,6 +15,7 @@ import {
   type Editor,
 } from '@halo-dev/richtext-editor';
 import { markRaw } from 'vue';
+import MingcuteDelete2Line from '~icons/mingcute/delete-2-line?color=#dc2626';
 import MingcuteShare3Line from '~icons/mingcute/share-3-line';
 import linkViewTypes from './link-view-type';
 
@@ -110,6 +112,16 @@ const HyperlinkCardExtension = Node.create<ExtensionOptions>({
                   if (attr?.href) {
                     window.open(attr?.href, '_blank');
                   }
+                },
+              },
+            },
+            {
+              priority: 40,
+              props: {
+                icon: markRaw(MingcuteDelete2Line),
+                title: '删除',
+                action: ({ editor }) => {
+                  deleteNode(HyperlinkCardExtension.name, editor);
                 },
               },
             },
