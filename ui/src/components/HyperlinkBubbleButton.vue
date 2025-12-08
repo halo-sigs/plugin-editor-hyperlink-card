@@ -60,8 +60,8 @@ const target = computed({
     </BubbleButton>
 
     <template #popper>
-      <div class=":uno: w-64">
-        <Input v-model="href" label="链接地址" />
+      <div class=":uno: w-80">
+        <Input auto-focus v-model="href" label="链接地址" />
         <label class=":uno: mt-2 inline-flex items-center">
           <input v-model="target" type="checkbox" />
           <span class=":uno: ml-2 text-sm text-gray-500">在新窗口中打开</span>

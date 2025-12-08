@@ -63,8 +63,8 @@ const isInline = computed(() => {
     </BubbleButton>
 
     <template #popper>
-      <div class=":uno: flex w-64 flex-col gap-3">
-        <Input v-model="customTitle" label="自定义标题" />
+      <div class=":uno: flex w-80 flex-col gap-3">
+        <Input auto-focus v-model="customTitle" label="自定义标题" />
         <Input v-if="!isInline" v-model="customDescription" label="自定义描述" />
       </div>
     </template>
