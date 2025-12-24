@@ -1,21 +1,25 @@
+import HyperlinkBubbleButton from '@/components/HyperlinkBubbleButton.vue';
+import HyperlinkPropsBubbleButton from '@/components/HyperlinkPropsBubbleButton.vue';
 import HyperlinkView from '@/components/HyperlinkView.vue';
 import LinkViewBubbleMenuItem from '@/components/LinkViewBubbleMenuItem.vue';
 import {
+  deleteNode,
   EditorState,
-  Node,
-  VueNodeViewRenderer,
+  ExtensionOptions,
   getNodeAttributes,
   isActive,
   mergeAttributes,
+  Node,
+  NodeBubbleMenuType,
+  VueNodeViewRenderer,
   type Editor,
 } from '@halo-dev/richtext-editor';
 import { markRaw } from 'vue';
+import MingcuteDelete2Line from '~icons/mingcute/delete-2-line?color=#dc2626';
+import MingcuteShare3Line from '~icons/mingcute/share-3-line';
 import linkViewTypes from './link-view-type';
-import MdiShare from '~icons/mdi/share';
-import HyperlinkBubbleButton from '@/components/HyperlinkBubbleButton.vue';
-import HyperlinkPropsBubbleButton from '@/components/HyperlinkPropsBubbleButton.vue';
 
-const HyperlinkCardExtension = Node.create({
+const HyperlinkCardExtension = Node.create<ExtensionOptions>({
   name: 'hyperlinkCard',
 
   atom: true,
@@ -66,13 +70,12 @@ const HyperlinkCardExtension = Node.create({
   addOptions() {
     return {
       ...this.parent?.(),
-      getBubbleMenu() {
+      getBubbleMenu(): NodeBubbleMenuType {
         return {
           pluginKey: 'linkViewBubbleMenu',
           shouldShow: ({ state }: { state: EditorState }) => {
             return isActive(state, HyperlinkCardExtension.name);
           },
-          defaultAnimation: false,
           items: [
             {
               priority: 10,
@@ -102,13 +105,23 @@ const HyperlinkCardExtension = Node.create({
               priority: 30,
               props: {
                 isActive: () => false,
-                icon: markRaw(MdiShare),
+                icon: markRaw(MingcuteShare3Line),
                 title: '打开链接',
                 action: ({ editor }: { editor: Editor }) => {
                   const attr = getNodeAttributes(editor.state, HyperlinkCardExtension.name);
                   if (attr?.href) {
                     window.open(attr?.href, '_blank');
                   }
+                },
+              },
+            },
+            {
+              priority: 40,
+              props: {
+                icon: markRaw(MingcuteDelete2Line),
+                title: '删除',
+                action: ({ editor }) => {
+                  deleteNode(HyperlinkCardExtension.name, editor);
                 },
               },
             },

@@ -1,18 +1,10 @@
 <script lang="ts" setup>
-import { computed, type Component } from 'vue';
-import { vTooltip, Dropdown as VDropdown } from 'floating-vue';
-import MdiLinkVariant from '~icons/mdi/link-variant';
-import type { Editor } from '@halo-dev/richtext-editor';
+import { computed } from 'vue';
+import { VDropdown } from '@halo-dev/components';
+import MingcuteLinkLine from '~icons/mingcute/link-line';
+import { BubbleButton, BubbleItemComponentProps, Input } from '@halo-dev/richtext-editor';
 
-const props = defineProps<{
-  editor: Editor;
-  name: string;
-  isActive: ({ editor }: { editor: Editor }) => boolean;
-  visible?: ({ editor }: { editor: Editor }) => boolean;
-  icon?: Component;
-  title?: string;
-  action?: ({ editor }: { editor: Editor }) => void;
-}>();
+const props = defineProps<BubbleItemComponentProps & { name: string }>();
 
 const href = computed({
   get() {
@@ -61,28 +53,17 @@ const target = computed({
 
 <template>
   <VDropdown class=":uno: inline-flex" :triggers="['click']" :distance="10">
-    <button
-      v-tooltip="'编辑链接'"
-      class=":uno: rounded-md p-2 text-lg text-gray-600 hover:bg-gray-100"
-    >
-      <MdiLinkVariant />
-    </button>
+    <BubbleButton title="编辑链接">
+      <template #icon>
+        <MingcuteLinkLine />
+      </template>
+    </BubbleButton>
 
     <template #popper>
-      <div
-        class=":uno: relative max-h-72 w-96 overflow-hidden overflow-y-auto rounded-md bg-white p-1 drop-shadow"
-      >
-        <input
-          v-model.lazy="href"
-          placeholder="链接地址"
-          class=":uno: block w-full border border-gray-300 rounded-md bg-gray-50 px-2 py-1.5 text-sm text-gray-900 focus:border-blue-500 hover:bg-gray-100 focus:ring-blue-500"
-        />
+      <div class=":uno: w-80">
+        <Input auto-focus v-model="href" label="链接地址" />
         <label class=":uno: mt-2 inline-flex items-center">
-          <input
-            v-model="target"
-            type="checkbox"
-            class=":uno: form-checkbox border-gray-300 rounded text-blue-600 focus:ring-blue-500"
-          />
+          <input v-model="target" type="checkbox" />
           <span class=":uno: ml-2 text-sm text-gray-500">在新窗口中打开</span>
         </label>
       </div>

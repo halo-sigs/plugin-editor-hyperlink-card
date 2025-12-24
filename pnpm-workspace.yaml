@@ -2,4 +2,5 @@ packages:
   - ui
   - packages/**
 onlyBuiltDependencies:
+  - core-js
   - esbuild
