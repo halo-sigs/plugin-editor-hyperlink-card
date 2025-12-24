@@ -14,7 +14,7 @@ spec:
         - $formkit: number
           name: port
           label: HTTP 代理端口
-        - $formkit: repeater
+        - $formkit: array
           name: hosts
           label: 需要代理 host 的列表
           help: 如：github.com

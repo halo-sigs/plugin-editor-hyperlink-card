@@ -8,7 +8,7 @@ metadata:
     "store.halo.run/app-id": "app-UpUJA"
 spec:
   enabled: true
-  requires: ">=2.11.0"
+  requires: ">=2.22.0"
   author:
     name: Halo
     website: https://github.com/halo-dev
