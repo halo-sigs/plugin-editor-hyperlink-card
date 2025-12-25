@@ -1,19 +1,19 @@
-import HyperlinkBubbleButton from "@/components/HyperlinkBubbleButton.vue";
-import HyperlinkInlineView from "@/components/HyperlinkInlineView.vue";
-import HyperlinkPropsBubbleButton from "@/components/HyperlinkPropsBubbleButton.vue";
-import LinkViewBubbleMenuItem from "@/components/LinkViewBubbleMenuItem.vue";
+import HyperlinkBubbleButton from '@/components/HyperlinkBubbleButton.vue';
+import HyperlinkInlineView from '@/components/HyperlinkInlineView.vue';
+import HyperlinkPropsBubbleButton from '@/components/HyperlinkPropsBubbleButton.vue';
+import LinkViewBubbleMenuItem from '@/components/LinkViewBubbleMenuItem.vue';
 import {
-  type Editor,
-  type EditorState,
+  EditorState,
   getNodeAttributes,
   isActive,
   mergeAttributes,
   Node,
   VueNodeViewRenderer,
-} from "@halo-dev/richtext-editor";
-import { markRaw } from "vue";
-import MdiShare from "~icons/mdi/share";
-import linkViewTypes from "./link-view-type";
+  type Editor,
+} from '@halo-dev/richtext-editor';
+import { markRaw } from 'vue';
+import MingcuteShare3Line from '~icons/mingcute/share-3-line';
+import linkViewTypes from './link-view-type';
 
 const HyperlinkInlineCardExtension = Node.create({
   name: "hyperlinkInlineCard",
@@ -97,8 +97,8 @@ const HyperlinkInlineCardExtension = Node.create({
               priority: 30,
               props: {
                 isActive: () => false,
-                icon: markRaw(MdiShare),
-                title: "打开链接",
+                icon: markRaw(MingcuteShare3Line),
+                title: '打开链接',
                 action: ({ editor }: { editor: Editor }) => {
                   const attr = getNodeAttributes(editor.state, HyperlinkInlineCardExtension.name);
                   if (attr?.href) {

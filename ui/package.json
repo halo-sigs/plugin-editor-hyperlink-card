@@ -5,15 +5,15 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.json --composite false"
   },
   "dependencies": {
-    "@halo-dev/components": "^2.21.0",
-    "@halo-dev/console-shared": "^2.21.0",
+    "@halo-dev/components": "^2.22.0",
+    "@halo-dev/ui-shared": "^2.22.0",
     "@halo-dev/hyperlink-card": "workspace:*",
-    "@halo-dev/richtext-editor": "^2.21.0",
+    "@halo-dev/richtext-editor": "^2.22.0",
     "floating-vue": "^5.2.2",
     "vue": "^3.5.25"
   },
   "devDependencies": {
-    "@halo-dev/ui-plugin-bundler-kit": "2.21.2",
+    "@halo-dev/ui-plugin-bundler-kit": "2.22.0",
     "@iconify/json": "^2.2.410",
     "@rsbuild/core": "^1.6.8",
     "@rsbuild/plugin-sass": "^1.4.0",

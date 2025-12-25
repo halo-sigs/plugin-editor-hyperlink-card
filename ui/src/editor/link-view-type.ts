@@ -1,16 +1,16 @@
 import {
-  type Editor,
   ExtensionLink,
   ExtensionText,
   getMarkAttributes,
   getNodeAttributes,
   isActive,
+  type Editor,
 } from "@halo-dev/richtext-editor";
-import { type Component, markRaw } from "vue";
+import { markRaw, type Component } from "vue";
 import MdiCardBulletedOutline from "~icons/mdi/card-bulleted-outline";
-import MdiGridLarge from "~icons/mdi/grid-large";
-import MdiLink from "~icons/mdi/link";
-import MdiLinkVariant from "~icons/mdi/link-variant";
+import MingcuteLayoutGridLine from "~icons/mingcute/layout-grid-line";
+import MingcuteLinkLine from "~icons/mingcute/link-line";
+import MingcuteTextLine from "~icons/mingcute/text-line";
 import HyperlinkCardExtension from "./hyperlink-card-extension";
 import HyperlinkInlineCardExtension from "./hyperlink-inline-card-extension";
 import { splitLink } from "./utils";
@@ -26,7 +26,7 @@ const linkViewTypes: LinkViewType[] = [
   {
     key: "link",
     title: "普通链接",
-    icon: markRaw(MdiLinkVariant),
+    icon: markRaw(MingcuteLinkLine),
     action: ({ editor }) => {
       let linkViewAttr;
       if (isActive(editor.state, HyperlinkCardExtension.name)) {
@@ -63,7 +63,7 @@ const linkViewTypes: LinkViewType[] = [
   {
     key: "inline",
     title: "行内卡片",
-    icon: markRaw(MdiLink),
+    icon: markRaw(MingcuteTextLine),
     action: ({ editor }) => {
       if (isActive(editor.state, ExtensionLink.name)) {
         editor
@@ -125,7 +125,7 @@ const linkViewTypes: LinkViewType[] = [
   {
     key: "grid",
     title: "链接卡片（格子）",
-    icon: markRaw(MdiGridLarge),
+    icon: markRaw(MingcuteLayoutGridLine),
     action: ({ editor }) => {
       changeToHyperlinkCardExtension(editor, "grid");
     },
