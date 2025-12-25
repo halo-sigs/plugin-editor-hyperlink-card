@@ -1,9 +1,11 @@
-# Refer https://docs.halo.run/developer-guide/plugin/basics/manifest
-
 apiVersion: plugin.halo.run/v1alpha1
 kind: Plugin
 metadata:
   name: editor-hyperlink-card
+  annotations:
+    # Add supports for Halo App Store
+    # https://www.halo.run/store/apps/app-UpUJA
+    "store.halo.run/app-id": "app-UpUJA"
 spec:
   enabled: true
   requires: ">=2.11.0"
