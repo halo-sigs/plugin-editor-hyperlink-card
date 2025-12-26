@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import type { LinkViewType } from '@/editor/link-view-type';
+import type { LinkViewType } from "@/editor/link-view-type";
 import {
   BlockActionSeparator,
   BubbleItemComponentProps,
   type Editor,
-} from '@halo-dev/richtext-editor';
-import LinkViewBubbleMenuItem from './LinkViewBubbleMenuItem.vue';
+} from "@halo-dev/richtext-editor";
+import LinkViewBubbleMenuItem from "./LinkViewBubbleMenuItem.vue";
 
 const props = withDefaults(
   defineProps<
-    BubbleItemComponentProps & { type: ({ editor }: { editor: Editor }) => LinkViewType }
+    BubbleItemComponentProps & { type?: ({ editor }: { editor: Editor }) => LinkViewType }
   >(),
   {
     isActive: () => false,

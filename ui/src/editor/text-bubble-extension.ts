@@ -1,4 +1,4 @@
-import TextExtensionMenuItem from '@/components/TextExtensionMenuItem.vue';
+import TextExtensionMenuItem from "@/components/TextExtensionMenuItem.vue";
 import {
   Editor,
   Extension,
@@ -7,12 +7,12 @@ import {
   isActive,
   NodeBubbleMenuType,
   TEXT_BUBBLE_MENU_KEY,
-} from '@halo-dev/richtext-editor';
-import { markRaw } from 'vue';
-import linkViewTypes from './link-view-type';
+} from "@halo-dev/richtext-editor";
+import { markRaw } from "vue";
+import linkViewTypes from "./link-view-type";
 
 const TextBubbleExtension = Extension.create<ExtensionOptions>({
-  name: 'textHyperlinkCardExtension',
+  name: "textHyperlinkCardExtension",
 
   addOptions() {
     return {

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
-import { VDropdown } from '@halo-dev/components';
-import MingcuteLinkLine from '~icons/mingcute/link-line';
-import { BubbleButton, BubbleItemComponentProps, Input } from '@halo-dev/richtext-editor';
+import { computed } from "vue";
+import { VDropdown } from "@halo-dev/components";
+import MingcuteLinkLine from "~icons/mingcute/link-line";
+import { BubbleButton, BubbleItemComponentProps, Input } from "@halo-dev/richtext-editor";
 
 const props = defineProps<BubbleItemComponentProps & { name: string }>();
 
@@ -61,7 +61,7 @@ const target = computed({
 
     <template #popper>
       <div class=":uno: w-80">
-        <Input auto-focus v-model="href" label="链接地址" />
+        <Input v-model="href" auto-focus label="链接地址" />
         <label class=":uno: mt-2 inline-flex items-center">
           <input v-model="target" type="checkbox" />
           <span class=":uno: ml-2 text-sm text-gray-500">在新窗口中打开</span>

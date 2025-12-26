@@ -1,7 +1,7 @@
-import HyperlinkBubbleButton from '@/components/HyperlinkBubbleButton.vue';
-import HyperlinkPropsBubbleButton from '@/components/HyperlinkPropsBubbleButton.vue';
-import HyperlinkView from '@/components/HyperlinkView.vue';
-import LinkViewBubbleMenuItem from '@/components/LinkViewBubbleMenuItem.vue';
+import HyperlinkBubbleButton from "@/components/HyperlinkBubbleButton.vue";
+import HyperlinkPropsBubbleButton from "@/components/HyperlinkPropsBubbleButton.vue";
+import HyperlinkView from "@/components/HyperlinkView.vue";
+import LinkViewBubbleMenuItem from "@/components/LinkViewBubbleMenuItem.vue";
 import {
   deleteNode,
   EditorState,
@@ -13,14 +13,14 @@ import {
   NodeBubbleMenuType,
   VueNodeViewRenderer,
   type Editor,
-} from '@halo-dev/richtext-editor';
-import { markRaw } from 'vue';
-import MingcuteDelete2Line from '~icons/mingcute/delete-2-line?color=#dc2626';
-import MingcuteShare3Line from '~icons/mingcute/share-3-line';
-import linkViewTypes from './link-view-type';
+} from "@halo-dev/richtext-editor";
+import { markRaw } from "vue";
+import MingcuteDelete2Line from "~icons/mingcute/delete-2-line?color=#dc2626";
+import MingcuteShare3Line from "~icons/mingcute/share-3-line";
+import linkViewTypes from "./link-view-type";
 
 const HyperlinkCardExtension = Node.create<ExtensionOptions>({
-  name: 'hyperlinkCard',
+  name: "hyperlinkCard",
 
   atom: true,
 
@@ -106,7 +106,7 @@ const HyperlinkCardExtension = Node.create<ExtensionOptions>({
               props: {
                 isActive: () => false,
                 icon: markRaw(MingcuteShare3Line),
-                title: '打开链接',
+                title: "打开链接",
                 action: ({ editor }: { editor: Editor }) => {
                   const attr = getNodeAttributes(editor.state, HyperlinkCardExtension.name);
                   if (attr?.href) {
@@ -119,7 +119,7 @@ const HyperlinkCardExtension = Node.create<ExtensionOptions>({
               priority: 40,
               props: {
                 icon: markRaw(MingcuteDelete2Line),
-                title: '删除',
+                title: "删除",
                 action: ({ editor }) => {
                   deleteNode(HyperlinkCardExtension.name, editor);
                 },

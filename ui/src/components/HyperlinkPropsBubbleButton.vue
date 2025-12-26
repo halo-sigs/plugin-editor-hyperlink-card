@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
-import { VDropdown } from '@halo-dev/components';
-import { BubbleButton, BubbleItemComponentProps, Input } from '@halo-dev/richtext-editor';
-import MingcuteEdit4Line from '~icons/mingcute/edit-4-line';
-import { HyperlinkInlineCardExtension } from '@/editor';
+import { computed } from "vue";
+import { VDropdown } from "@halo-dev/components";
+import { BubbleButton, BubbleItemComponentProps, Input } from "@halo-dev/richtext-editor";
+import MingcuteEdit4Line from "~icons/mingcute/edit-4-line";
+import { HyperlinkInlineCardExtension } from "@/editor";
 
 const props = defineProps<BubbleItemComponentProps & { name: string }>();
 
