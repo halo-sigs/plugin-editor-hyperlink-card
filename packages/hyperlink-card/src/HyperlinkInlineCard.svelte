@@ -44,6 +44,8 @@
   onMount(() => {
     fetchSiteData();
   });
+
+  let rel = $derived(target === "_blank" ? "noopener" : undefined);
 </script>
 
 {#if loading}
@@ -58,6 +60,7 @@
     class="inline-flex items-center group space-x-1.5 px-1.5 text-inline-title bg-hover-inline-card text-[90%] rounded bg-inline-card transition-all mx-1 py-0.5"
     {href}
     {target}
+    {rel}
   >
     {#if !!siteData.icon || !!siteData.image}
       <img
@@ -73,7 +76,7 @@
     {/if}
   </a>
 {:else}
-  <a class="text-indigo-600" {href} {target}> {customTitle || href}</a>
+  <a class="text-indigo-600" {href} {target} {rel}> {customTitle || href}</a>
 {/if}
 
 <style>

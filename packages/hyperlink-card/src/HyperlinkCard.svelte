@@ -71,11 +71,13 @@
 
   let ThemeComponent = $derived(themes[theme as keyof typeof themes].component);
   let LoadingComponent = $derived(themes[theme as keyof typeof themes].loadingComponent);
+  let rel = $derived(target === "_blank" ? "noopener" : undefined);
 </script>
 
 <a
   {href}
   {target}
+  {rel}
   class="border w-full border-card relative flex rounded-xl overflow-hidden border-hover-card bg-card transition-all"
 >
   {#if loading}
