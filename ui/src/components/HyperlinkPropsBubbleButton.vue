@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
-import { VDropdown } from '@halo-dev/components';
-import { BubbleButton, BubbleItemComponentProps, Input } from '@halo-dev/richtext-editor';
-import MingcuteEdit4Line from '~icons/mingcute/edit-4-line';
-import { HyperlinkInlineCardExtension } from '@/editor';
+import { computed } from "vue";
+import { VDropdown } from "@halo-dev/components";
+import { BubbleButton, BubbleItemComponentProps, Input } from "@halo-dev/richtext-editor";
+import MingcuteEdit4Line from "~icons/mingcute/edit-4-line";
+import { HyperlinkInlineCardExtension } from "@/editor";
 
 const props = defineProps<BubbleItemComponentProps & { name: string }>();
 
 const customTitle = computed({
   get() {
     const attrs = props.editor.getAttributes(props.name);
-    return attrs?.['custom-title'];
+    return attrs?.["custom-title"];
   },
   set(value) {
     const { selection } = props.editor.state;
@@ -21,7 +21,7 @@ const customTitle = computed({
     props.editor
       .chain()
       .updateAttributes(props.name, {
-        'custom-title': value,
+        "custom-title": value,
       })
       .setNodeSelection(pos)
       .run();
@@ -31,7 +31,7 @@ const customTitle = computed({
 const customDescription = computed({
   get() {
     const attrs = props.editor.getAttributes(props.name);
-    return attrs?.['custom-description'];
+    return attrs?.["custom-description"];
   },
   set(value) {
     const { selection } = props.editor.state;
@@ -42,7 +42,7 @@ const customDescription = computed({
     props.editor
       .chain()
       .updateAttributes(props.name, {
-        'custom-description': value,
+        "custom-description": value,
       })
       .setNodeSelection(pos)
       .run();
@@ -64,7 +64,7 @@ const isInline = computed(() => {
 
     <template #popper>
       <div class=":uno: flex w-80 flex-col gap-3">
-        <Input auto-focus v-model="customTitle" label="自定义标题" />
+        <Input v-model="customTitle" auto-focus label="自定义标题" />
         <Input v-if="!isInline" v-model="customDescription" label="自定义描述" />
       </div>
     </template>

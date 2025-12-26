@@ -1,37 +1,51 @@
-import { fileURLToPath } from 'url';
-import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
-import { viteStaticCopy as StaticCopy } from 'vite-plugin-static-copy';
-import { sharedPluginsConfig } from './src/vite/shared-plugin-config';
+import { svelte } from "@sveltejs/vite-plugin-svelte";
+import { minify } from "terser";
+import { fileURLToPath } from "url";
+import { defineConfig, type Plugin } from "vite";
+import { viteStaticCopy as StaticCopy } from "vite-plugin-static-copy";
+
+// See https://github.com/vitejs/vite/issues/6555
+const minifyBundle = (): Plugin => ({
+  name: "minify-bundle",
+  async generateBundle(_, bundle) {
+    for (const asset of Object.values(bundle)) {
+      if (asset.type === "chunk") {
+        const code = (await minify(asset.code, { sourceMap: false })).code;
+        if (code) {
+          asset.code = code;
+        }
+      }
+    }
+  },
+});
 
 export default defineConfig({
   experimental: {
     enableNativePlugin: true,
   },
+  plugins: [
+    svelte(),
+    minifyBundle(),
+    StaticCopy({
+      targets: [
+        {
+          src: ["./dist/index.iife.js", "./dist/index.css"],
+          dest: fileURLToPath(new URL("../../src/main/resources/static", import.meta.url)),
+        },
+      ],
+    }),
+  ],
   build: {
     lib: {
-      entry: 'src/index.ts',
-      name: 'hyperlink-card',
-      fileName: 'hyperlink-card',
-      formats: ['iife', 'es'],
+      entry: "src/index.ts",
+      name: "hyperlink-card",
+      fileName: "index",
+      formats: ["es", "iife"],
     },
-    emptyOutDir: true,
     rollupOptions: {
       output: {
         extend: true,
       },
     },
   },
-  plugins: [
-    ...sharedPluginsConfig,
-    dts(),
-    StaticCopy({
-      targets: [
-        {
-          src: ['./dist/hyperlink-card.iife.js', './var.css'],
-          dest: fileURLToPath(new URL('../../src/main/resources/static', import.meta.url)),
-        },
-      ],
-    }),
-  ],
 });

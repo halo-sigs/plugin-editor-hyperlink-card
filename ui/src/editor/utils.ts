@@ -1,4 +1,4 @@
-import { canSplit, TextSelection, type Transaction } from '@halo-dev/richtext-editor';
+import { canSplit, TextSelection, type Transaction } from "@halo-dev/richtext-editor";
 
 export const splitLink = (tr: Transaction) => {
   const { selection } = tr;

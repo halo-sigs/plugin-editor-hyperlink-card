@@ -2,57 +2,27 @@
   "scripts": {
     "build": "rsbuild build",
     "dev": "rsbuild build --env-mode development --watch",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "prettier": "prettier --write .",
     "type-check": "vue-tsc --noEmit -p tsconfig.json --composite false"
   },
-  "prettier": {
-    "arrowParens": "always",
-    "bracketSpacing": true,
-    "endOfLine": "lf",
-    "printWidth": 100,
-    "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "es5",
-    "useTabs": false,
-    "plugins": [
-      "prettier-plugin-organize-imports"
-    ]
-  },
   "dependencies": {
-    "@halo-dev/components": "https://pkg.pr.new/@halo-dev/components@fca4c32",
-    "@halo-dev/console-shared": "^2.21.0",
+    "@halo-dev/components": "^2.22.0",
+    "@halo-dev/ui-shared": "^2.22.0",
     "@halo-dev/hyperlink-card": "workspace:*",
-    "@halo-dev/richtext-editor": "https://pkg.pr.new/@halo-dev/richtext-editor@7d378d6",
+    "@halo-dev/richtext-editor": "^2.22.0",
+    "floating-vue": "^5.2.2",
     "vue": "^3.5.25"
   },
   "devDependencies": {
-    "@halo-dev/ui-plugin-bundler-kit": "2.21.2",
-    "@iconify/json": "^2.2.413",
-    "@rsbuild/core": "^1.6.12",
+    "@halo-dev/ui-plugin-bundler-kit": "2.22.0",
+    "@iconify/json": "^2.2.410",
+    "@rsbuild/core": "^1.6.8",
     "@rsbuild/plugin-sass": "^1.4.0",
-    "@rspack/cli": "^1.6.6",
-    "@rspack/core": "^1.6.6",
-    "@rushstack/eslint-patch": "^1.15.0",
-    "@types/node": "^16.18.126",
-    "@unocss/eslint-config": "^66.5.10",
-    "@unocss/webpack": "^66.5.10",
-    "@vue/eslint-config-prettier": "^9.0.0",
-    "@vue/eslint-config-typescript": "^11.0.3",
+    "@unocss/webpack": "^66.5.9",
     "@vue/tsconfig": "^0.1.3",
     "autoprefixer": "^10.4.22",
-    "css-loader": "^7.1.2",
-    "eslint": "^8.57.1",
-    "eslint-plugin-vue": "^9.33.0",
-    "prettier": "^3.7.4",
-    "prettier-plugin-organize-imports": "^4.3.0",
     "sass-embedded": "^1.93.3",
-    "sass-loader": "^16.0.6",
-    "style-loader": "^4.0.0",
-    "typescript": "~4.7.4",
-    "unocss": "^66.5.10",
+    "unocss": "^66.5.9",
     "unplugin-icons": "^22.5.0",
-    "vue-loader": "^17.4.2",
     "vue-tsc": "^1.8.27"
   }
 }

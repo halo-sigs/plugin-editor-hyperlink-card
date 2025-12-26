@@ -36,8 +36,8 @@ public class HyperLinkHeadProcessor implements TemplateHeadProcessor {
 
         return PROPERTY_PLACEHOLDER_HELPER.replacePlaceholders("""
             <!-- plugin-editor-hyperlink-card start -->
-            <script src="/plugins/editor-hyperlink-card/assets/static/hyperlink-card.iife.js?version=${version}"></script>
-            <link rel="stylesheet" href="/plugins/editor-hyperlink-card/assets/static/var.css?version=${version}" />
+            <script src="/plugins/editor-hyperlink-card/assets/static/index.iife.js?version=${version}"></script>
+            <link rel="stylesheet" href="/plugins/editor-hyperlink-card/assets/static/index.css?version=${version}" />
             <!-- plugin-editor-hyperlink-card end -->
             """, properties);
     }

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import linkViewTypes, { type LinkViewType } from '@/editor/link-view-type';
+import linkViewTypes, { type LinkViewType } from "@/editor/link-view-type";
 import {
   DropdownItem,
   type BubbleItemComponentProps,
   type Editor,
-} from '@halo-dev/richtext-editor';
+} from "@halo-dev/richtext-editor";
 
 const props = defineProps<
-  BubbleItemComponentProps & { type: ({ editor }: { editor: Editor }) => LinkViewType }
+  BubbleItemComponentProps & { type?: ({ editor }: { editor: Editor }) => LinkViewType }
 >();
 
 const handleSwitchLinkViewType = (item: LinkViewType) => {
