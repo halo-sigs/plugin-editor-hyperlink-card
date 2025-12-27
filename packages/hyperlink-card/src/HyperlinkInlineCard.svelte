@@ -31,6 +31,15 @@
 
   async function fetchSiteData() {
     try {
+      // if customTitle and customImage are set, we don't need to fetch site data
+      if (customTitle && customImage) {
+        siteData = {
+          title: customTitle,
+          image: customImage,
+        } as SiteData;
+        return;
+      }
+
       loading = true;
       const response = await fetch(`/apis/api.hyperlink.halo.run/v1alpha1/link-detail?url=${href}`);
 
@@ -69,12 +78,7 @@
     {rel}
   >
     {#if image}
-      <img
-        class="size-4 rounded-sm"
-        src={image}
-        alt={title}
-        referrerpolicy="no-referrer"
-      />
+      <img class="size-4 rounded-sm" src={image} alt={title} referrerpolicy="no-referrer" />
     {/if}
     <span>{title || href}</span>
     {#if !href.startsWith(location.origin)}
