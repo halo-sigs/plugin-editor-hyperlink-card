@@ -89,17 +89,7 @@ const isInline = computed(() => {
         <Input v-model="customTitle" auto-focus label="自定义标题" />
         <Input v-if="!isInline" v-model="customDescription" label="自定义描述" />
         <FormKit
-          v-if="!isInline"
-          v-model="customImage"
-          :classes="{
-            outer: ':uno: !pt-0',
-          }"
-          type="attachment"
-          help="自定义图片"
-        ></FormKit>
-
-        <FormKit
-          v-else
+          v-if="isInline || props.editor.getAttributes(props.name)?.['theme'] === 'small'"
           v-model="customImage"
           :classes="{
             outer: ':uno: !pt-0',
@@ -108,6 +98,15 @@ const isInline = computed(() => {
           value-only
           type="iconify"
           help="自定义图标"
+        ></FormKit>
+        <FormKit
+          v-else
+          v-model="customImage"
+          :classes="{
+            outer: ':uno: !pt-0',
+          }"
+          type="attachment"
+          help="自定义图片"
         ></FormKit>
       </div>
     </template>
