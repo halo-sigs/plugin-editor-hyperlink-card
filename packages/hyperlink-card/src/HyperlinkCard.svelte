@@ -7,6 +7,7 @@
       theme: { reflect: true, type: "String", attribute: "theme" },
       customTitle: { reflect: true, type: "String", attribute: "custom-title" },
       customDescription: { reflect: true, type: "String", attribute: "custom-description" },
+      customImage: { reflect: true, type: "String", attribute: "custom-image" },
     },
   }}
 />
@@ -24,12 +25,14 @@
     theme = "regular",
     customTitle,
     customDescription,
+    customImage,
   }: {
     href: string;
     target: "_blank" | "_self";
     theme: "small" | "regular" | "grid";
     customTitle?: string;
     customDescription?: string;
+    customImage?: string;
   } = $props();
 
   let loading = $state(false);
@@ -86,7 +89,7 @@
     {#await ThemeComponent}
       <LoadingComponent />
     {:then { default: Component }}
-      <Component {siteData} {customTitle} {customDescription} />
+      <Component {siteData} {customTitle} {customDescription} {customImage} />
     {/await}
   {:else}
     <span class="text-link text-xs p-1 px-2">{customTitle || href}</span>

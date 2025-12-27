@@ -5,9 +5,13 @@
     siteData,
     customTitle,
     customDescription,
-  }: { siteData?: SiteData; customTitle?: string; customDescription?: string } = $props();
+    customImage,
+  }: { siteData?: SiteData; customTitle?: string; customDescription?: string; customImage?: string } = $props();
 
-  let isOnlyIcon = $derived(!siteData?.image && siteData?.icon);
+  let isOnlyIcon = $derived(!siteData?.image && !customImage && siteData?.icon);
+  let image = $derived(customImage || siteData?.image);
+  let title = $derived(customTitle || siteData?.title);
+  let description = $derived(customDescription || siteData?.description);
 </script>
 
 <div
@@ -15,32 +19,22 @@
   class:flex-row={isOnlyIcon}
   class:flex-col={!isOnlyIcon}
 >
-  {#if siteData?.image}
+  {#if image}
     <div
       class="h-full z-0 w-full rounded-b-none absolute inset-0 rounded-t-md bg-cover bg-center bg-no-repeat"
-      style:background-image={`var(--halo-hyperlink-card-bg-gradient,linear-gradient(#f2f2f2, #f2f2f2), linear-gradient(#000000, #000000)), url('${siteData?.image || siteData?.icon}')`}
+      style:background-image={`var(--halo-hyperlink-card-bg-gradient,linear-gradient(#f2f2f2, #f2f2f2), linear-gradient(#000000, #000000)), url('${image || siteData?.icon}')`}
       style:background-blend-mode="luminosity, overlay, normal"
       style:transform="scale(1.5) translate3d(0, 0, 0)"
       style:filter="blur(64px) saturate(4) contrast(90%)"
     ></div>
     <div class="aspect-16/9 w-full sm:w-56 flex-none z-[1]">
-      <img
-        class="rounded-lg size-full object-cover"
-        src={siteData?.image}
-        alt={siteData?.title}
-        referrerpolicy="no-referrer"
-      />
+      <img class="rounded-lg size-full object-cover" src={image} alt={title} referrerpolicy="no-referrer" />
     </div>
   {/if}
 
   {#if isOnlyIcon}
     <div class="aspect-square w-18 flex-none z-[1]">
-      <img
-        class="rounded-lg size-full object-cover"
-        src={siteData?.icon}
-        alt={siteData?.title}
-        referrerpolicy="no-referrer"
-      />
+      <img class="rounded-lg size-full object-cover" src={siteData?.icon} alt={title} referrerpolicy="no-referrer" />
     </div>
   {/if}
 
@@ -50,11 +44,11 @@
     </div>
     <div>
       <h2 class="font-semibold text-base text-title line-clamp-2 lg:line-clamp-1">
-        {customTitle || siteData?.title}
+        {title}
       </h2>
     </div>
     <p class="text-sm text-description ${isOnlyIcon ? 'line-clamp-1' : 'line-clamp-2'}">
-      {customDescription || siteData?.description}
+      {description}
     </p>
   </div>
 </div>
