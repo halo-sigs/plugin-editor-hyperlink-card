@@ -5,6 +5,7 @@
       href: { reflect: true, type: "String", attribute: "href" },
       target: { reflect: true, type: "String", attribute: "target" },
       customTitle: { reflect: true, type: "String", attribute: "custom-title" },
+      customImage: { reflect: true, type: "String", attribute: "custom-image" },
     },
   }}
 />
@@ -17,10 +18,12 @@
     href,
     target = "_self",
     customTitle,
+    customImage,
   }: {
     href: string;
     target: "_blank" | "_self";
     customTitle?: string;
+    customImage?: string;
   } = $props();
 
   let loading = $state(false);
@@ -46,6 +49,9 @@
   });
 
   let rel = $derived(target === "_blank" ? "noopener" : undefined);
+
+  let image = $derived(customImage || siteData?.icon || siteData?.image);
+  let title = $derived(customTitle || siteData?.title);
 </script>
 
 {#if loading}
@@ -62,21 +68,21 @@
     {target}
     {rel}
   >
-    {#if !!siteData.icon || !!siteData.image}
+    {#if image}
       <img
         class="size-4 rounded-sm"
-        src={siteData.icon || siteData.image || ""}
-        alt={siteData.title}
+        src={image}
+        alt={title}
         referrerpolicy="no-referrer"
       />
     {/if}
-    <span>{customTitle || siteData.title || href}</span>
+    <span>{title || href}</span>
     {#if !href.startsWith(location.origin)}
       <span class="i-tabler-external-link text-inline-title"></span>
     {/if}
   </a>
 {:else}
-  <a class="text-indigo-600" {href} {target} {rel}> {customTitle || href}</a>
+  <a class="text-indigo-600" {href} {target} {rel}> {title || href}</a>
 {/if}
 
 <style>

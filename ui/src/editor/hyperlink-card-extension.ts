@@ -64,6 +64,12 @@ const HyperlinkCardExtension = Node.create<ExtensionOptions>({
           return element.getAttribute("custom-description");
         },
       },
+      "custom-image": {
+        default: null,
+        parseHTML: (element: HTMLElement) => {
+          return element.getAttribute("custom-image");
+        },
+      },
     };
   },
 

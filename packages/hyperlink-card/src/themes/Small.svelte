@@ -5,26 +5,26 @@
     siteData,
     customTitle,
     customDescription,
-  }: { siteData?: SiteData; customTitle?: string; customDescription?: string } = $props();
+    customImage,
+  }: { siteData?: SiteData; customTitle?: string; customDescription?: string; customImage?: string } = $props();
+
+  let image = $derived(customImage || siteData?.image || siteData?.icon);
+  let title = $derived(customTitle || siteData?.title);
+  let description = $derived(customDescription || siteData?.description);
 </script>
 
 <div class="items-center w-full relative flex p-2 gap-3">
-  {#if siteData?.image || siteData?.icon}
+  {#if image}
     <div class="flex-none w-8 z-[1] aspect-square">
-      <img
-        class="rounded-lg size-full object-cover"
-        src={siteData?.icon || siteData?.image || ""}
-        alt={siteData?.title}
-        referrerpolicy="no-referrer"
-      />
+      <img class="rounded-lg size-full object-cover" src={image} alt={title} referrerpolicy="no-referrer" />
     </div>
   {/if}
 
   <h2 class="font-semibold text-base whitespace-nowrap truncate text-title">
-    {customTitle || siteData?.title}
+    {title}
   </h2>
   <p class="text-sm truncate text-description">
-    {customDescription || siteData?.description}
+    {description}
   </p>
 </div>
 

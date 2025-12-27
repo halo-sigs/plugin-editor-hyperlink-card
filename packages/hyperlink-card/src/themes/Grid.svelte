@@ -5,38 +5,35 @@
     siteData,
     customTitle,
     customDescription,
-  }: { siteData?: SiteData; customTitle?: string; customDescription?: string } = $props();
+    customImage,
+  }: { siteData?: SiteData; customTitle?: string; customDescription?: string; customImage?: string } = $props();
+
+  let image = $derived(customImage || siteData?.image || siteData?.icon);
+  let title = $derived(customTitle || siteData?.title);
+  let description = $derived(customDescription || siteData?.description);
 </script>
 
 <div class="items-center relative grid grid-cols-12 p-2 gap-3 size-full">
-  {#if siteData?.image}
+  {#if image}
     <div
       class="h-full z-0 w-full rounded-b-none absolute inset-0 rounded-t-md bg-cover bg-center bg-no-repeat"
-      style:background-image={`var(--halo-hyperlink-card-bg-gradient,linear-gradient(#f2f2f2, #f2f2f2), linear-gradient(#000000, #000000)), url('${siteData?.image || siteData?.icon}')`}
+      style:background-image={`var(--halo-hyperlink-card-bg-gradient,linear-gradient(#f2f2f2, #f2f2f2), linear-gradient(#000000, #000000)), url('${image}')`}
       style:background-blend-mode="luminosity, overlay, normal"
       style:transform="scale(1.5) translate3d(0, 0, 0)"
       style:filter="blur(64px) saturate(4) contrast(90%)"
     ></div>
-  {/if}
-
-  {#if siteData?.image || siteData?.icon}
     <div class="col-span-12 z-[1]">
-      <img
-        class="rounded-lg size-full object-cover aspect-16/9"
-        src={siteData?.image || siteData?.icon || ""}
-        alt={siteData?.title}
-        referrerpolicy="no-referrer"
-      />
+      <img class="rounded-lg size-full object-cover aspect-16/9" src={image} alt={title} referrerpolicy="no-referrer" />
     </div>
   {/if}
 
   <div class="col-span-12 space-y-1 z-[1]">
     <div class="text-link text-xs line-clamp-1">{siteData?.url}</div>
     <h2 class="font-semibold text-base text-title line-clamp-2">
-      {customTitle || siteData?.title}
+      {title}
     </h2>
     <p class="text-sm text-description line-clamp-2">
-      {customDescription || siteData?.description}
+      {description}
     </p>
   </div>
 </div>
