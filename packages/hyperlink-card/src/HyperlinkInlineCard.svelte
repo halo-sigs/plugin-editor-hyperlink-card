@@ -5,47 +5,66 @@
       href: { reflect: true, type: "String", attribute: "href" },
       target: { reflect: true, type: "String", attribute: "target" },
       customTitle: { reflect: true, type: "String", attribute: "custom-title" },
+      customImage: { reflect: true, type: "String", attribute: "custom-image" },
     },
   }}
 />
 
 <script lang="ts">
-  import { onMount } from "svelte";
   import type { SiteData } from "./types";
 
   let {
     href,
     target = "_self",
     customTitle,
+    customImage,
   }: {
     href: string;
     target: "_blank" | "_self";
     customTitle?: string;
+    customImage?: string;
   } = $props();
 
   let loading = $state(false);
   let siteData = $state<SiteData>();
 
   async function fetchSiteData() {
+    if (customTitle && customImage) {
+      siteData = {
+        title: customTitle,
+        image: customImage,
+        url: href,
+      } as SiteData;
+      return;
+    }
+
     try {
       loading = true;
+
       const response = await fetch(`/apis/api.hyperlink.halo.run/v1alpha1/link-detail?url=${href}`);
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch site data");
+      siteData = (await response.json()) as SiteData;
+
+      if (customTitle) {
+        siteData.title = customTitle;
       }
 
-      siteData = (await response.json()) as SiteData;
+      if (customImage) {
+        siteData.image = customImage;
+        siteData.icon = customImage;
+      }
     } finally {
       loading = false;
     }
   }
 
-  onMount(() => {
+  $effect(() => {
     fetchSiteData();
   });
 
   let rel = $derived(target === "_blank" ? "noopener" : undefined);
+
+  let image = $derived(siteData?.icon || siteData?.image);
 </script>
 
 {#if loading}
@@ -62,21 +81,16 @@
     {target}
     {rel}
   >
-    {#if !!siteData.icon || !!siteData.image}
-      <img
-        class="size-4 rounded-sm"
-        src={siteData.icon || siteData.image || ""}
-        alt={siteData.title}
-        referrerpolicy="no-referrer"
-      />
+    {#if image}
+      <img class="size-4 rounded-sm" src={image} alt={siteData?.title} referrerpolicy="no-referrer" />
     {/if}
-    <span>{customTitle || siteData.title || href}</span>
+    <span>{siteData?.title || href}</span>
     {#if !href.startsWith(location.origin)}
       <span class="i-tabler-external-link text-inline-title"></span>
     {/if}
   </a>
 {:else}
-  <a class="text-indigo-600" {href} {target} {rel}> {customTitle || href}</a>
+  <a class="text-indigo-600" {href} {target} {rel}> {href}</a>
 {/if}
 
 <style>

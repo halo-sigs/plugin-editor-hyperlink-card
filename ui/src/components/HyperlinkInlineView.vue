@@ -13,7 +13,6 @@ watch(
   (value) => {
     if (value && cardRef.value) {
       cardRef.value.href = value;
-      cardRef.value.fetchSiteData();
     }
   }
 );
@@ -32,6 +31,7 @@ watch(
       :theme="node.attrs.theme"
       :custom-title="node.attrs?.['custom-title']"
       :custom-description="node.attrs?.['custom-description']"
+      :custom-image="node.attrs?.['custom-image']"
     ></hyperlink-inline-card>
   </node-view-wrapper>
 </template>
