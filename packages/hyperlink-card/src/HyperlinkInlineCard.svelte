@@ -11,7 +11,6 @@
 />
 
 <script lang="ts">
-  import { onMount } from "svelte";
   import type { SiteData } from "./types";
 
   let {
@@ -30,37 +29,42 @@
   let siteData = $state<SiteData>();
 
   async function fetchSiteData() {
-    try {
-      // if customTitle and customImage are set, we don't need to fetch site data
-      if (customTitle && customImage) {
-        siteData = {
-          title: customTitle,
-          image: customImage,
-        } as SiteData;
-        return;
-      }
+    if (customTitle && customImage) {
+      siteData = {
+        title: customTitle,
+        image: customImage,
+        url: href,
+      } as SiteData;
+      return;
+    }
 
+    try {
       loading = true;
+
       const response = await fetch(`/apis/api.hyperlink.halo.run/v1alpha1/link-detail?url=${href}`);
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch site data");
+      siteData = (await response.json()) as SiteData;
+
+      if (customTitle) {
+        siteData.title = customTitle;
       }
 
-      siteData = (await response.json()) as SiteData;
+      if (customImage) {
+        siteData.image = customImage;
+        siteData.icon = customImage;
+      }
     } finally {
       loading = false;
     }
   }
 
-  onMount(() => {
+  $effect(() => {
     fetchSiteData();
   });
 
   let rel = $derived(target === "_blank" ? "noopener" : undefined);
 
-  let image = $derived(customImage || siteData?.icon || siteData?.image);
-  let title = $derived(customTitle || siteData?.title);
+  let image = $derived(siteData?.icon || siteData?.image);
 </script>
 
 {#if loading}
@@ -78,15 +82,15 @@
     {rel}
   >
     {#if image}
-      <img class="size-4 rounded-sm" src={image} alt={title} referrerpolicy="no-referrer" />
+      <img class="size-4 rounded-sm" src={image} alt={siteData?.title} referrerpolicy="no-referrer" />
     {/if}
-    <span>{title || href}</span>
+    <span>{siteData?.title || href}</span>
     {#if !href.startsWith(location.origin)}
       <span class="i-tabler-external-link text-inline-title"></span>
     {/if}
   </a>
 {:else}
-  <a class="text-indigo-600" {href} {target} {rel}> {title || href}</a>
+  <a class="text-indigo-600" {href} {target} {rel}> {href}</a>
 {/if}
 
 <style>

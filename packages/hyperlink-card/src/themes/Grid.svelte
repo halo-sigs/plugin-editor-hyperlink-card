@@ -1,16 +1,9 @@
 <script lang="ts">
   import type { SiteData } from "../types";
 
-  let {
-    siteData,
-    customTitle,
-    customDescription,
-    customImage,
-  }: { siteData?: SiteData; customTitle?: string; customDescription?: string; customImage?: string } = $props();
+  let { siteData }: { siteData?: SiteData } = $props();
 
-  let image = $derived(customImage || siteData?.image || siteData?.icon);
-  let title = $derived(customTitle || siteData?.title);
-  let description = $derived(customDescription || siteData?.description);
+  let image = $derived(siteData?.image || siteData?.icon);
 </script>
 
 <div class="items-center relative grid grid-cols-12 p-2 gap-3 size-full">
@@ -23,17 +16,17 @@
       style:filter="blur(64px) saturate(4) contrast(90%)"
     ></div>
     <div class="col-span-12 z-[1]">
-      <img class="rounded-lg size-full object-cover aspect-16/9" src={image} alt={title} referrerpolicy="no-referrer" />
+      <img class="rounded-lg size-full object-cover aspect-16/9" src={image} alt={siteData?.title} referrerpolicy="no-referrer" />
     </div>
   {/if}
 
   <div class="col-span-12 space-y-1 z-[1]">
     <div class="text-link text-xs line-clamp-1">{siteData?.url}</div>
     <h2 class="font-semibold text-base text-title line-clamp-2">
-      {title}
+      {siteData?.title}
     </h2>
     <p class="text-sm text-description line-clamp-2">
-      {description}
+      {siteData?.description}
     </p>
   </div>
 </div>

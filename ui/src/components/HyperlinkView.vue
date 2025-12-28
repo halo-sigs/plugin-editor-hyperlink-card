@@ -13,7 +13,6 @@ watch(
   (value) => {
     if (value && cardRef.value) {
       cardRef.value.href = value;
-      cardRef.value.fetchSiteData();
     }
   }
 );

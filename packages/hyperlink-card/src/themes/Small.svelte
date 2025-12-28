@@ -1,30 +1,23 @@
 <script lang="ts">
   import type { SiteData } from "../types";
 
-  let {
-    siteData,
-    customTitle,
-    customDescription,
-    customImage,
-  }: { siteData?: SiteData; customTitle?: string; customDescription?: string; customImage?: string } = $props();
+  let { siteData }: { siteData?: SiteData } = $props();
 
-  let image = $derived(customImage || siteData?.image || siteData?.icon);
-  let title = $derived(customTitle || siteData?.title);
-  let description = $derived(customDescription || siteData?.description);
+  let image = $derived(siteData?.icon || siteData?.image);
 </script>
 
 <div class="items-center w-full relative flex p-2 gap-3">
   {#if image}
     <div class="flex-none w-8 z-[1] aspect-square">
-      <img class="rounded-lg size-full object-cover" src={image} alt={title} referrerpolicy="no-referrer" />
+      <img class="rounded-lg size-full object-cover" src={image} alt={siteData?.title} referrerpolicy="no-referrer" />
     </div>
   {/if}
 
   <h2 class="font-semibold text-base whitespace-nowrap truncate text-title">
-    {title}
+    {siteData?.title}
   </h2>
   <p class="text-sm truncate text-description">
-    {description}
+    {siteData?.description}
   </p>
 </div>
 

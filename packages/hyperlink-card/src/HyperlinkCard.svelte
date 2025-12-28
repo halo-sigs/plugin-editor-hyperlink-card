@@ -13,7 +13,6 @@
 />
 
 <script lang="ts">
-  import { onMount } from "svelte";
   import GridLoading from "./themes/GridLoading.svelte";
   import RegularLoading from "./themes/RegularLoading.svelte";
   import SmallLoading from "./themes/SmallLoading.svelte";
@@ -39,21 +38,42 @@
   let siteData = $state<SiteData>();
 
   async function fetchSiteData() {
+    console.log("fetchSiteData", customTitle, customImage, customDescription);
+    if (customTitle && customImage && customDescription) {
+      siteData = {
+        title: customTitle,
+        image: customImage,
+        description: customDescription,
+        url: href,
+      } as SiteData;
+      return;
+    }
+
     try {
       loading = true;
+
       const response = await fetch(`/apis/api.hyperlink.halo.run/v1alpha1/link-detail?url=${href}`);
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch site data");
+      siteData = (await response.json()) as SiteData;
+
+      if (customTitle) {
+        siteData.title = customTitle;
       }
 
-      siteData = (await response.json()) as SiteData;
+      if (customDescription) {
+        siteData.description = customDescription;
+      }
+
+      if (customImage) {
+        siteData.image = customImage;
+        siteData.icon = customImage;
+      }
     } finally {
       loading = false;
     }
   }
 
-  onMount(() => {
+  $effect(() => {
     fetchSiteData();
   });
 
@@ -89,10 +109,10 @@
     {#await ThemeComponent}
       <LoadingComponent />
     {:then { default: Component }}
-      <Component {siteData} {customTitle} {customDescription} {customImage} />
+      <Component {siteData} />
     {/await}
   {:else}
-    <span class="text-link text-xs p-1 px-2">{customTitle || href}</span>
+    <span class="text-link text-xs p-1 px-2">{href}</span>
   {/if}
 </a>
 
