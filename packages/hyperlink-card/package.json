@@ -1,6 +1,11 @@
 {
   "name": "@halo-dev/hyperlink-card",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/halo-sigs/plugin-editor-hyperlink-card",
+    "directory": "packages/hyperlink-card"
+  },
   "author": {
     "name": "Halo",
     "url": "https://github.com/halo-dev"
@@ -27,7 +32,8 @@
     "build": "vite build --config vite.config.lib.ts",
     "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
     "dev": "vite",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepublishOnly": "pnpm run build"
   },
   "devDependencies": {
     "@iconify/json": "^2.2.410",
