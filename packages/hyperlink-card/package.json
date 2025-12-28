@@ -1,6 +1,6 @@
 {
   "name": "@halo-dev/hyperlink-card",
-  "version": "1.0.0",
+  "version": "1.7.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/halo-sigs/plugin-editor-hyperlink-card",
