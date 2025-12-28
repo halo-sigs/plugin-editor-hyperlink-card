@@ -6,9 +6,9 @@
   let image = $derived(siteData?.icon || siteData?.image);
 </script>
 
-<div class="items-center w-full relative flex p-2 gap-3">
+<div class="items-center w-full relative flex p-2 gap-3 z-0">
   {#if image}
-    <div class="flex-none w-8 z-[1] aspect-square">
+    <div class="flex-none w-8 aspect-square">
       <img class="rounded-lg size-full object-cover" src={image} alt={siteData?.title} referrerpolicy="no-referrer" />
     </div>
   {/if}
