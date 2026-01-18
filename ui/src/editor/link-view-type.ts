@@ -75,7 +75,7 @@ const linkViewTypes: LinkViewType[] = [
               return false;
             }
             tr.replaceSelectionWith(
-              state.schema.nodes[HyperlinkInlineCardExtension.name].create({
+              state.schema.nodes[HyperlinkInlineCardExtension.name]!.create({
                 href: linkAttr.href,
                 theme: "inline",
               })
@@ -92,7 +92,7 @@ const linkViewTypes: LinkViewType[] = [
           .chain()
           .command(({ tr, state }) => {
             tr.replaceSelectionWith(
-              state.schema.nodes[HyperlinkInlineCardExtension.name].create({
+              state.schema.nodes[HyperlinkInlineCardExtension.name]!.create({
                 href: linkViewAttr.href,
                 theme: "inline",
                 "custom-title": linkViewAttr?.["custom-title"],
@@ -147,7 +147,7 @@ const changeToHyperlinkCardExtension = (editor: Editor, theme: string) => {
           return false;
         }
         tr.replaceSelectionWith(
-          state.schema.nodes[HyperlinkCardExtension.name].create({
+          state.schema.nodes[HyperlinkCardExtension.name]!.create({
             href: linkAttr.href,
             theme: theme,
           })
@@ -170,7 +170,7 @@ const changeToHyperlinkCardExtension = (editor: Editor, theme: string) => {
       .chain()
       .command(({ tr, state }) => {
         tr.replaceSelectionWith(
-          state.schema.nodes[HyperlinkCardExtension.name].create({
+          state.schema.nodes[HyperlinkCardExtension.name]!.create({
             href: linkViewAttr.href,
             theme: theme,
             "custom-title": linkViewAttr?.["custom-title"],

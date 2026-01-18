@@ -2,7 +2,7 @@
 import type { LinkViewType } from "@/editor/link-view-type";
 import {
   BlockActionSeparator,
-  BubbleItemComponentProps,
+  type BubbleItemComponentProps,
   type Editor,
 } from "@halo-dev/richtext-editor";
 import LinkViewBubbleMenuItem from "./LinkViewBubbleMenuItem.vue";
