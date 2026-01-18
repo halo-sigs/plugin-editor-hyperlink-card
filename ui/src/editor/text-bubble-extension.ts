@@ -3,9 +3,9 @@ import {
   Editor,
   Extension,
   ExtensionLink,
-  ExtensionOptions,
+  type ExtensionOptions,
   isActive,
-  NodeBubbleMenuType,
+  type NodeBubbleMenuType,
   TEXT_BUBBLE_MENU_KEY,
 } from "@halo-dev/richtext-editor";
 import { markRaw } from "vue";

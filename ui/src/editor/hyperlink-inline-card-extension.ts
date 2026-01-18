@@ -39,7 +39,7 @@ const HyperlinkInlineCardExtension = Node.create({
         },
       },
       theme: {
-        default: linkViewTypes[1].key,
+        default: linkViewTypes[1]!.key,
         parseHTML: (element: HTMLElement) => {
           return element.getAttribute("theme");
         },

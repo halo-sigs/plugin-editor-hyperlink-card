@@ -1,8 +1,12 @@
 <script lang="ts" setup>
 import LinkViewMenu from "@/components/LinkViewMenu.vue";
 import type { LinkViewType } from "@/editor/link-view-type";
-import { BubbleButton, BubbleItemComponentProps, type Editor } from "@halo-dev/richtext-editor";
 import { VDropdown } from "@halo-dev/components";
+import {
+  BubbleButton,
+  type BubbleItemComponentProps,
+  type Editor,
+} from "@halo-dev/richtext-editor";
 
 const props = withDefaults(
   defineProps<

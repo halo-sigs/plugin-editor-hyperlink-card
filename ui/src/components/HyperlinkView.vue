@@ -1,12 +1,11 @@
 <script lang="ts" setup>
-import type { HyperlinkCard } from "@halo-dev/hyperlink-card";
+import "@halo-dev/hyperlink-card";
 import { NodeViewWrapper, nodeViewProps } from "@halo-dev/richtext-editor";
 import { ref, watch } from "vue";
-import "@halo-dev/hyperlink-card";
 
 const props = defineProps(nodeViewProps);
 
-const cardRef = ref<InstanceType<typeof HyperlinkCard> | null>();
+const cardRef = ref();
 
 watch(
   () => props.node.attrs.href,

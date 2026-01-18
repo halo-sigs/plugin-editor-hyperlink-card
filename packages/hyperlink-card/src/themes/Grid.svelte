@@ -16,7 +16,12 @@
       style:filter="blur(64px) saturate(4) contrast(90%)"
     ></div>
     <div class="col-span-12">
-      <img class="rounded-lg size-full object-cover aspect-16/9" src={image} alt={siteData?.title} referrerpolicy="no-referrer" />
+      <img
+        class="rounded-lg size-full object-cover aspect-16/9"
+        src={image}
+        alt={siteData?.title}
+        referrerpolicy="no-referrer"
+      />
     </div>
   {/if}
 

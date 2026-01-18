@@ -4,15 +4,15 @@ import HyperlinkView from "@/components/HyperlinkView.vue";
 import LinkViewBubbleMenuItem from "@/components/LinkViewBubbleMenuItem.vue";
 import {
   deleteNode,
+  type Editor,
   EditorState,
-  ExtensionOptions,
+  type ExtensionOptions,
   getNodeAttributes,
   isActive,
   mergeAttributes,
   Node,
-  NodeBubbleMenuType,
+  type NodeBubbleMenuType,
   VueNodeViewRenderer,
-  type Editor,
 } from "@halo-dev/richtext-editor";
 import { markRaw } from "vue";
 import MingcuteDelete2Line from "~icons/mingcute/delete-2-line?color=#dc2626";
@@ -41,7 +41,7 @@ const HyperlinkCardExtension = Node.create<ExtensionOptions>({
         },
       },
       theme: {
-        default: linkViewTypes[1].key,
+        default: linkViewTypes[1]!.key,
         parseHTML: (element: HTMLElement) => {
           return element.getAttribute("theme");
         },
