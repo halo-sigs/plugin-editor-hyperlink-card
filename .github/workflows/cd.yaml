@@ -15,6 +15,7 @@ jobs:
     with:
       node-version: "20"
       pnpm-version: "10"
+      java-version: "21"
       app-id: app-UpUJA
       skip-node-setup: false
       ui-path: "."

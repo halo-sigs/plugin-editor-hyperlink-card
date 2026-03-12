@@ -36,7 +36,10 @@ public class HttpClientFactory {
             return false;
         }
 
-        if (!StringUtils.hasText(proxyConfig.host()) && proxyConfig.port() <= 0) {
+        if (!StringUtils.hasText(proxyConfig.host())) {
+            return false;
+        }
+        if (proxyConfig.port() == null || proxyConfig.port() <= 0) {
             return false;
         }
 
@@ -51,7 +54,7 @@ public class HttpClientFactory {
             .compress(true);
     }
 
-    record ProxyConfig(String host, int port, List<AddressConfig> hosts) {
+    record ProxyConfig(String host, Integer port, List<AddressConfig> hosts) {
     }
 
     record AddressConfig(String value) {
