@@ -54,7 +54,7 @@ public class HyperLinkCardEndpoint implements CustomEndpoint {
                 if (ex.getCause() instanceof ReadTimeoutException) {
                     log.warn("Request to {} timed out.", url);
                     return new ResponseStatusException(HttpStatus.GATEWAY_TIMEOUT,
-                        "Request to the target service timed out.");
+                        "Request to the target URL timed out. Please try again later.");
                 }
                 return ex;
             });
