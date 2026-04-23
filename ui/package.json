@@ -17,7 +17,6 @@
   },
   "devDependencies": {
     "@halo-dev/ui-plugin-bundler-kit": "2.22.0",
-    "@iconify/json": "^2.2.410",
     "@rsbuild/core": "^1.6.8",
     "@rsbuild/plugin-sass": "^1.4.0",
     "@unocss/webpack": "^66.5.9",

@@ -1,7 +1,12 @@
 import { defineConfig, presetIcons, presetWind3 } from "unocss";
 
 export default defineConfig({
-  presets: [presetWind3(), presetIcons()],
+  presets: [
+    presetWind3(),
+    presetIcons({
+      warn: true,
+    }),
+  ],
   shortcuts: {
     "bg-card": "bg-[var(--halo-hyperlink-card-bg-color,#fff)]",
     "border-card": "border-[var(--halo-hyperlink-card-border-color,#e4e4e7)]",
