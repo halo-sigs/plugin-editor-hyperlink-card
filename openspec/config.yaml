@@ -1,0 +1,48 @@
+schema: spec-driven
+
+context: |
+  This is a Halo CMS editor plugin called editor-hyperlink-card. It converts plain hyperlinks into rich card previews in Halo's default editor.
+
+  Tech stack:
+  - Backend: Java 21, Spring WebFlux, Gradle, Lombok
+  - Editor UI: Vue 3, TipTap (via @halo-dev/richtext-editor), Rsbuild, TypeScript
+  - Theme components: Svelte 5 (compiled to Custom Elements / Web Components), Vite, UnoCSS
+  - Package management: pnpm workspaces (monorepo)
+
+  Architecture (three layers — any feature change may impact one or more layers):
+  1. Java backend (src/main/java/): Exposes GET /apis/api.hyperlink.halo.run/v1alpha1/link-detail?url=... Uses a strategy pattern (HyperLinkParser) to extract metadata from different sites. Supports caching (12h Guava) and proxy settings.
+  2. Editor UI (ui/): Vue 3 + TipTap extensions registered via Halo's default:editor:extension:create extension point. Defines hyperlinkCard (block) and hyperlinkInlineCard (inline) nodes with bubble menus and node views.
+  3. Web Components (packages/hyperlink-card/): Svelte 5 custom elements <hyperlink-card> and <hyperlink-inline-card>. Rendered in theme pages; fetch metadata from the backend API at runtime.
+
+  Build pipeline:
+  - packages/hyperlink-card compiles to IIFE + ES module, copied to src/main/resources/static
+  - ui compiles via Rsbuild to src/main/resources/console
+  - Gradle buildFrontend runs before compileJava (frontend must build first)
+  - Dev mode: cd ui && pnpm dev (Rsbuild watch); cd packages/hyperlink-card && pnpm dev (Vite dev server proxying to localhost:8090)
+
+  Code style:
+  - ESLint + Prettier, configured in root eslint.config.ts
+  - UI uses Vue/TS rules; packages/hyperlink-card uses Svelte rules
+  - No frontend test suites; Java tests use JUnit
+
+  Important notes:
+  - Plugin requires Halo >= 2.22.0
+  - Backend parsers are selected by HyperLinkParserFactory based on host (default / Bilibili / QQMusic)
+  - Web Components support overriding metadata via custom-title, custom-description, custom-image attributes
+  - Dark mode controlled via CSS variables and html/body class or data-color-scheme attribute
+
+rules:
+  proposal:
+    - For any new feature, explicitly state which layer(s) are affected (backend API / editor UI / Web Components) and whether the change spans multiple layers
+    - When adding a new site parser, describe the required changes to ParserType and HyperLinkParserConfiguration
+    - When modifying editor interaction, describe TipTap node extension and bubble menu changes
+    - When modifying theme rendering, describe Svelte component and CSS variable changes
+
+  tasks:
+    - Split work by tech stack into independent tasks (Java / Vue / Svelte)
+    - Place build and verification tasks last, since Gradle build depends on frontend artifacts
+    - Type-checking and linting are optional verification steps
+
+  design:
+    - Data flow design must cover the full chain: editor node attributes → HTML serialization → Web Component attributes → API request
+    - Style changes must account for both the Vue node view inside the editor and the Svelte Web Component in the theme
