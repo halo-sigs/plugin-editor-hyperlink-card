@@ -1,5 +1,7 @@
 package run.halo.editor.hyperlink.handler;
 
+import io.netty.channel.ConnectTimeoutException;
+import io.netty.handler.timeout.ReadTimeoutException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -18,6 +20,7 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 import org.springframework.web.server.ServerWebInputException;
 import reactor.core.publisher.Mono;
 import run.halo.app.infra.utils.PathUtils;
@@ -37,6 +40,14 @@ public class HyperLinkDefaultParser implements HyperLinkParser<HyperLinkBaseDTO>
     @Override
     public Mono<HyperLinkBaseDTO> parse(URI linkURI) {
         return getHyperLinkDetail(linkURI)
+                .onErrorMap(throwable -> {
+                    if (throwable instanceof WebClientRequestException wcre
+                        && (wcre.getCause() instanceof ReadTimeoutException
+                            || wcre.getCause() instanceof ConnectTimeoutException)) {
+                        return new ServerWebInputException("Request to target service timed out.");
+                    }
+                    return throwable;
+                })
                 .switchIfEmpty(
                         Mono.error(new ServerWebInputException("this website is not supported.")))
                 .map(item -> {

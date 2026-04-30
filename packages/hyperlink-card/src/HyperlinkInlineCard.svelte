@@ -43,6 +43,10 @@
 
       const response = await fetch(`/apis/api.hyperlink.halo.run/v1alpha1/link-detail?url=${href}`);
 
+      if (!response.ok) {
+        return;
+      }
+
       siteData = (await response.json()) as SiteData;
 
       if (customTitle) {
