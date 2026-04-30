@@ -3,10 +3,14 @@ package run.halo.editor.hyperlink.handler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.netty.channel.ConnectTimeoutException;
+import io.netty.handler.timeout.ReadTimeoutException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
+import org.springframework.web.server.ServerWebInputException;
 import reactor.core.publisher.Mono;
 import run.halo.editor.hyperlink.HttpClientFactory;
 import run.halo.editor.hyperlink.dto.HyperLinkBaseDTO;
@@ -24,6 +28,14 @@ public class HyperLinkQQMusicParser implements HyperLinkParser<HyperLinkBaseDTO>
 
     public Mono<HyperLinkBaseDTO> parse(URI linkURI) {
         return getHyperLinkDetail(linkURI)
+            .onErrorMap(throwable -> {
+                if (throwable instanceof WebClientRequestException wcre
+                    && (wcre.getCause() instanceof ReadTimeoutException
+                        || wcre.getCause() instanceof ConnectTimeoutException)) {
+                    return new ServerWebInputException("Request to target service timed out.");
+                }
+                return throwable;
+            })
             .map(item -> {
                 var hyperLinkDTO = new HyperLinkBaseDTO();
                 try {

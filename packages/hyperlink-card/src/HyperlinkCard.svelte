@@ -38,7 +38,6 @@
   let siteData = $state<SiteData>();
 
   async function fetchSiteData() {
-    console.log("fetchSiteData", customTitle, customImage, customDescription);
     if (customTitle && customImage && customDescription) {
       siteData = {
         title: customTitle,
@@ -53,6 +52,10 @@
       loading = true;
 
       const response = await fetch(`/apis/api.hyperlink.halo.run/v1alpha1/link-detail?url=${href}`);
+
+      if (!response.ok) {
+        return;
+      }
 
       siteData = (await response.json()) as SiteData;
 
