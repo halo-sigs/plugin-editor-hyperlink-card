@@ -3,8 +3,10 @@ package run.halo.editor.hyperlink.handler;
 import io.netty.channel.ConnectTimeoutException;
 import io.netty.handler.timeout.ReadTimeoutException;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import lombok.RequiredArgsConstructor;
@@ -104,17 +106,27 @@ public class HyperLinkDefaultParser implements HyperLinkParser<HyperLinkBaseDTO>
                             httpHeaders.set(HttpHeaders.REFERER,
                                     linkURI.getScheme() + "://" + linkURI.getHost());
                         })
-                        .retrieve()
-                        .bodyToFlux(DataBuffer.class)
-                        .flatMap(dataBuffer -> {
-                            String content = dataBuffer.toString(StandardCharsets.UTF_8);
-                            DataBufferUtils.release(dataBuffer);
-                            return Mono.just(content);
-                        })
-                        .reduce(new StringBuilder(), StringBuilder::append)
-                        .filter(stringBuilder -> !stringBuilder.isEmpty())
-                        .map(StringBuilder::toString)
-                        .map(htmlContent -> new HyperLinkRequest.HyperLinkResponse(htmlContent, resourceUrl.get())));
+                        .exchangeToMono(clientResponse -> {
+                            Charset resolvedCharset = StandardCharsets.UTF_8;
+                            try {
+                                resolvedCharset = clientResponse.headers().contentType()
+                                        .map(MediaType::getCharset)
+                                        .orElse(StandardCharsets.UTF_8);
+                            } catch (IllegalArgumentException e) {
+                                // keep UTF-8 fallback
+                            }
+                            final Charset charset = resolvedCharset;
+                            return clientResponse.bodyToFlux(DataBuffer.class)
+                                    .flatMap(dataBuffer -> {
+                                        String content = dataBuffer.toString(charset);
+                                        DataBufferUtils.release(dataBuffer);
+                                        return Mono.just(content);
+                                    })
+                                    .reduce(new StringBuilder(), StringBuilder::append)
+                                    .filter(stringBuilder -> !stringBuilder.isEmpty())
+                                    .map(StringBuilder::toString)
+                                    .map(htmlContent -> new HyperLinkRequest.HyperLinkResponse(htmlContent, resourceUrl.get()));
+                        }));
     }
 
     private void parserLinks(Elements links, HyperLinkBaseDTO hyperLinkBaseDTO) {
