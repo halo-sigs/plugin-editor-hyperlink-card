@@ -91,21 +91,7 @@ public class HyperLinkDefaultParser implements HyperLinkParser<HyperLinkBaseDTO>
         return clientFactory.createHttpClientBuilder(linkURI.getHost())
                 .map(httpClient -> httpClient.followRedirect((clientRequest, clientResponse) -> {
                     String location = clientResponse.responseHeaders().get(HttpHeaderNames.LOCATION);
-                    if (!StringUtils.hasText(location)
-                        || !StringUtils.hasText(clientRequest.resourceUrl())) {
-                        return false;
-                    }
-                    URI redirectUri;
-                    try {
-                        redirectUri = URI.create(clientRequest.resourceUrl()).resolve(location);
-                    } catch (IllegalArgumentException e) {
-                        return false;
-                    }
-                    if (!UrlSafetyValidator.isSafeHttpUrl(redirectUri)) {
-                        throw new ServerWebInputException("Invalid url.");
-                    }
-                    resourceUrl.set(redirectUri.toString());
-                    return true;
+                    return validateRedirect(clientRequest.resourceUrl(), location, resourceUrl);
                 }))
                 .map(httpClient -> WebClient.builder()
                         .clientConnector(new ReactorClientHttpConnector(httpClient))
@@ -141,6 +127,24 @@ public class HyperLinkDefaultParser implements HyperLinkParser<HyperLinkBaseDTO>
                                     .map(StringBuilder::toString)
                                     .map(htmlContent -> new HyperLinkRequest.HyperLinkResponse(htmlContent, resourceUrl.get()));
                         }));
+    }
+
+    static boolean validateRedirect(String currentUrl, String location,
+        AtomicReference<String> resourceUrl) {
+        if (!StringUtils.hasText(location) || !StringUtils.hasText(currentUrl)) {
+            return false;
+        }
+        URI redirectUri;
+        try {
+            redirectUri = URI.create(currentUrl).resolve(location);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+        if (!UrlSafetyValidator.hasSafeHttpStructure(redirectUri)) {
+            throw new ServerWebInputException("Invalid url.");
+        }
+        resourceUrl.set(redirectUri.toString());
+        return true;
     }
 
     private void parserLinks(Elements links, HyperLinkBaseDTO hyperLinkBaseDTO) {

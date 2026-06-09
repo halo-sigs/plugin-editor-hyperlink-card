@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.server.ServerWebInputException;
 
@@ -66,6 +67,35 @@ class UrlSafetyValidatorTest {
     void shouldRejectCarrierGradeNatAddress() {
         assertInvalid("http://100.64.0.1/");
         assertInvalid("http://100.127.255.255/");
+    }
+
+    @Test
+    void shouldRejectIpv6UlaAddress() {
+        assertInvalid("http://[fc00::1]/");
+        assertInvalid("http://[fd00:1234:5678:9abc::1]/");
+    }
+
+    @Test
+    void shouldValidateHttpStructureOnly() {
+        assertTrue(UrlSafetyValidator.hasSafeHttpStructure(
+            URI.create("https://example.com/path")));
+        assertFalse(UrlSafetyValidator.hasSafeHttpStructure(
+            URI.create("ftp://example.com/file")));
+        assertFalse(UrlSafetyValidator.hasSafeHttpStructure(
+            URI.create("https://user@example.com/")));
+        assertFalse(UrlSafetyValidator.hasSafeHttpStructure(
+            URI.create("http://localhost/")));
+        assertFalse(UrlSafetyValidator.hasSafeHttpStructure(
+            URI.create("http://foo.localhost/")));
+        assertFalse(UrlSafetyValidator.hasSafeHttpStructure(
+            URI.create("http://127.0.0.1/")));
+        assertFalse(UrlSafetyValidator.hasSafeHttpStructure(
+            URI.create("http://[::1]/")));
+        assertFalse(UrlSafetyValidator.hasSafeHttpStructure(
+            URI.create("http://[fe80::1]/")));
+        assertTrue(UrlSafetyValidator.hasSafeHttpStructure(
+            URI.create("http://[2001:db8::1]/")));
+        assertFalse(UrlSafetyValidator.hasSafeHttpStructure(null));
     }
 
     @Test

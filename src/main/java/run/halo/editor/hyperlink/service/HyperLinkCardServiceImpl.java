@@ -31,14 +31,14 @@ public class HyperLinkCardServiceImpl implements HyperLinkCardService {
 
     @Override
     public Mono<HyperLinkBaseDTO> getHyperLinkDetail(String linkUrl) {
-        var uri = UrlSafetyValidator.requireSafeHttpUrl(linkUrl);
-        var cacheHyperLink = hyperLinkCache.getIfPresent(linkUrl);
-        if (Objects.nonNull(cacheHyperLink)) {
-            return Mono.just(cacheHyperLink);
-        }
-        return parserFactory.getParser(uri.getHost()).parse(uri)
-            .doOnNext(hyperLinkBaseDTO -> {
-                hyperLinkCache.put(linkUrl, hyperLinkBaseDTO);
+        return UrlSafetyValidator.requireSafeHttpUrlAsync(linkUrl)
+            .flatMap(uri -> {
+                var cacheHyperLink = hyperLinkCache.getIfPresent(linkUrl);
+                if (Objects.nonNull(cacheHyperLink)) {
+                    return Mono.just(cacheHyperLink);
+                }
+                return parserFactory.getParser(uri.getHost()).parse(uri)
+                    .doOnNext(hyperLinkBaseDTO -> hyperLinkCache.put(linkUrl, hyperLinkBaseDTO));
             });
     }
 }

@@ -8,6 +8,8 @@ import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.Locale;
 import org.springframework.web.server.ServerWebInputException;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 public final class UrlSafetyValidator {
 
@@ -50,6 +52,11 @@ public final class UrlSafetyValidator {
         return uri;
     }
 
+    public static Mono<URI> requireSafeHttpUrlAsync(String rawUrl) {
+        return Mono.fromCallable(() -> requireSafeHttpUrl(rawUrl))
+            .subscribeOn(Schedulers.boundedElastic());
+    }
+
     public static boolean isSafeHttpUrl(URI uri) {
         try {
             requireSafeHttpUrl(uri);
@@ -57,6 +64,41 @@ public final class UrlSafetyValidator {
         } catch (ServerWebInputException e) {
             return false;
         }
+    }
+
+    public static boolean hasSafeHttpStructure(URI uri) {
+        if (uri == null || !isHttpScheme(uri) || uri.getHost() == null
+            || uri.getRawUserInfo() != null) {
+            return false;
+        }
+        String host = normalizeHost(uri.getHost());
+        if (host.equals("localhost") || host.endsWith(".localhost")) {
+            return false;
+        }
+        if (isNumericHost(host)) {
+            try {
+                return isPublicAddress(InetAddress.getByName(host));
+            } catch (UnknownHostException e) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean isNumericHost(String host) {
+        if (host.startsWith("[")) {
+            return true;
+        }
+        if (host.contains(":")) {
+            return true;
+        }
+        for (int i = 0; i < host.length(); i++) {
+            char c = host.charAt(i);
+            if (c != '.' && (c < '0' || c > '9')) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static boolean isHttpScheme(URI uri) {

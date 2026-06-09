@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.server.ServerWebInputException;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.transport.ProxyProvider;
@@ -61,7 +62,7 @@ public class HttpClientFactory {
                     .filter(UrlSafetyValidator::isPublicSocketAddress)
                     .toList();
                 if (safeAddresses.isEmpty()) {
-                    throw new IllegalArgumentException("Invalid url.");
+                    throw new ServerWebInputException("Invalid url.");
                 }
                 return safeAddresses;
             })
