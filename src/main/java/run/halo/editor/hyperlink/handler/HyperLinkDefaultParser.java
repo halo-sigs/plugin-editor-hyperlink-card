@@ -1,12 +1,12 @@
 package run.halo.editor.hyperlink.handler;
 
 import io.netty.channel.ConnectTimeoutException;
+import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.timeout.ReadTimeoutException;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +28,7 @@ import reactor.core.publisher.Mono;
 import run.halo.app.infra.utils.PathUtils;
 import run.halo.editor.hyperlink.HttpClientFactory;
 import run.halo.editor.hyperlink.HyperLinkRequest;
+import run.halo.editor.hyperlink.UrlSafetyValidator;
 import run.halo.editor.hyperlink.dto.HyperLinkBaseDTO;
 
 /**
@@ -88,10 +89,23 @@ public class HyperLinkDefaultParser implements HyperLinkParser<HyperLinkBaseDTO>
     public Mono<HyperLinkRequest.HyperLinkResponse> getHyperLinkDetail(URI linkURI) {
         AtomicReference<String> resourceUrl = new AtomicReference<>(linkURI.toString());
         return clientFactory.createHttpClientBuilder(linkURI.getHost())
-                .map(httpClient -> httpClient.followRedirect(true, (clientRequest) -> {
-                    if (StringUtils.hasText(clientRequest.resourceUrl())) {
-                        resourceUrl.set(clientRequest.resourceUrl());
+                .map(httpClient -> httpClient.followRedirect((clientRequest, clientResponse) -> {
+                    String location = clientResponse.responseHeaders().get(HttpHeaderNames.LOCATION);
+                    if (!StringUtils.hasText(location)
+                        || !StringUtils.hasText(clientRequest.resourceUrl())) {
+                        return false;
                     }
+                    URI redirectUri;
+                    try {
+                        redirectUri = URI.create(clientRequest.resourceUrl()).resolve(location);
+                    } catch (IllegalArgumentException e) {
+                        return false;
+                    }
+                    if (!UrlSafetyValidator.isSafeHttpUrl(redirectUri)) {
+                        throw new ServerWebInputException("Invalid url.");
+                    }
+                    resourceUrl.set(redirectUri.toString());
+                    return true;
                 }))
                 .map(httpClient -> WebClient.builder()
                         .clientConnector(new ReactorClientHttpConnector(httpClient))

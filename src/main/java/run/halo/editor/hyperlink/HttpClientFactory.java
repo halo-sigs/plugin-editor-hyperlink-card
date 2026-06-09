@@ -1,6 +1,7 @@
 package run.halo.editor.hyperlink;
 
 import java.time.Duration;
+import java.net.InetSocketAddress;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -50,6 +51,20 @@ public class HttpClientFactory {
 
     private static HttpClient getHttpClient() {
         return HttpClient.create()
+            .resolvedAddressesSelector((config, addresses) -> {
+                if (config.hasProxy()) {
+                    return addresses;
+                }
+                var safeAddresses = addresses.stream()
+                    .filter(InetSocketAddress.class::isInstance)
+                    .map(InetSocketAddress.class::cast)
+                    .filter(UrlSafetyValidator::isPublicSocketAddress)
+                    .toList();
+                if (safeAddresses.isEmpty()) {
+                    throw new IllegalArgumentException("Invalid url.");
+                }
+                return safeAddresses;
+            })
             .responseTimeout(Duration.ofSeconds(10))
             .compress(true);
     }
