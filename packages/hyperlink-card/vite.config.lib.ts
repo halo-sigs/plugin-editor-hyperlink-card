@@ -20,9 +20,6 @@ const minifyBundle = (): Plugin => ({
 });
 
 export default defineConfig({
-  experimental: {
-    enableNativePlugin: true,
-  },
   plugins: [
     svelte(),
     minifyBundle(),

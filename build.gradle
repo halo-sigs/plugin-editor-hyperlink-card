@@ -1,8 +1,8 @@
 plugins {
     id 'java'
     id "com.github.node-gradle.node" version "7.1.0"
-    id "io.freefair.lombok" version "8.13"
-    id "run.halo.plugin.devtools" version "0.6.1"
+    id "io.freefair.lombok" version "9.2.0"
+    id "run.halo.plugin.devtools" version "0.8.0"
 }
 
 group 'run.halo.editor.hyperlink'
@@ -24,13 +24,29 @@ test {
     useJUnitPlatform()
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
     options.release = 21
 }
 
+def pnpmVersionFromPackageJson = providers.provider {
+    def packageManager = packageJson.get("packageManager")
+    def matcher = (packageManager ?: "") =~ /^pnpm@([^+]+)(?:\+.*)?$/
+    if (!matcher.matches()) {
+        throw new GradleException("Expected package.json packageManager to be pnpm@<version>, but got: ${packageManager}")
+    }
+    matcher[0][1]
+}
+
 node {
     nodeProjectDir = file("${project.projectDir}")
+    pnpmVersion.set(pnpmVersionFromPackageJson)
 }
 
 tasks.register('buildFrontend', PnpmTask) {
