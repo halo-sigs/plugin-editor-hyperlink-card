@@ -1,11 +1,13 @@
 package run.halo.editor.hyperlink;
 
 import java.time.Duration;
+import java.net.InetSocketAddress;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.server.ServerWebInputException;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.transport.ProxyProvider;
@@ -50,6 +52,20 @@ public class HttpClientFactory {
 
     private static HttpClient getHttpClient() {
         return HttpClient.create()
+            .resolvedAddressesSelector((config, addresses) -> {
+                if (config.hasProxy()) {
+                    return addresses;
+                }
+                var safeAddresses = addresses.stream()
+                    .filter(InetSocketAddress.class::isInstance)
+                    .map(InetSocketAddress.class::cast)
+                    .filter(UrlSafetyValidator::isPublicSocketAddress)
+                    .toList();
+                if (safeAddresses.isEmpty()) {
+                    throw new ServerWebInputException("Invalid url.");
+                }
+                return safeAddresses;
+            })
             .responseTimeout(Duration.ofSeconds(10))
             .compress(true);
     }
