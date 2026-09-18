@@ -1,7 +1,7 @@
 packages:
   - ui
   - packages/**
-onlyBuiltDependencies:
-  - "@parcel/watcher"
-  - core-js
-  - esbuild
+allowBuilds:
+  '@parcel/watcher': true
+  core-js: true
+  esbuild: true
