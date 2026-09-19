@@ -98,6 +98,7 @@ const linkViewTypes: LinkViewType[] = [
                 "custom-title": linkViewAttr?.["custom-title"],
                 "custom-description": linkViewAttr?.["custom-description"],
                 "custom-image": linkViewAttr?.["custom-image"],
+                "custom-icon": linkViewAttr?.["custom-icon"],
               })
             );
             return true;
@@ -176,6 +177,7 @@ const changeToHyperlinkCardExtension = (editor: Editor, theme: string) => {
             "custom-title": linkViewAttr?.["custom-title"],
             "custom-description": linkViewAttr?.["custom-description"],
             "custom-image": linkViewAttr?.["custom-image"],
+            "custom-icon": linkViewAttr?.["custom-icon"],
           })
         );
         return true;

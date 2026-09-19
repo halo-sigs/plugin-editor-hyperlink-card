@@ -8,6 +8,7 @@
       customTitle: { reflect: true, type: "String", attribute: "custom-title" },
       customDescription: { reflect: true, type: "String", attribute: "custom-description" },
       customImage: { reflect: true, type: "String", attribute: "custom-image" },
+      customIcon: { reflect: true, type: "String", attribute: "custom-icon" },
     },
   }}
 />
@@ -25,6 +26,7 @@
     customTitle,
     customDescription,
     customImage,
+    customIcon,
   }: {
     href: string;
     target: "_blank" | "_self";
@@ -32,16 +34,18 @@
     customTitle?: string;
     customDescription?: string;
     customImage?: string;
+    customIcon?: string;
   } = $props();
 
   let loading = $state(false);
   let siteData = $state<SiteData>();
 
   async function fetchSiteData() {
-    if (customTitle && customImage && customDescription) {
+    if (customTitle && customDescription && (customImage || customIcon)) {
       siteData = {
         title: customTitle,
         image: customImage,
+        icon: customIcon || customImage,
         description: customDescription,
         url: href,
       } as SiteData;
@@ -51,7 +55,7 @@
     try {
       loading = true;
 
-      const response = await fetch(`/apis/api.hyperlink.halo.run/v1alpha1/link-detail?url=${href}`);
+      const response = await fetch(`/apis/api.hyperlink.halo.run/v1alpha1/link-detail?url=${encodeURIComponent(href)}`);
 
       if (!response.ok) {
         return;
@@ -69,6 +73,11 @@
 
       if (customImage) {
         siteData.image = customImage;
+      }
+
+      if (customIcon) {
+        siteData.icon = customIcon;
+      } else if (customImage) {
         siteData.icon = customImage;
       }
     } finally {

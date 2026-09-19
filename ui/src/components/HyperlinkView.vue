@@ -31,6 +31,7 @@ watch(
       :custom-title="node.attrs?.['custom-title']"
       :custom-description="node.attrs?.['custom-description']"
       :custom-image="node.attrs?.['custom-image']"
+      :custom-icon="node.attrs?.['custom-icon']"
     ></hyperlink-card>
   </node-view-wrapper>
 </template>

@@ -49,7 +49,7 @@
         {siteData?.title}
       </h2>
     </div>
-    <p class="text-sm text-description ${isOnlyIcon ? 'line-clamp-1' : 'line-clamp-2'}">
+    <p class="text-sm text-description {isOnlyIcon ? 'line-clamp-1' : 'line-clamp-2'}">
       {siteData?.description}
     </p>
   </div>

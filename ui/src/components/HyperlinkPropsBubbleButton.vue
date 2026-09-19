@@ -72,6 +72,27 @@ const customImage = computed({
   },
 });
 
+const customIcon = computed({
+  get() {
+    const attrs = props.editor.getAttributes(props.name);
+    return attrs?.["custom-icon"] ?? attrs?.["custom-image"];
+  },
+  set(value) {
+    const { selection } = props.editor.state;
+    if (!selection) {
+      return;
+    }
+    const pos = selection.$anchor.pos;
+    props.editor
+      .chain()
+      .updateAttributes(props.name, {
+        "custom-icon": value,
+      })
+      .setNodeSelection(pos)
+      .run();
+  },
+});
+
 const isInline = computed(() => {
   return props.name === HyperlinkInlineCardExtension.name;
 });
@@ -88,6 +109,7 @@ async function handleGetSiteData() {
     });
     customTitle.value = data.title;
     customDescription.value = data.description;
+    customIcon.value = data.icon || data.image;
     customImage.value = data.image || data.icon;
   } finally {
     isFetching.value = false;
@@ -123,7 +145,7 @@ async function handleGetSiteData() {
         <Input v-if="!isInline" v-model="customDescription" label="自定义描述" />
         <FormKit
           v-if="isInline || props.editor.getAttributes(props.name)?.['theme'] === 'small'"
-          v-model="customImage"
+          v-model="customIcon"
           :classes="{
             outer: ':uno: !pt-0',
           }"

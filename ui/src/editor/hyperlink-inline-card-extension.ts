@@ -62,6 +62,12 @@ const HyperlinkInlineCardExtension = Node.create({
           return element.getAttribute("custom-image");
         },
       },
+      "custom-icon": {
+        default: null,
+        parseHTML: (element: HTMLElement) => {
+          return element.getAttribute("custom-icon");
+        },
+      },
     };
   },
 
