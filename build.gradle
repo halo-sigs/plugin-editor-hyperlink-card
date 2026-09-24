@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id "com.github.node-gradle.node" version "7.1.0"
+    id "com.github.node-gradle.node" version "7.1.0" apply false
     id "io.freefair.lombok" version "9.2.0"
     id "run.halo.plugin.devtools" version "0.8.0"
 }
@@ -35,33 +35,20 @@ tasks.withType(JavaCompile).configureEach {
     options.release = 21
 }
 
-def pnpmVersionFromPackageJson = providers.provider {
-    def packageManager = packageJson.get("packageManager")
-    def matcher = (packageManager ?: "") =~ /^pnpm@([^+]+)(?:\+.*)?$/
-    if (!matcher.matches()) {
-        throw new GradleException("Expected package.json packageManager to be pnpm@<version>, but got: ${packageManager}")
+sourceSets.main.resources.exclude 'console/**', 'static/**'
+
+tasks.named('processResources', Copy) {
+    dependsOn project(':packages').tasks.named('pnpmBuild')
+    from(project(':packages').layout.projectDirectory.dir('ui/build/dist')) {
+        into 'console'
     }
-    matcher[0][1]
-}
-
-node {
-    nodeProjectDir = file("${project.projectDir}")
-    pnpmVersion.set(pnpmVersionFromPackageJson)
-}
-
-tasks.register('buildFrontend', PnpmTask) {
-    args = ['build']
-    dependsOn('installDepsForUI')
-}
-
-tasks.register('installDepsForUI', PnpmTask) {
-    args = ['install']
-}
-
-build {
-    // build frontend before build
-    tasks.named('compileJava').configure {
-        dependsOn('buildFrontend')
+    from(project(':packages').layout.projectDirectory.dir('hyperlink-card/dist')) {
+        include 'index.iife.js', 'index.css'
+        into 'static'
+    }
+    doFirst {
+        delete layout.buildDirectory.dir('resources/main/console'),
+            layout.buildDirectory.dir('resources/main/static')
     }
 }
 

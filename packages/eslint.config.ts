@@ -13,7 +13,7 @@ import tseslint from "typescript-eslint";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const gitignorePath = path.resolve(__dirname, ".gitignore");
+const gitignorePath = path.resolve(__dirname, "../.gitignore");
 
 const vueConfig = defineConfigWithVueTs(
   pluginVue.configs["flat/recommended"],
@@ -75,7 +75,7 @@ export default [
   ...svelte.configs["flat/recommended"],
   {
     name: "app/svelte-files",
-    files: ["packages/hyperlink-card/**/*.svelte"],
+    files: ["hyperlink-card/**/*.svelte"],
     languageOptions: {
       parserOptions: {
         parser: tseslint.parser,
@@ -91,7 +91,7 @@ export default [
 
   {
     name: "app/svelte-ts-files",
-    files: ["packages/hyperlink-card/**/*.ts"],
+    files: ["hyperlink-card/**/*.ts"],
     rules: {
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-unused-vars": [

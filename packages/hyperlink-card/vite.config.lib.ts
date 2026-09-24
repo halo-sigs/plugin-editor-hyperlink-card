@@ -1,8 +1,6 @@
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { minify } from "terser";
-import { fileURLToPath } from "url";
 import { defineConfig, type Plugin } from "vite";
-import { viteStaticCopy as StaticCopy } from "vite-plugin-static-copy";
 
 // See https://github.com/vitejs/vite/issues/6555
 const minifyBundle = (): Plugin => ({
@@ -20,18 +18,7 @@ const minifyBundle = (): Plugin => ({
 });
 
 export default defineConfig({
-  plugins: [
-    svelte(),
-    minifyBundle(),
-    StaticCopy({
-      targets: [
-        {
-          src: ["./dist/index.iife.js", "./dist/index.css"],
-          dest: fileURLToPath(new URL("../../src/main/resources/static", import.meta.url)),
-        },
-      ],
-    }),
-  ],
+  plugins: [svelte(), minifyBundle()],
   build: {
     lib: {
       entry: "src/index.ts",

@@ -1,0 +1,3 @@
+**/build/
+**/dist/
+pnpm-lock.yaml

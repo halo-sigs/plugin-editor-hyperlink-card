@@ -12,7 +12,7 @@ jobs:
   ci:
     uses: halo-sigs/reusable-workflows/.github/workflows/plugin-ci.yaml@v4
     with:
-      ui-path: "."
+      ui-path: "packages"
       node-version: "20"
-      pnpm-version: ""
+      pnpm-version: "12.4.2"
       java-version: "21"
