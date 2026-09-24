@@ -10,7 +10,7 @@ The plugin requires Halo >= 2.22.0.
 
 ## Repository Structure
 
-This is a **pnpm monorepo** with three layers:
+This plugin has a Java root project and a `packages/` Gradle module that is also the pnpm workspace. It has three layers:
 
 ### 1. Java Backend (`src/main/java/`)
 
@@ -22,17 +22,17 @@ Spring WebFlux plugin providing a link metadata API and theme asset injection.
 - **`HyperLinkHeadProcessor`** — `TemplateHeadProcessor` that injects the Web Component script and CSS into theme page `<head>`.
 - **Settings** (`src/main/resources/extensions/settings.yaml`) — Proxy configuration (host, port, host allowlist).
 
-### 2. Editor UI (`ui/`)
+### 2. Editor UI (`packages/ui/`)
 
 Vue 3 + TipTap editor extensions that integrate with Halo’s default editor. Built with **Rsbuild** via `@halo-dev/ui-plugin-bundler-kit`.
 
-- **Entry:** `ui/src/index.ts` registers three extensions via the `default:editor:extension:create` extension point.
-- **Extensions** (`ui/src/editor/`):
+- **Entry:** `packages/ui/src/index.ts` registers three extensions via the `default:editor:extension:create` extension point.
+- **Extensions** (`packages/ui/src/editor/`):
   - `HyperlinkCardExtension` — Block-level card node (`hyperlink-card`). Supports `theme` (`regular` | `small` | `grid`), `href`, `target`, and custom title/description/image overrides.
   - `HyperlinkInlineCardExtension` — Inline card node (`hyperlink-inline-card`).
   - `TextBubbleExtension` — Adds bubble menu items for converting links to cards.
-- **Components** (`ui/src/components/`) — Vue node views and bubble menu buttons rendered inside the editor.
-- **Build output:** `src/main/resources/console` (production) or `build/resources/main/console` (development).
+- **Components** (`packages/ui/src/components/`) — Vue node views and bubble menu buttons rendered inside the editor.
+- **Build output:** `packages/ui/build/dist` (production) or `build/resources/main/console` (development). Gradle packages the production output under `console/`.
 
 ### 3. Web Components Package (`packages/hyperlink-card/`)
 
@@ -42,7 +42,7 @@ Svelte 5 custom elements that render the actual cards in themes. Built with **Vi
 - **Themes** (`src/themes/`) — `Regular`, `Small`, `Grid`, plus loading skeletons for each.
 - **`src/index.ts`** — Registers the Svelte components and imports CSS variables (`var.css`).
 - **Runtime behavior:** Each component fetches its own metadata from the backend API (`/apis/api.hyperlink.halo.run/v1alpha1/link-detail?url=...`). Supports overriding fields via `custom-title`, `custom-description`, and `custom-image` attributes.
-- **Build output:** `dist/index.iife.js` and `dist/index.css`, copied by `vite-plugin-static-copy` to `src/main/resources/static`.
+- **Build output:** `dist/index.iife.js` and `dist/index.css`, packaged by Gradle under `static/`. The npm package also includes the ES module output.
 
 ## Common Commands
 
@@ -50,47 +50,47 @@ Svelte 5 custom elements that render the actual cards in themes. Built with **Vi
 
 ```bash
 # Build all JS packages (UI + hyperlink-card library)
-pnpm build
+(cd packages && pnpm build)
 
 # Full plugin build (frontend + Java)
 ./gradlew build
 ```
 
-Gradle automatically runs `pnpm install` and `pnpm build` before `compileJava`.
+Gradle runs `:packages:pnpmBuild` before `processResources` packages the frontend assets.
 
 ### Development
 
 ```bash
 # UI (editor extensions) — watch mode with dev env
 # Outputs to build/resources/main/console for hot reloading in Halo
-cd ui && pnpm dev
+(cd packages/ui && pnpm dev)
 
 # Web component package — Vite dev server with proxy to local Halo (localhost:8090)
-cd packages/hyperlink-card && pnpm dev
+(cd packages/hyperlink-card && pnpm dev)
 ```
 
 ### Lint & Format
 
 ```bash
 # Check ESLint + Prettier
-pnpm lint
+(cd packages && pnpm lint)
 
 # Fix formatting
-pnpm prettier
+(cd packages && pnpm prettier)
 ```
 
-ESLint config is in `eslint.config.ts`. Rules differ by workspace:
-- `ui/` — Vue + TypeScript (`@vue/eslint-config-typescript`)
+ESLint config is in `packages/eslint.config.ts`. Rules differ by workspace:
+- `packages/ui/` — Vue + TypeScript (`@vue/eslint-config-typescript`)
 - `packages/hyperlink-card/` — Svelte (`eslint-plugin-svelte`)
 
 ### Type Checking
 
 ```bash
 # UI (Vue)
-cd ui && pnpm type-check
+(cd packages/ui && pnpm type-check)
 
 # hyperlink-card (Svelte)
-cd packages/hyperlink-card && pnpm check
+(cd packages/hyperlink-card && pnpm check)
 ```
 
 ### Tests

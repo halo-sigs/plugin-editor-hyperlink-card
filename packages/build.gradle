@@ -1,0 +1,41 @@
+plugins {
+    id 'base'
+    id 'com.github.node-gradle.node'
+}
+
+def pnpmVersionFromPackageJson = providers.provider {
+    def packageManager = packageJson.get('packageManager')
+    def matcher = (packageManager ?: '') =~ /^pnpm@([^+]+)(?:\+.*)?$/
+    if (!matcher.matches()) {
+        throw new GradleException("Expected package.json packageManager to be pnpm@<version>, but got: ${packageManager}")
+    }
+    matcher[0][1]
+}
+
+node {
+    nodeProjectDir = projectDir
+    pnpmVersion.set(pnpmVersionFromPackageJson)
+}
+
+tasks.register('pnpmBuild', PnpmTask) {
+    group = 'build'
+    args = ['run', 'build']
+    dependsOn tasks.named('pnpmInstall')
+    inputs.files(fileTree(projectDir) {
+        include 'ui/src/**', 'hyperlink-card/src/**'
+        include 'ui/*.json', 'ui/*.mjs', 'ui/*.ts'
+        include 'hyperlink-card/*.json', 'hyperlink-card/*.js', 'hyperlink-card/*.ts'
+        include 'package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml'
+    })
+    inputs.file(rootProject.layout.projectDirectory.file('src/main/resources/plugin.yaml'))
+    outputs.dir('ui/build/dist')
+    outputs.dir('hyperlink-card/dist')
+}
+
+tasks.named('assemble') {
+    dependsOn tasks.named('pnpmBuild')
+}
+
+tasks.named('clean') {
+    delete 'ui/build', 'hyperlink-card/dist'
+}

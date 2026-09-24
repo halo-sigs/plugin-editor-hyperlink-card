@@ -14,8 +14,8 @@ jobs:
       contents: write
     with:
       node-version: "20"
-      pnpm-version: ""
+      pnpm-version: "12.4.2"
       java-version: "21"
       app-id: app-UpUJA
       skip-node-setup: false
-      ui-path: "."
+      ui-path: "packages"

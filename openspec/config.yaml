@@ -7,21 +7,21 @@ context: |
   - Backend: Java 21, Spring WebFlux, Gradle, Lombok
   - Editor UI: Vue 3, TipTap (via @halo-dev/richtext-editor), Rsbuild, TypeScript
   - Theme components: Svelte 5 (compiled to Custom Elements / Web Components), Vite, UnoCSS
-  - Package management: pnpm workspaces (monorepo)
+  - Package management: packages/ is a Gradle module and pnpm workspace
 
   Architecture (three layers — any feature change may impact one or more layers):
   1. Java backend (src/main/java/): Exposes GET /apis/api.hyperlink.halo.run/v1alpha1/link-detail?url=... Uses a strategy pattern (HyperLinkParser) to extract metadata from different sites. Supports caching (12h Guava) and proxy settings.
-  2. Editor UI (ui/): Vue 3 + TipTap extensions registered via Halo's default:editor:extension:create extension point. Defines hyperlinkCard (block) and hyperlinkInlineCard (inline) nodes with bubble menus and node views.
+  2. Editor UI (packages/ui/): Vue 3 + TipTap extensions registered via Halo's default:editor:extension:create extension point. Defines hyperlinkCard (block) and hyperlinkInlineCard (inline) nodes with bubble menus and node views.
   3. Web Components (packages/hyperlink-card/): Svelte 5 custom elements <hyperlink-card> and <hyperlink-inline-card>. Rendered in theme pages; fetch metadata from the backend API at runtime.
 
   Build pipeline:
-  - packages/hyperlink-card compiles to IIFE + ES module, copied to src/main/resources/static
-  - ui compiles via Rsbuild to src/main/resources/console
-  - Gradle buildFrontend runs before compileJava (frontend must build first)
-  - Dev mode: cd ui && pnpm dev (Rsbuild watch); cd packages/hyperlink-card && pnpm dev (Vite dev server proxying to localhost:8090)
+  - packages/hyperlink-card compiles to IIFE + ES module in dist; Gradle packages the IIFE and CSS under static
+  - packages/ui compiles via Rsbuild to packages/ui/build/dist; Gradle packages it under console
+  - Gradle :packages:pnpmBuild runs before processResources to package frontend assets
+  - Dev mode: cd packages/ui && pnpm dev (Rsbuild watch); cd packages/hyperlink-card && pnpm dev (Vite dev server proxying to localhost:8090)
 
   Code style:
-  - ESLint + Prettier, configured in root eslint.config.ts
+  - ESLint + Prettier, configured in packages/eslint.config.ts
   - UI uses Vue/TS rules; packages/hyperlink-card uses Svelte rules
   - No frontend test suites; Java tests use JUnit
 
