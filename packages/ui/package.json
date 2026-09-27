@@ -1,25 +1,23 @@
 {
   "private": true,
   "scripts": {
-    "build": "rsbuild build",
-    "dev": "rsbuild build --env-mode development --watch",
+    "build": "vite build",
+    "dev": "vite build --mode development --watch",
     "type-check": "vue-tsc --noEmit -p tsconfig.json --composite false"
   },
   "dependencies": {
-    "@halo-dev/api-client": "^2.22.0",
-    "@halo-dev/components": "^2.22.0",
+    "@halo-dev/api-client": "^2.26.0",
+    "@halo-dev/components": "^2.26.0",
     "@halo-dev/hyperlink-card": "workspace:*",
-    "@halo-dev/richtext-editor": "^2.22.0",
-    "@halo-dev/ui-shared": "^2.22.0",
+    "@halo-dev/richtext-editor": "^2.26.0",
+    "@halo-dev/ui-shared": "^2.26.0",
     "axios": "^1.13.2",
     "floating-vue": "^5.2.2",
-    "vue": "^3.5.25"
+    "vue": "^3.5.43"
   },
   "devDependencies": {
-    "@halo-dev/ui-plugin-bundler-kit": "2.22.0",
-    "@rsbuild/core": "^1.6.8",
-    "@rsbuild/plugin-sass": "^1.4.0",
-    "@unocss/webpack": "^66.5.9",
+    "@halo-dev/ui-plugin-bundler-kit": "2.26.0",
+    "@vitejs/plugin-vue": "^6.0.9",
     "@vue/tsconfig": "^0.8.1",
     "autoprefixer": "^10.4.22",
     "sass-embedded": "^1.93.3",

@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id "com.github.node-gradle.node" version "7.1.0" apply false
-    id "io.freefair.lombok" version "9.2.0"
+    id "io.freefair.lombok" version "9.7.0"
     id "run.halo.plugin.devtools" version "0.8.0"
 }
 
@@ -53,6 +53,6 @@ tasks.named('processResources', Copy) {
 }
 
 halo {
-    version = '2.22'
+    version = '2.26'
     debug = true
 }

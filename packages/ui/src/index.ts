@@ -1,5 +1,4 @@
 import { definePlugin } from "@halo-dev/ui-shared";
-import "uno.css";
 
 export default definePlugin({
   components: {},
