@@ -13,6 +13,7 @@ import org.springframework.web.reactive.function.client.WebClientRequestExceptio
 import org.springframework.web.server.ServerWebInputException;
 import reactor.core.publisher.Mono;
 import run.halo.editor.hyperlink.HttpClientFactory;
+import run.halo.editor.hyperlink.LinkFetchPolicy;
 import run.halo.editor.hyperlink.dto.HyperLinkBaseDTO;
 import java.net.URI;
 import java.util.List;
@@ -26,8 +27,8 @@ public class HyperLinkQQMusicParser implements HyperLinkParser<HyperLinkBaseDTO>
     private final HttpClientFactory clientFactory;
     private final ObjectMapper objectMapper;
 
-    public Mono<HyperLinkBaseDTO> parse(URI linkURI) {
-        return getHyperLinkDetail(linkURI)
+    public Mono<HyperLinkBaseDTO> parse(URI linkURI, LinkFetchPolicy policy) {
+        return getHyperLinkDetail(linkURI, policy)
             .onErrorMap(throwable -> {
                 if (throwable instanceof WebClientRequestException wcre
                     && (wcre.getCause() instanceof ReadTimeoutException
@@ -63,9 +64,9 @@ public class HyperLinkQQMusicParser implements HyperLinkParser<HyperLinkBaseDTO>
         });
     }
 
-    public Mono<String> getHyperLinkDetail(URI linkURI) {
+    public Mono<String> getHyperLinkDetail(URI linkURI, LinkFetchPolicy policy) {
         String api = "https://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg?" + getQueryParam(linkURI) + "&platform=yqq&format=json";
-        return clientFactory.createHttpClientBuilder(linkURI.getHost())
+        return clientFactory.createHttpClientBuilder(linkURI.getHost(), URI.create(api), policy)
             .map(httpClient -> WebClient.builder()
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .build())

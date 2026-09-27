@@ -1,6 +1,7 @@
 import HyperlinkBubbleButton from "@/components/HyperlinkBubbleButton.vue";
 import HyperlinkInlineView from "@/components/HyperlinkInlineView.vue";
 import HyperlinkPropsBubbleButton from "@/components/HyperlinkPropsBubbleButton.vue";
+import HyperlinkRefreshBubbleButton from "@/components/HyperlinkRefreshBubbleButton.vue";
 import LinkViewBubbleMenuItem from "@/components/LinkViewBubbleMenuItem.vue";
 import {
   EditorState,
@@ -26,6 +27,10 @@ const HyperlinkInlineCardExtension = Node.create({
 
   addAttributes() {
     return {
+      "data-mode": {
+        default: null,
+        parseHTML: (element: HTMLElement) => element.getAttribute("data-mode"),
+      },
       target: {
         default: "_blank",
         parseHTML: (element: HTMLElement) => {
@@ -104,6 +109,11 @@ const HyperlinkInlineCardExtension = Node.create({
               props: {
                 name: HyperlinkInlineCardExtension.name,
               },
+            },
+            {
+              priority: 27,
+              component: markRaw(HyperlinkRefreshBubbleButton),
+              props: { name: HyperlinkInlineCardExtension.name },
             },
             {
               priority: 30,

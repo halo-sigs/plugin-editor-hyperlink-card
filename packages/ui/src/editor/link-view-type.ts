@@ -13,6 +13,7 @@ import MingcuteLinkLine from "~icons/mingcute/link-line";
 import MingcuteTextLine from "~icons/mingcute/text-line";
 import HyperlinkCardExtension from "./hyperlink-card-extension";
 import HyperlinkInlineCardExtension from "./hyperlink-inline-card-extension";
+import { refreshCard, selectedCard } from "./link-data";
 import { splitLink } from "./utils";
 
 export interface LinkViewType {
@@ -78,12 +79,17 @@ const linkViewTypes: LinkViewType[] = [
               state.schema.nodes[HyperlinkInlineCardExtension.name]!.create({
                 href: linkAttr.href,
                 theme: "inline",
+                "data-mode": "snapshot",
+                "custom-title":
+                  state.doc.textBetween(state.selection.from, state.selection.to) || linkAttr.href,
               })
             );
             return true;
           })
           .focus()
           .run();
+        const card = selectedCard(editor, HyperlinkInlineCardExtension.name);
+        if (card) void refreshCard(editor, card, true);
         return;
       }
       if (isActive(editor.state, HyperlinkCardExtension.name)) {
@@ -95,6 +101,7 @@ const linkViewTypes: LinkViewType[] = [
               state.schema.nodes[HyperlinkInlineCardExtension.name]!.create({
                 href: linkViewAttr.href,
                 theme: "inline",
+                "data-mode": linkViewAttr?.["data-mode"],
                 "custom-title": linkViewAttr?.["custom-title"],
                 "custom-description": linkViewAttr?.["custom-description"],
                 "custom-image": linkViewAttr?.["custom-image"],
@@ -151,12 +158,17 @@ const changeToHyperlinkCardExtension = (editor: Editor, theme: string) => {
           state.schema.nodes[HyperlinkCardExtension.name]!.create({
             href: linkAttr.href,
             theme: theme,
+            "data-mode": "snapshot",
+            "custom-title":
+              state.doc.textBetween(state.selection.from, state.selection.to) || linkAttr.href,
           })
         );
         return true;
       })
       .focus()
       .run();
+    const card = selectedCard(editor, HyperlinkCardExtension.name);
+    if (card) void refreshCard(editor, card, true);
     return;
   }
   if (isActive(editor.state, HyperlinkCardExtension.name)) {
@@ -174,6 +186,7 @@ const changeToHyperlinkCardExtension = (editor: Editor, theme: string) => {
           state.schema.nodes[HyperlinkCardExtension.name]!.create({
             href: linkViewAttr.href,
             theme: theme,
+            "data-mode": linkViewAttr?.["data-mode"],
             "custom-title": linkViewAttr?.["custom-title"],
             "custom-description": linkViewAttr?.["custom-description"],
             "custom-image": linkViewAttr?.["custom-image"],

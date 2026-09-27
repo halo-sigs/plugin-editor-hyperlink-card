@@ -17,30 +17,27 @@ import reactor.core.publisher.Mono;
 import run.halo.app.core.extension.endpoint.CustomEndpoint;
 import run.halo.app.extension.GroupVersion;
 import run.halo.app.infra.ExternalUrlSupplier;
-import run.halo.app.plugin.ReactiveSettingFetcher;
 import run.halo.app.infra.utils.PathUtils;
 import run.halo.editor.hyperlink.dto.HyperLinkBaseDTO;
 import run.halo.editor.hyperlink.service.HyperLinkCardService;
 
 /**
- * @author LIlGG
+ * @author ryanwang
  */
 @Component
 @RequiredArgsConstructor
-public class HyperLinkCardEndpoint implements CustomEndpoint {
+public class ConsoleHyperLinkCardEndpoint implements CustomEndpoint {
 
     private final HyperLinkCardService hyperLinkCardService;
 
     private final ExternalUrlSupplier externalUrlSupplier;
-
-    private final ReactiveSettingFetcher settingFetcher;
 
     @Override
     public RouterFunction<ServerResponse> endpoint() {
         final var tag = groupVersion().toString() + "/link";
         return SpringdocRouteBuilder.route()
             .GET("link-detail", this::getHyperLinkDetail, builder -> {
-                builder.operationId("GetHyperLinkDetail")
+                builder.operationId("FetchEditorHyperLinkDetail")
                     .description("Get hyper link detail.")
                     .parameter(parameterBuilder().name("url").in(ParameterIn.QUERY)
                         .required(true).implementation(String.class))
@@ -64,14 +61,12 @@ public class HyperLinkCardEndpoint implements CustomEndpoint {
             })
             .filter(PathUtils::isAbsoluteUri)
             .orElseThrow(() -> new ServerWebInputException("Invalid url."));
-        return settingFetcher.fetch("fetch", LinkFetchPolicy.class)
-            .defaultIfEmpty(LinkFetchPolicy.DISABLED)
-            .flatMap(policy -> hyperLinkCardService.getHyperLinkDetail(url, policy, false))
+        return hyperLinkCardService.getHyperLinkDetail(url, LinkFetchPolicy.EDITOR, true)
             .flatMap(dto -> ServerResponse.ok().bodyValue(dto));
     }
 
     @Override
     public GroupVersion groupVersion() {
-        return new GroupVersion("api.hyperlink.halo.run", "v1alpha1");
+        return new GroupVersion("console.api.hyperlink.halo.run", "v1alpha1");
     }
 }

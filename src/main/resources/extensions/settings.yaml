@@ -4,6 +4,33 @@ metadata:
   name: plugin-editor-hyperlink-card-settings
 spec:
   forms:
+    - group: fetch
+      label: 链接信息获取
+      formSchema:
+        - $formkit: checkbox
+          name: onlineFetchEnabled
+          id: onlineFetchEnabled
+          label: 允许实时获取
+          value: false
+          help: 仅用于旧卡片和未保存信息的手写标签。开启后，访客可触发服务器访问外部网站，目标网站可能获知服务器出口 IP。新卡片始终在编辑时保存信息。
+        - $formkit: checkbox
+          if: $get(onlineFetchEnabled).value
+          name: whitelistEnabled
+          id: whitelistEnabled
+          label: 启用 Host 白名单
+          value: false
+          help: 关闭时允许访问任意通过安全校验的公网目标。
+        - $formkit: array
+          if: $get(onlineFetchEnabled).value && $get(whitelistEnabled).value
+          name: hosts
+          label: 允许访问的 Host
+          value: []
+          help: 精确匹配，不含协议、路径或端口，例如 www.halo.run。启用白名单后，空名单禁止全部目标；重定向和专用解析器的 API 域名也需加入。
+          children:
+            - $formkit: text
+              name: value
+              label: Host
+              validation: required
     - group: proxy
       label: 代理设置
       formSchema:

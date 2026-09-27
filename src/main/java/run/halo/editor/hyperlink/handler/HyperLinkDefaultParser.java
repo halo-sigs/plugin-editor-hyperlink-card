@@ -27,6 +27,7 @@ import org.springframework.web.server.ServerWebInputException;
 import reactor.core.publisher.Mono;
 import run.halo.app.infra.utils.PathUtils;
 import run.halo.editor.hyperlink.HttpClientFactory;
+import run.halo.editor.hyperlink.LinkFetchPolicy;
 import run.halo.editor.hyperlink.HyperLinkRequest;
 import run.halo.editor.hyperlink.UrlSafetyValidator;
 import run.halo.editor.hyperlink.dto.HyperLinkBaseDTO;
@@ -41,8 +42,8 @@ public class HyperLinkDefaultParser implements HyperLinkParser<HyperLinkBaseDTO>
 
     @SuppressWarnings("checkstyle:MissingSwitchDefault")
     @Override
-    public Mono<HyperLinkBaseDTO> parse(URI linkURI) {
-        return getHyperLinkDetail(linkURI)
+    public Mono<HyperLinkBaseDTO> parse(URI linkURI, LinkFetchPolicy policy) {
+        return getHyperLinkDetail(linkURI, policy)
                 .onErrorMap(throwable -> {
                     if (throwable instanceof WebClientRequestException wcre
                         && (wcre.getCause() instanceof ReadTimeoutException
@@ -86,12 +87,12 @@ public class HyperLinkDefaultParser implements HyperLinkParser<HyperLinkBaseDTO>
                 });
     }
 
-    public Mono<HyperLinkRequest.HyperLinkResponse> getHyperLinkDetail(URI linkURI) {
+    public Mono<HyperLinkRequest.HyperLinkResponse> getHyperLinkDetail(URI linkURI, LinkFetchPolicy policy) {
         AtomicReference<String> resourceUrl = new AtomicReference<>(linkURI.toString());
-        return clientFactory.createHttpClientBuilder(linkURI.getHost())
+        return clientFactory.createHttpClientBuilder(linkURI.getHost(), linkURI, policy)
                 .map(httpClient -> httpClient.followRedirect((clientRequest, clientResponse) -> {
                     String location = clientResponse.responseHeaders().get(HttpHeaderNames.LOCATION);
-                    return validateRedirect(clientRequest.resourceUrl(), location, resourceUrl);
+                    return validateRedirect(clientRequest.resourceUrl(), location, resourceUrl, policy);
                 }))
                 .map(httpClient -> WebClient.builder()
                         .clientConnector(new ReactorClientHttpConnector(httpClient))
@@ -130,7 +131,7 @@ public class HyperLinkDefaultParser implements HyperLinkParser<HyperLinkBaseDTO>
     }
 
     static boolean validateRedirect(String currentUrl, String location,
-        AtomicReference<String> resourceUrl) {
+        AtomicReference<String> resourceUrl, LinkFetchPolicy policy) {
         if (!StringUtils.hasText(location) || !StringUtils.hasText(currentUrl)) {
             return false;
         }
@@ -140,6 +141,7 @@ public class HyperLinkDefaultParser implements HyperLinkParser<HyperLinkBaseDTO>
         } catch (IllegalArgumentException e) {
             return false;
         }
+        policy.requireAllowed(redirectUri);
         if (!UrlSafetyValidator.hasSafeHttpStructure(redirectUri)) {
             throw new ServerWebInputException("Invalid url.");
         }

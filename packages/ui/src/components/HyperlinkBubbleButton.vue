@@ -1,72 +1,76 @@
 <script lang="ts" setup>
-import { VDropdown } from "@halo-dev/components";
-import { BubbleButton, type BubbleItemComponentProps, Input } from "@halo-dev/richtext-editor";
-import { computed } from "vue";
+import { refreshCard, selectedCard } from "@/editor/link-data";
+import { VButton, VDropdown } from "@halo-dev/components";
+import {
+  BubbleButton,
+  closeHistory,
+  Input,
+  type BubbleItemComponentProps,
+} from "@halo-dev/richtext-editor";
+import { computed, ref } from "vue";
 import MingcuteLinkLine from "~icons/mingcute/link-line";
 
 const props = defineProps<BubbleItemComponentProps & { name: string }>();
+const draftHref = ref("");
+let editingNode: ReturnType<typeof selectedCard>;
 
-const href = computed({
-  get() {
-    const attrs = props.editor.getAttributes(props.name);
-    return attrs?.href;
-  },
-  set(value) {
-    const { selection } = props.editor.state;
-    if (!selection) {
-      return;
-    }
-    const pos = selection.$anchor.pos;
-    props.editor
-      .chain()
-      .updateAttributes(props.name, {
-        href: value,
-        target: target.value ? "_blank" : "_self",
-      })
-      .setNodeSelection(pos)
-      .run();
-  },
-});
+function startEditing() {
+  editingNode = selectedCard(props.editor, props.name);
+  draftHref.value = editingNode?.attrs.href || "";
+}
+
+function applyHref() {
+  const href = draftHref.value.trim();
+  if (!href || !editingNode || href === editingNode.attrs.href) return;
+  let position: number | undefined;
+  props.editor.state.doc.descendants((node, pos) => {
+    if (node === editingNode) position = pos;
+  });
+  if (position === undefined) return;
+  props.editor.commands.command(({ tr }) => {
+    tr.setNodeMarkup(position!, undefined, {
+      ...editingNode!.attrs,
+      href,
+      "data-mode": "snapshot",
+      "custom-title": href,
+      "custom-description": null,
+      "custom-image": null,
+      "custom-icon": null,
+    });
+    closeHistory(tr as unknown as Parameters<typeof closeHistory>[0]);
+    return true;
+  });
+  const node = props.editor.state.doc.nodeAt(position);
+  editingNode = node || undefined;
+  if (node) void refreshCard(props.editor, node, true);
+}
 
 const target = computed({
   get() {
-    const attrs = props.editor.getAttributes(props.name);
-    return attrs?.target === "_blank";
+    return props.editor.getAttributes(props.name)?.target === "_blank";
   },
   set(value) {
-    const { selection } = props.editor.state;
-    if (!selection) {
-      return;
-    }
-    const pos = selection.$anchor.pos;
-    props.editor
-      .chain()
-      .updateAttributes(props.name, {
-        href: href.value,
-        target: value ? "_blank" : "_self",
-      })
-      .setNodeSelection(pos)
-      .run();
+    props.editor.commands.updateAttributes(props.name, { target: value ? "_blank" : "_self" });
+    editingNode = selectedCard(props.editor, props.name);
   },
 });
 </script>
 
 <template>
-  <VDropdown class=":uno: inline-flex" :triggers="['click']" :distance="10">
+  <VDropdown class=":uno: inline-flex" :triggers="['click']" :distance="10" @show="startEditing">
     <BubbleButton title="编辑链接">
-      <template #icon>
-        <MingcuteLinkLine />
-      </template>
+      <template #icon><MingcuteLinkLine /></template>
     </BubbleButton>
-
     <template #popper>
-      <div class=":uno: w-80">
-        <Input v-model="href" auto-focus label="链接地址" />
+      <form class=":uno: w-80" @submit.prevent="applyHref">
+        <Input v-model="draftHref" auto-focus label="链接地址" />
         <label class=":uno: mt-2 inline-flex items-center">
           <input v-model="target" type="checkbox" />
           <span class=":uno: ml-2 text-sm text-gray-500">在新窗口中打开</span>
         </label>
-      </div>
+        <p class=":uno: my-2 text-xs text-gray-500">更换链接会重新获取信息并替换原内容，可撤销。</p>
+        <VButton size="sm" :disabled="!draftHref.trim()" @click="applyHref">应用链接</VButton>
+      </form>
     </template>
   </VDropdown>
 </template>

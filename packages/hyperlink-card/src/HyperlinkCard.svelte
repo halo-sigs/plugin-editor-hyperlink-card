@@ -2,6 +2,7 @@
   customElement={{
     tag: "hyperlink-card",
     props: {
+      mode: { reflect: true, type: "String", attribute: "data-mode" },
       href: { reflect: true, type: "String", attribute: "href" },
       target: { reflect: true, type: "String", attribute: "target" },
       theme: { reflect: true, type: "String", attribute: "theme" },
@@ -17,10 +18,12 @@
   import GridLoading from "./themes/GridLoading.svelte";
   import RegularLoading from "./themes/RegularLoading.svelte";
   import SmallLoading from "./themes/SmallLoading.svelte";
+  import { canFetchOnline, savedSiteData, fetchSiteData } from "./site-data";
   import type { SiteData } from "./types";
 
   let {
     href,
+    mode,
     target = "_self",
     theme = "regular",
     customTitle,
@@ -29,6 +32,7 @@
     customIcon,
   }: {
     href: string;
+    mode?: string;
     target: "_blank" | "_self";
     theme: "small" | "regular" | "grid";
     customTitle?: string;
@@ -40,53 +44,37 @@
   let loading = $state(false);
   let siteData = $state<SiteData>();
 
-  async function fetchSiteData() {
-    if (customTitle && customDescription && (customImage || customIcon)) {
-      siteData = {
-        title: customTitle,
-        image: customImage,
-        icon: customIcon || customImage,
-        description: customDescription,
-        url: href,
-      } as SiteData;
-      return;
-    }
-
-    try {
-      loading = true;
-
-      const response = await fetch(`/apis/api.hyperlink.halo.run/v1alpha1/link-detail?url=${encodeURIComponent(href)}`);
-
-      if (!response.ok) {
-        return;
-      }
-
-      siteData = (await response.json()) as SiteData;
-
-      if (customTitle) {
-        siteData.title = customTitle;
-      }
-
-      if (customDescription) {
-        siteData.description = customDescription;
-      }
-
-      if (customImage) {
-        siteData.image = customImage;
-      }
-
-      if (customIcon) {
-        siteData.icon = customIcon;
-      } else if (customImage) {
-        siteData.icon = customImage;
-      }
-    } finally {
-      loading = false;
-    }
-  }
-
   $effect(() => {
-    fetchSiteData();
+    const controller = new AbortController();
+    const saved = savedSiteData(href, customTitle, customDescription, customImage, customIcon);
+    const title = customTitle;
+    const description = customDescription;
+    const image = customImage;
+    const icon = customIcon;
+    siteData = saved;
+    loading = false;
+    if (href && canFetchOnline(mode)) {
+      loading = true;
+      fetchSiteData(href, controller.signal)
+        .then((data) => {
+          if (!controller.signal.aborted) {
+            siteData = {
+              ...data,
+              title: title || data.title || href,
+              description: description || data.description,
+              image: image || data.image,
+              icon: icon || image || data.icon,
+            };
+          }
+        })
+        .catch(() => {
+          /* Keep saved metadata or the URL when fetching fails. */
+        })
+        .finally(() => {
+          if (!controller.signal.aborted) loading = false;
+        });
+    }
+    return () => controller.abort();
   });
 
   const themes = {

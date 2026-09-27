@@ -25,6 +25,7 @@ watch(
   >
     <hyperlink-inline-card
       ref="cardRef"
+      data-mode="snapshot"
       class=":uno: pointer-events-none select-none"
       :href="node.attrs.href"
       :theme="node.attrs.theme"
