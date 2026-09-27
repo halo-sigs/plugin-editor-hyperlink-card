@@ -32,7 +32,6 @@
     customIcon?: string;
   } = $props();
 
-  let loading = $state(false);
   let siteData = $state<SiteData>();
 
   $effect(() => {
@@ -43,9 +42,7 @@
     const image = customImage;
     const icon = customIcon;
     siteData = saved;
-    loading = false;
     if (href && canFetchOnline(mode)) {
-      loading = true;
       fetchSiteData(href, controller.signal)
         .then((data) => {
           if (!controller.signal.aborted) {
@@ -60,9 +57,6 @@
         })
         .catch(() => {
           /* Keep saved metadata or the URL when fetching fails. */
-        })
-        .finally(() => {
-          if (!controller.signal.aborted) loading = false;
         });
     }
     return () => controller.abort();
@@ -73,14 +67,7 @@
   let image = $derived(siteData?.icon || siteData?.image);
 </script>
 
-{#if loading}
-  <span
-    class="inline-flex items-center group space-x-1.5 px-1.5 text-inline-title bg-inline-card text-[90%] rounded transition-all mx-1 py-0.5"
-  >
-    <div class="size-4 bg-skeleton rounded-sm animate-pulse"></div>
-    <div class="h-3 bg-skeleton rounded animate-pulse w-16"></div>
-  </span>
-{:else if siteData}
+{#if siteData}
   <a
     class="inline-flex items-center group space-x-1.5 px-1.5 text-inline-title bg-hover-inline-card text-[90%] rounded bg-inline-card transition-all mx-1 py-0.5"
     {href}

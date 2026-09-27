@@ -49,6 +49,7 @@ export async function refreshCard(
       return true;
     });
     if (!automatic) Toast.success("链接信息已更新，可撤销");
+    return editor.state.doc.nodeAt(position);
   } catch {
     if (!editor.isDestroyed) Toast.warning("获取链接信息失败，可重试或手动编辑");
   }

@@ -66,6 +66,7 @@ public class HyperLinkCardEndpoint implements CustomEndpoint {
             .orElseThrow(() -> new ServerWebInputException("Invalid url."));
         return settingFetcher.fetch("fetch", LinkFetchPolicy.class)
             .defaultIfEmpty(LinkFetchPolicy.DISABLED)
+            .onErrorReturn(LinkFetchPolicy.DISABLED)
             .flatMap(policy -> hyperLinkCardService.getHyperLinkDetail(url, policy, false))
             .flatMap(dto -> ServerResponse.ok().bodyValue(dto));
     }

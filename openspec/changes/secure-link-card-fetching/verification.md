@@ -4,7 +4,7 @@ Tested on 2026-09-27 with the repository's Halo 2.26 development container at lo
 
 ## Automated checks
 
-- `./gradlew build`: 28 Java tests, no failures. Includes default-off policy before DNS, normalized exact hosts, empty whitelist, redirect rejection, fresh Console reads versus cached reads, and preserving HTTP policy errors wrapped by WebClient.
+- `./gradlew build`: 29 Java tests, no failures. Includes default-off policy before DNS, normalized exact hosts, empty whitelist, redirect rejection, fresh Console reads versus cached reads, and preserving HTTP policy errors wrapped by WebClient.
 - `pnpm --dir packages/ui type-check`: passed.
 - `pnpm --dir packages/hyperlink-card check`: passed, no warnings.
 - ESLint on UI and Web Component sources: no errors; one generated-file warning for an unused eslint-disable directive in the generated API index.
@@ -40,3 +40,12 @@ Tested on 2026-09-27 with the repository's Halo 2.26 development container at lo
 Screenshots are under `build/e2e/`: denied-editor.png, authorized-inline-editor.png, static-cards.png, fetch-settings.png. Temporary E2E users/content are removed and the original plugin configuration is restored after verification.
 
 No bulk migration is included. Existing cards without saved metadata can degrade to basic links until manually refreshed or public compatibility fetching is enabled.
+
+## Review regression fixes
+
+- `node packages/ui/tests/insert-card.mjs`: passed using the installed ProseMirror dependencies. Covers actual inserted-node identity, adjacent inline cards, following block paragraphs, and preserving neighbours after automatic metadata updates and undo.
+- Rebuilt and hot-reloaded on Halo 2.26. Real editor conversion requests only the inserted inline card URL, preserves the adjacent card's manual title, and undo restores the original link. A block conversion followed by another paragraph now fetches once.
+- Applying two URLs successively in the same open popup fetches each once; undo restores the first URL and metadata.
+- Both running Web Components keep saved titles and clickable links visible during browser-simulated pending requests and after rejection.
+- Temporarily malformed fetch settings now return 403 instead of 500; original settings restored. Added an endpoint test proving no parser invocation when settings fail.
+- Vue type checking, Svelte checking, changed-source ESLint, build and Java tests passed. Temporary browser-created Post was deleted and the isolated browser session closed.

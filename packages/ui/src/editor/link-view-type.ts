@@ -13,7 +13,8 @@ import MingcuteLinkLine from "~icons/mingcute/link-line";
 import MingcuteTextLine from "~icons/mingcute/text-line";
 import HyperlinkCardExtension from "./hyperlink-card-extension";
 import HyperlinkInlineCardExtension from "./hyperlink-inline-card-extension";
-import { refreshCard, selectedCard } from "./link-data";
+import { insertCard } from "./insert-card";
+import { refreshCard } from "./link-data";
 import { splitLink } from "./utils";
 
 export interface LinkViewType {
@@ -67,6 +68,7 @@ const linkViewTypes: LinkViewType[] = [
     icon: markRaw(MingcuteTextLine),
     action: ({ editor }) => {
       if (isActive(editor.state, ExtensionLink.name)) {
+        let card: Editor["state"]["doc"] | undefined;
         editor
           .chain()
           .extendMarkRange(ExtensionLink.name)
@@ -75,7 +77,8 @@ const linkViewTypes: LinkViewType[] = [
             if (!linkAttr || !linkAttr.href) {
               return false;
             }
-            tr.replaceSelectionWith(
+            card = insertCard(
+              tr,
               state.schema.nodes[HyperlinkInlineCardExtension.name]!.create({
                 href: linkAttr.href,
                 theme: "inline",
@@ -88,7 +91,6 @@ const linkViewTypes: LinkViewType[] = [
           })
           .focus()
           .run();
-        const card = selectedCard(editor, HyperlinkInlineCardExtension.name);
         if (card) void refreshCard(editor, card, true);
         return;
       }
@@ -143,6 +145,7 @@ const linkViewTypes: LinkViewType[] = [
 
 const changeToHyperlinkCardExtension = (editor: Editor, theme: string) => {
   if (isActive(editor.state, ExtensionLink.name)) {
+    let card: Editor["state"]["doc"] | undefined;
     editor
       .chain()
       .extendMarkRange(ExtensionLink.name)
@@ -154,7 +157,8 @@ const changeToHyperlinkCardExtension = (editor: Editor, theme: string) => {
         if (!linkAttr || !linkAttr.href) {
           return false;
         }
-        tr.replaceSelectionWith(
+        card = insertCard(
+          tr,
           state.schema.nodes[HyperlinkCardExtension.name]!.create({
             href: linkAttr.href,
             theme: theme,
@@ -167,7 +171,6 @@ const changeToHyperlinkCardExtension = (editor: Editor, theme: string) => {
       })
       .focus()
       .run();
-    const card = selectedCard(editor, HyperlinkCardExtension.name);
     if (card) void refreshCard(editor, card, true);
     return;
   }

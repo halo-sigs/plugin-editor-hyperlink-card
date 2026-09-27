@@ -42,7 +42,11 @@ function applyHref() {
   });
   const node = props.editor.state.doc.nodeAt(position);
   editingNode = node || undefined;
-  if (node) void refreshCard(props.editor, node, true);
+  if (node) {
+    void refreshCard(props.editor, node, true).then((updated) => {
+      if (editingNode === node && updated) editingNode = updated;
+    });
+  }
 }
 
 const target = computed({

@@ -41,7 +41,6 @@
     customIcon?: string;
   } = $props();
 
-  let loading = $state(false);
   let siteData = $state<SiteData>();
 
   $effect(() => {
@@ -52,9 +51,7 @@
     const image = customImage;
     const icon = customIcon;
     siteData = saved;
-    loading = false;
     if (href && canFetchOnline(mode)) {
-      loading = true;
       fetchSiteData(href, controller.signal)
         .then((data) => {
           if (!controller.signal.aborted) {
@@ -69,9 +66,6 @@
         })
         .catch(() => {
           /* Keep saved metadata or the URL when fetching fails. */
-        })
-        .finally(() => {
-          if (!controller.signal.aborted) loading = false;
         });
     }
     return () => controller.abort();
@@ -103,9 +97,7 @@
   {rel}
   class="border w-full border-card relative flex rounded-xl overflow-hidden border-hover-card bg-card transition-all"
 >
-  {#if loading}
-    <LoadingComponent />
-  {:else if siteData}
+  {#if siteData}
     {#await ThemeComponent}
       <LoadingComponent />
     {:then { default: Component }}
