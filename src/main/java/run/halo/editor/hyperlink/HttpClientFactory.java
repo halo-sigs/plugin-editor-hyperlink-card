@@ -1,7 +1,8 @@
 package run.halo.editor.hyperlink;
 
-import java.time.Duration;
 import java.net.InetSocketAddress;
+import java.net.URI;
+import java.time.Duration;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,10 +20,13 @@ public class HttpClientFactory {
 
     private final ReactiveSettingFetcher settingFetcher;
 
-    public Mono<HttpClient> createHttpClientBuilder(String host) {
-        return settingFetcher.fetch("proxy", ProxyConfig.class)
+    public Mono<HttpClient> createHttpClientBuilder(String proxyHost, URI uri, LinkFetchPolicy policy) {
+        policy.requireAllowed(uri);
+        return UrlSafetyValidator.requireSafeHttpUrlAsync(uri.toString())
+            .then(settingFetcher.fetch("proxy", ProxyConfig.class))
+            .defaultIfEmpty(new ProxyConfig(null, null, List.of()))
             .map(proxyConfig -> {
-                if (isProxy(proxyConfig, host)) {
+                if (isProxy(proxyConfig, proxyHost)) {
                     return getHttpClient()
                         .proxy(proxy ->
                             proxy.type(ProxyProvider.Proxy.HTTP)

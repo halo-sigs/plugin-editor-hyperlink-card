@@ -11,5 +11,20 @@ metadata:
     rbac.authorization.halo.run/display-name: "编辑器超链接卡片"
 rules:
   - apiGroups: ["api.hyperlink.halo.run"]
-    resources: ["*"]
-    verbs: ["*"]
+    resources: ["link-detail"]
+    verbs: ["list"]
+---
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: role-template-hyperlink-card-fetch
+  labels:
+    halo.run/role-template: "true"
+  annotations:
+    rbac.authorization.halo.run/module: "editor-hyperlink-card"
+    rbac.authorization.halo.run/display-name: "获取链接卡片信息"
+    rbac.authorization.halo.run/ui-permissions: '["plugin:hyperlink-card:fetch"]'
+rules:
+  - apiGroups: ["console.api.hyperlink.halo.run"]
+    resources: ["link-detail"]
+    verbs: ["list"]

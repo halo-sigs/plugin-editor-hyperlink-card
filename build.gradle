@@ -56,3 +56,19 @@ halo {
     version = '2.26'
     debug = true
 }
+
+haloPlugin {
+    openApi {
+        groupingRules {
+            hyperlink {
+                displayName = 'Hyperlink Console API'
+                pathsToMatch = ['/apis/console.api.hyperlink.halo.run/**']
+            }
+        }
+        groupedApiMappings = ['/v3/api-docs/hyperlink': 'hyperlink.json']
+        generator {
+            outputDir = file('packages/ui/src/api/generated')
+            additionalProperties = [useSingleRequestParameter: true]
+        }
+    }
+}

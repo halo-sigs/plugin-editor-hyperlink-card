@@ -2,6 +2,7 @@
   customElement={{
     tag: "hyperlink-inline-card",
     props: {
+      mode: { reflect: true, type: "String", attribute: "data-mode" },
       href: { reflect: true, type: "String", attribute: "href" },
       target: { reflect: true, type: "String", attribute: "target" },
       customTitle: { reflect: true, type: "String", attribute: "custom-title" },
@@ -12,67 +13,53 @@
 />
 
 <script lang="ts">
+  import { canFetchOnline, savedSiteData, fetchSiteData } from "./site-data";
   import type { SiteData } from "./types";
 
   let {
     href,
+    mode,
     target = "_self",
     customTitle,
     customImage,
     customIcon,
   }: {
     href: string;
+    mode?: string;
     target: "_blank" | "_self";
     customTitle?: string;
     customImage?: string;
     customIcon?: string;
   } = $props();
 
-  let loading = $state(false);
   let siteData = $state<SiteData>();
 
-  async function fetchSiteData() {
-    if (customTitle && (customImage || customIcon)) {
-      siteData = {
-        title: customTitle,
-        image: customImage,
-        icon: customIcon || customImage,
-        url: href,
-      } as SiteData;
-      return;
-    }
-
-    try {
-      loading = true;
-
-      const response = await fetch(`/apis/api.hyperlink.halo.run/v1alpha1/link-detail?url=${encodeURIComponent(href)}`);
-
-      if (!response.ok) {
-        return;
-      }
-
-      siteData = (await response.json()) as SiteData;
-
-      if (customTitle) {
-        siteData.title = customTitle;
-      }
-
-      if (customImage) {
-        siteData.image = customImage;
-      }
-
-      if (customIcon) {
-        siteData.icon = customIcon;
-      } else if (customImage) {
-        siteData.icon = customImage;
-      }
-    } finally {
-      loading = false;
-    }
-  }
-
   $effect(() => {
-    fetchSiteData();
+    const controller = new AbortController();
+    const saved = savedSiteData(href, customTitle, undefined, customImage, customIcon);
+    const title = customTitle;
+    const description = undefined;
+    const image = customImage;
+    const icon = customIcon;
+    siteData = saved;
+    if (href && canFetchOnline(mode)) {
+      fetchSiteData(href, controller.signal)
+        .then((data) => {
+          if (!controller.signal.aborted) {
+            siteData = {
+              ...data,
+              title: title || data.title || href,
+              description: description || data.description,
+              image: image || data.image,
+              icon: icon || image || data.icon,
+            };
+          }
+        })
+        .catch(() => {
+          /* Keep saved metadata or the URL when fetching fails. */
+        });
+    }
+    return () => controller.abort();
   });
 
   let rel = $derived(target === "_blank" ? "noopener" : undefined);
@@ -80,14 +67,7 @@
   let image = $derived(siteData?.icon || siteData?.image);
 </script>
 
-{#if loading}
-  <span
-    class="inline-flex items-center group space-x-1.5 px-1.5 text-inline-title bg-inline-card text-[90%] rounded transition-all mx-1 py-0.5"
-  >
-    <div class="size-4 bg-skeleton rounded-sm animate-pulse"></div>
-    <div class="h-3 bg-skeleton rounded animate-pulse w-16"></div>
-  </span>
-{:else if siteData}
+{#if siteData}
   <a
     class="inline-flex items-center group space-x-1.5 px-1.5 text-inline-title bg-hover-inline-card text-[90%] rounded bg-inline-card transition-all mx-1 py-0.5"
     {href}

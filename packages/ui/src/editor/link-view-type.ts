@@ -13,6 +13,8 @@ import MingcuteLinkLine from "~icons/mingcute/link-line";
 import MingcuteTextLine from "~icons/mingcute/text-line";
 import HyperlinkCardExtension from "./hyperlink-card-extension";
 import HyperlinkInlineCardExtension from "./hyperlink-inline-card-extension";
+import { insertCard } from "./insert-card";
+import { refreshCard } from "./link-data";
 import { splitLink } from "./utils";
 
 export interface LinkViewType {
@@ -66,6 +68,7 @@ const linkViewTypes: LinkViewType[] = [
     icon: markRaw(MingcuteTextLine),
     action: ({ editor }) => {
       if (isActive(editor.state, ExtensionLink.name)) {
+        let card: Editor["state"]["doc"] | undefined;
         editor
           .chain()
           .extendMarkRange(ExtensionLink.name)
@@ -74,16 +77,21 @@ const linkViewTypes: LinkViewType[] = [
             if (!linkAttr || !linkAttr.href) {
               return false;
             }
-            tr.replaceSelectionWith(
+            card = insertCard(
+              tr,
               state.schema.nodes[HyperlinkInlineCardExtension.name]!.create({
                 href: linkAttr.href,
                 theme: "inline",
+                "data-mode": "snapshot",
+                "custom-title":
+                  state.doc.textBetween(state.selection.from, state.selection.to) || linkAttr.href,
               })
             );
             return true;
           })
           .focus()
           .run();
+        if (card) void refreshCard(editor, card, true);
         return;
       }
       if (isActive(editor.state, HyperlinkCardExtension.name)) {
@@ -95,6 +103,7 @@ const linkViewTypes: LinkViewType[] = [
               state.schema.nodes[HyperlinkInlineCardExtension.name]!.create({
                 href: linkViewAttr.href,
                 theme: "inline",
+                "data-mode": linkViewAttr?.["data-mode"],
                 "custom-title": linkViewAttr?.["custom-title"],
                 "custom-description": linkViewAttr?.["custom-description"],
                 "custom-image": linkViewAttr?.["custom-image"],
@@ -136,6 +145,7 @@ const linkViewTypes: LinkViewType[] = [
 
 const changeToHyperlinkCardExtension = (editor: Editor, theme: string) => {
   if (isActive(editor.state, ExtensionLink.name)) {
+    let card: Editor["state"]["doc"] | undefined;
     editor
       .chain()
       .extendMarkRange(ExtensionLink.name)
@@ -147,16 +157,21 @@ const changeToHyperlinkCardExtension = (editor: Editor, theme: string) => {
         if (!linkAttr || !linkAttr.href) {
           return false;
         }
-        tr.replaceSelectionWith(
+        card = insertCard(
+          tr,
           state.schema.nodes[HyperlinkCardExtension.name]!.create({
             href: linkAttr.href,
             theme: theme,
+            "data-mode": "snapshot",
+            "custom-title":
+              state.doc.textBetween(state.selection.from, state.selection.to) || linkAttr.href,
           })
         );
         return true;
       })
       .focus()
       .run();
+    if (card) void refreshCard(editor, card, true);
     return;
   }
   if (isActive(editor.state, HyperlinkCardExtension.name)) {
@@ -174,6 +189,7 @@ const changeToHyperlinkCardExtension = (editor: Editor, theme: string) => {
           state.schema.nodes[HyperlinkCardExtension.name]!.create({
             href: linkViewAttr.href,
             theme: theme,
+            "data-mode": linkViewAttr?.["data-mode"],
             "custom-title": linkViewAttr?.["custom-title"],
             "custom-description": linkViewAttr?.["custom-description"],
             "custom-image": linkViewAttr?.["custom-image"],
