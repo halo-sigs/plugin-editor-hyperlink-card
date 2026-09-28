@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { refreshCard, selectedCard } from "@/editor/link-data";
+import { trackCard } from "@/editor/track-card";
 import { VButton, VDropdown } from "@halo-dev/components";
 import {
   BubbleButton,
@@ -7,26 +8,30 @@ import {
   Input,
   type BubbleItemComponentProps,
 } from "@halo-dev/richtext-editor";
-import { computed, ref } from "vue";
+import { computed, onBeforeUnmount, ref } from "vue";
 import MingcuteLinkLine from "~icons/mingcute/link-line";
 
 const props = defineProps<BubbleItemComponentProps & { name: string }>();
 const draftHref = ref("");
-let editingNode: ReturnType<typeof selectedCard>;
+let editing: ReturnType<typeof trackCard> | undefined;
+function stopEditing() {
+  editing?.stop();
+  editing = undefined;
+}
+onBeforeUnmount(stopEditing);
 
 function startEditing() {
-  editingNode = selectedCard(props.editor, props.name);
-  draftHref.value = editingNode?.attrs.href || "";
+  stopEditing();
+  const node = selectedCard(props.editor, props.name);
+  if (node) editing = trackCard(props.editor, node);
+  draftHref.value = node?.attrs.href || "";
 }
 
 function applyHref() {
   const href = draftHref.value.trim();
-  if (!href || !editingNode || href === editingNode.attrs.href) return;
-  let position: number | undefined;
-  props.editor.state.doc.descendants((node, pos) => {
-    if (node === editingNode) position = pos;
-  });
-  if (position === undefined) return;
+  const editingNode = editing?.node;
+  const position = editing?.position;
+  if (!href || !editingNode || position === undefined || href === editingNode.attrs.href) return;
   props.editor.commands.command(({ tr }) => {
     tr.setNodeMarkup(position!, undefined, {
       ...editingNode!.attrs,
@@ -40,13 +45,8 @@ function applyHref() {
     closeHistory(tr as unknown as Parameters<typeof closeHistory>[0]);
     return true;
   });
-  const node = props.editor.state.doc.nodeAt(position);
-  editingNode = node || undefined;
-  if (node) {
-    void refreshCard(props.editor, node, true).then((updated) => {
-      if (editingNode === node && updated) editingNode = updated;
-    });
-  }
+  const node = editing?.node;
+  if (node) void refreshCard(props.editor, node, true);
 }
 
 const target = computed({
@@ -54,14 +54,27 @@ const target = computed({
     return props.editor.getAttributes(props.name)?.target === "_blank";
   },
   set(value) {
-    props.editor.commands.updateAttributes(props.name, { target: value ? "_blank" : "_self" });
-    editingNode = selectedCard(props.editor, props.name);
+    if (!editing?.node || editing.position === undefined) return;
+    const { node, position } = editing;
+    props.editor.commands.command(({ tr }) => {
+      tr.setNodeMarkup(position!, undefined, {
+        ...node!.attrs,
+        target: value ? "_blank" : "_self",
+      });
+      return true;
+    });
   },
 });
 </script>
 
 <template>
-  <VDropdown class=":uno: inline-flex" :triggers="['click']" :distance="10" @show="startEditing">
+  <VDropdown
+    class=":uno: inline-flex"
+    :triggers="['click']"
+    :distance="10"
+    @show="startEditing"
+    @hide="stopEditing"
+  >
     <BubbleButton title="编辑链接">
       <template #icon><MingcuteLinkLine /></template>
     </BubbleButton>

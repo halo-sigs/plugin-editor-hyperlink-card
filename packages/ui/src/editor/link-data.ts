@@ -1,8 +1,9 @@
 import { hyperlinkApi } from "@/api";
 import { Toast } from "@halo-dev/components";
-import { closeHistory, type Editor, type Transaction } from "@halo-dev/richtext-editor";
+import { closeHistory, type Editor } from "@halo-dev/richtext-editor";
 import { utils } from "@halo-dev/ui-shared";
 import { shallowReactive } from "vue";
+import { trackCard } from "./track-card";
 
 export const fetchingCards = shallowReactive(new WeakSet<object>());
 
@@ -26,45 +27,37 @@ export async function refreshCard(
   automatic = false
 ) {
   if (!canFetchLinkData() || fetchingCards.has(target)) return;
-  let position: number | undefined;
-  editor.state.doc.descendants((node, pos) => {
-    if (node === target) position = pos;
-  });
-  if (position === undefined) return;
   let current = target;
-  const track = ({ transaction }: { transaction: Transaction }) => {
-    if (position === undefined || !transaction.docChanged) return;
-    let mapped = transaction.mapping.map(position, -1);
-    transaction.doc.descendants((node, pos) => {
-      if (node === current) mapped = pos;
-    });
-    const next = transaction.doc.nodeAt(mapped);
+  const tracked = trackCard(editor, target, () => {
     fetchingCards.delete(current);
-    // Presentation changes are safe; URL or manual metadata edits invalidate the response.
+    const next = tracked.node;
     if (
-      !next ||
-      !["hyperlinkCard", "hyperlinkInlineCard"].includes(next.type.name) ||
-      ["href", "custom-title", "custom-description", "custom-icon", "custom-image"].some(
-        (key) => next.attrs[key] !== target.attrs[key]
+      next &&
+      ["href", "custom-title", "custom-description", "custom-icon", "custom-image"].every(
+        (key) => next.attrs[key] === target.attrs[key]
       )
     ) {
-      position = undefined;
-      return;
+      current = next;
+      fetchingCards.add(current);
+    } else {
+      tracked.node = undefined;
+      tracked.stop();
     }
-    position = mapped;
-    current = next;
-    fetchingCards.add(current);
-  };
+  });
+  if (!tracked.node) {
+    tracked.stop();
+    return;
+  }
   fetchingCards.add(current);
-  editor.on("transaction", track);
   try {
     const { data } = await hyperlinkApi.fetchEditorHyperLinkDetail(
       { url: target.attrs.href },
       { mute: true }
     );
     if (editor.isDestroyed) return;
-    if (position === undefined) return;
-    editor.off("transaction", track);
+    if (!tracked.node || tracked.position === undefined) return;
+    const position = tracked.position;
+    tracked.stop();
     editor.commands.command(({ tr }) => {
       tr.setNodeMarkup(position!, undefined, {
         ...current.attrs,
@@ -81,9 +74,9 @@ export async function refreshCard(
     if (!automatic) Toast.success("链接信息已更新");
     return editor.state.doc.nodeAt(position);
   } catch {
-    if (!editor.isDestroyed) Toast.warning("获取链接信息失败，可重试或手动编辑");
+    if (!editor.isDestroyed && tracked.node) Toast.warning("获取链接信息失败，可重试或手动编辑");
   } finally {
-    editor.off("transaction", track);
+    tracked.stop();
     fetchingCards.delete(current);
   }
 }

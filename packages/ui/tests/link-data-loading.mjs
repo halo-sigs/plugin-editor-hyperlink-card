@@ -21,6 +21,14 @@ const context = vm.createContext({
     },
   },
 });
+vm.runInContext(
+  stripTypeScriptTypes(
+    readFileSync(new URL("../src/editor/track-card.ts", import.meta.url), "utf8")
+      .replace(/^import .*;\n/gm, "")
+      .replace(/^export /gm, "")
+  ),
+  context
+);
 const source = readFileSync(new URL("../src/editor/link-data.ts", import.meta.url), "utf8");
 vm.runInContext(
   stripTypeScriptTypes(source.replace(/^import .*;\n/gm, "").replace(/^export /gm, "")),

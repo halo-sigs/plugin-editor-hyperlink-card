@@ -49,3 +49,12 @@ No bulk migration is included. Existing cards without saved metadata can degrade
 - Both running Web Components keep saved titles and clickable links visible during browser-simulated pending requests and after rejection.
 - Temporarily malformed fetch settings now return 403 instead of 500; original settings restored. Added an endpoint test proving no parser invocation when settings fail.
 - Vue type checking, Svelte checking, changed-source ESLint, build and Java tests passed. Temporary browser-created Post was deleted and the isolated browser session closed.
+
+## Slow-request follow-up verification
+
+- Reproduced three missed races against the actual frontend functions and installed ProseMirror: deleting a card adopted an identical neighbour, block-to-inline conversion lost the pending response, and an open URL popup retained an obsolete node reference after metadata arrived. A deleted request also emitted a late failure toast.
+- Added shared per-step replacement tracking for the request and popup. Deletion ends tracking; a single replacement card is followed through block/inline wrappers. URL or manual metadata changes still invalidate pending fetches.
+- Expanded `node packages/ui/tests/link-data-race.mjs`: adjacent identical card deletion, silent late rejection, block/inline conversion in both directions, insertion plus attribute change, and applying a popup draft after metadata arrival. `link-data-loading.mjs` and `insert-card.mjs` also pass.
+- Rebuilt and hot-reloaded the plugin. In the running Post editor, held real Console requests before sending: deletion left the identical neighbour unchanged; conversion retained loading and wrote NewsNow metadata to the inline card; a popup opened before the NewsNow response applied a new Halo URL afterward and fetched its metadata. Aborting a deleted request produced neither stale loading nor a failure toast.
+- Restored and saved the original Post content after E2E; no publishing or plugin settings changes. Vue type checking, changed-source ESLint and Gradle build/Java tests passed.
+- Follow-up review found mark-only steps also replace inline nodes with empty StepMaps. Added regression coverage and preserved same-position targets for those steps. Real editor E2E: bold an inline card during the held request; loading remains until success, then both NewsNow metadata and the bold mark are retained.
