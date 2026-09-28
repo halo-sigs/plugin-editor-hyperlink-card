@@ -1,7 +1,9 @@
 <script lang="ts" setup>
+import { fetchingCards } from "@/editor/link-data";
 import "@halo-dev/hyperlink-card";
 import { NodeViewWrapper, nodeViewProps } from "@halo-dev/richtext-editor";
 import { ref, watch } from "vue";
+import MingcuteLoadingLine from "~icons/mingcute/loading-line";
 
 const props = defineProps(nodeViewProps);
 
@@ -23,6 +25,15 @@ watch(
     class=":uno: mb-0 mt-[0.75em] first:mt-0"
     :class="{ ':uno: rounded-xl ring-1': selected }"
   >
+    <span
+      v-if="fetchingCards.has(node)"
+      role="status"
+      contenteditable="false"
+      class=":uno: inline-flex items-center gap-1 text-xs text-gray-500"
+    >
+      <MingcuteLoadingLine class=":uno: animate-spin" />
+      正在获取链接信息…
+    </span>
     <hyperlink-card
       ref="cardRef"
       data-mode="snapshot"
